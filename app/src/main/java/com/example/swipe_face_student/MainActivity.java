@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG ="BACKFLAG";
     private TextView mTextMessage;
     private Fragment_ClassList fragment_classList;
     private Fragment_LeaveList fragment_leaveList;
@@ -44,20 +46,27 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     transaction.replace(R.id.content, new Fragment_ClassList());
+                    transaction.addToBackStack(new Fragment_ClassList().getClass().getName());
                     transaction.commit();
 
                     return true;
                 case R.id.navigation_leave:
                     transaction.replace(R.id.content, new Fragment_LeaveList());
+                    transaction.addToBackStack(new Fragment_LeaveList().getClass().getName());
+
                     transaction.commit();
                     return true;
                 case R.id.navigation_notification:
                     transaction.replace(R.id.content, new Fragment_Notifications());
+                    transaction.addToBackStack(new Fragment_Notifications().getClass().getName());
+
                     transaction.commit();
                     return true;
 
                 case R.id.navigation_user:
                     transaction.replace(R.id.content, new Fragment_User());
+                    transaction.addToBackStack(new Fragment_User().getClass().getName());
+
                     transaction.commit();
                     return true;
             }
@@ -89,4 +98,22 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
+
+    @Override
+    public void onBackPressed() {
+        int count = getFragmentManager().getBackStackEntryCount();
+
+//        if (count == 0) {
+//            super.onBackPressed();
+//        } else {
+//            getFragmentManager().popBackStack();
+//        }
+        if (!BackHandlerHelper.handleBackPress(this)) {
+            super.onBackPressed();
+            Log.d(TAG,"ERROR");
+        }
+        else{
+            Log.d(TAG,"success");
+        }
+    }//fragment退回鍵
 }

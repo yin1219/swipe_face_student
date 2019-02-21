@@ -1,5 +1,7 @@
 package com.example.swipe_face_student;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,13 +17,17 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.View
 
 
     @NonNull
+
+    private transPageListener mTransPageListener;//adapter跳轉fragment
     public List<Class> ClassList;
+
 
     public ClassListAdapter(List<Class> ClassList) {
 
         this.ClassList = ClassList;
 
     }
+
 
     @Override
 
@@ -42,11 +48,15 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.View
         holder.class_id.setText(ClassList.get(position).getClass_id());
 
 
-        holder.mView.setOnClickListener(new View.OnClickListener(){
+        holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
-                Log.d("Flag:","click");
+            public void onClick(View view) {
+                Context context = view.getContext();
+                Log.d("Flag:", "click");
                 notifyItemChanged(position);
+
+                mTransPageListener.onTransPageClick();
+
 
 
             }
@@ -78,4 +88,15 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.View
 
         }
     }
+
+    public interface transPageListener {
+        public void onTransPageClick();
+    }//adapter跳轉fragment
+    public void setOnTransPageClickListener(transPageListener transPageListener) {
+        this.mTransPageListener = transPageListener;
+    }//adapter跳轉fragment
+
+
+
+
 }

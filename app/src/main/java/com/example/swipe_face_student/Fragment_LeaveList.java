@@ -15,7 +15,7 @@ import android.view.ViewGroup;
  * Use the {@link Fragment_LeaveList#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Fragment_LeaveList extends Fragment {
+public class Fragment_LeaveList extends Fragment implements FragmentBackHandler {
 
 
     @Override
@@ -24,6 +24,11 @@ public class Fragment_LeaveList extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_fragment__leave_list, container, false);
     }
+
+    @Override
+    public boolean onBackPressed() {
+        return BackHandlerHelper.handleBackPress(this);
+    }//fragment 返回鍵
 
 
 }

@@ -3,6 +3,8 @@ package com.example.swipe_face_student;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -29,7 +31,7 @@ import java.util.List;
  * Use the {@link Fragment_ClassList#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Fragment_ClassList extends Fragment {
+public class Fragment_ClassList extends Fragment implements FragmentBackHandler {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private RecyclerView mMainList;
@@ -40,6 +42,8 @@ public class Fragment_ClassList extends Fragment {
     private String student_id = "405401217";
     private Teacher teacher;
     private ArrayList<String> class_id = new ArrayList<String>();
+    private FragmentTransaction transaction;
+    private FragmentManager fragmentManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -114,40 +118,32 @@ public class Fragment_ClassList extends Fragment {
                     }
                 });
         Log.d(TAG, "out" + class_id.toString());
-//        D741201584
-//
-//        db.collection("Class").
-//
-//                whereArrayContains("class_id", class_id).
-//
-//                addSnapshotListener(new EventListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onEvent(QuerySnapshot
-//                                                documentSnapshots, FirebaseFirestoreException e) {
-//                        if (e != null) {
-//
-//                            Log.d(TAG, "Error :" + e.getMessage());
-//                        }
-//
-//
-//                        for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
-//
-//
-//                            if (doc.getType() == DocumentChange.Type.ADDED) {
-//
-//                                Class aClass = doc.getDocument().toObject(Class.class);
-//                                Log.d(TAG, "DB2");
-//                                classList.add(aClass);
-//                                classListAdapter.notifyDataSetChanged();
-//
-//                            }
-//                        }
-//
-//                    }
-//                });
+
+        classListAdapter.setOnTransPageClickListener (new ClassListAdapter.transPageListener(){
+
+            @Override
+            public void onTransPageClick() {
+                fragmentManager = getChildFragmentManager();
+                transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.fragment_class_list, new FragmentClassDetail());
+                transaction.addToBackStack(new FragmentClassDetail().getClass().getName());
+                transaction.commit();
+
+            }
+
+        });
+
+
 
 
     }
+
+    @Override
+    public boolean onBackPressed() {
+        return BackHandlerHelper.handleBackPress(this);
+    }//fragment 返回鍵
+
+
 
 
 }

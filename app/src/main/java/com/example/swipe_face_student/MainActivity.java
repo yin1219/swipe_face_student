@@ -16,8 +16,8 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class MainActivity extends AppCompatActivity {
-    private static final String TAG ="BACKFLAG";
+public class MainActivity extends AppCompatActivity implements Fragment_ClassList.OnFragmentSelectedListener {
+    private static final String TAG = "BACKFLAG";
     private TextView mTextMessage;
     private Fragment_ClassList fragment_classList;
     private Fragment_LeaveList fragment_leaveList;
@@ -110,10 +110,23 @@ public class MainActivity extends AppCompatActivity {
 //        }
         if (!BackHandlerHelper.handleBackPress(this)) {
             super.onBackPressed();
-            Log.d(TAG,"ERROR");
-        }
-        else{
-            Log.d(TAG,"success");
+            Log.d(TAG, "ERROR");
+        } else {
+            Log.d(TAG, "success");
         }
     }//fragment退回鍵
+
+    @Override
+    public void onFragmentSelected(String info ,String fragmentKey) {
+        if(fragmentKey.equals("ClassList")) {
+            FragmentClassDetail fragmentClassDetail = new FragmentClassDetail();
+            Bundle args = new Bundle();
+            args.putString("info", info);
+            fragmentClassDetail.setArguments(args);
+            Log.d(TAG, " MAIN");
+            getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.content, fragmentClassDetail).commit();
+        }//判斷是哪個fragment傳來的請求
+    }//fragment傳值並換頁
+
+
 }

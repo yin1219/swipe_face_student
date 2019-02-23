@@ -2,6 +2,7 @@ package com.example.swipe_face_student;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,11 +21,13 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.View
 
     private transPageListener mTransPageListener;//adapter跳轉fragment
     public List<Class> ClassList;
+    public Context context;
 
 
-    public ClassListAdapter(List<Class> ClassList) {
+    public ClassListAdapter(Context context,List<Class> ClassList) {
 
         this.ClassList = ClassList;
+        this.context =context;
 
     }
 
@@ -46,16 +49,20 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.View
         holder.class_schoolyear.setText(ClassList.get(position).getClass_schoolyear());
         holder.student_total.setText(ClassList.get(position).getStudent_total().toString());
         holder.class_id.setText(ClassList.get(position).getClass_id());
+        String classId= ClassList.get(position).classId;
+
 
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Bundle bundle = new Bundle();
                 Context context = view.getContext();
                 Log.d("Flag:", "click");
                 notifyItemChanged(position);
 
-                mTransPageListener.onTransPageClick();
+                mTransPageListener.onTransPageClick(classId);
+
 
 
 
@@ -90,8 +97,8 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.View
     }
 
     public interface transPageListener {
-        public void onTransPageClick();
-    }//adapter跳轉fragment
+        public void onTransPageClick(String classId);
+    }//adapter跳轉fragment並攜帶需要的資料
     public void setOnTransPageClickListener(transPageListener transPageListener) {
         this.mTransPageListener = transPageListener;
     }//adapter跳轉fragment

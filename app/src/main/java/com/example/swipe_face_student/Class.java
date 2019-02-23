@@ -2,7 +2,7 @@ package com.example.swipe_face_student;
 
 import java.util.ArrayList;
 
-public class Class {
+public class Class extends  ClassId{
     public Class() {
 
     }

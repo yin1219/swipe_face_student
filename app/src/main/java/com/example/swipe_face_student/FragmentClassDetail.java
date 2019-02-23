@@ -5,33 +5,43 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import io.opencensus.tags.Tag;
 
 import static com.example.swipe_face_student.BackHandlerHelper.handleBackPress;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link FragmentClassDetail.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link FragmentClassDetail#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class FragmentClassDetail extends Fragment implements FragmentBackHandler {
 
+
+    private String TAG = "ClassDetail";
+    private String classId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+
+        Bundle args = new Bundle();//fragment傳值
+        args = getArguments();//fragment傳值
+        classId=args.getString("info");
+        Log.d(TAG,"classId:" +classId);//fragment傳值
+        Toast.makeText(getContext(),"現在課程代碼是"+classId,Toast.LENGTH_LONG).show();
+
+
         return inflater.inflate(R.layout.fragment_fragment_class_detail, container, false);
     }
 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-
+        Log.d(TAG,"classId2:"+classId);
     }
 
     @Override

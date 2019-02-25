@@ -3,6 +3,7 @@ package com.example.swipe_face_student;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -13,6 +14,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -25,6 +29,7 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
     private Button buttonRegister;
     private EditText editTextName1;
     private EditText editTextName2;
+    private EditText editTextId;
     private EditText editTextEmail;
     private EditText editTextPassword1;
     private EditText editTextPassword2;
@@ -59,6 +64,7 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
 
         editTextName1 = (EditText) findViewById(R.id.editTextName1);
         editTextName2 = (EditText) findViewById(R.id.editTextName2);
+        editTextId = (EditText)findViewById(R.id.editTextId);
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPassword1 = (EditText) findViewById(R.id.editTextPassword1);
         editTextPassword2 = (EditText) findViewById(R.id.editTextPassword2);
@@ -81,6 +87,7 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
     private void registerUser() {
         String name1 = editTextName1.getText().toString().trim();
         String name2 = editTextName2.getText().toString().trim();
+        String id = editTextId.getText().toString().trim();
         final String email = editTextEmail.getText().toString().trim();
         final String password1 = editTextPassword1.getText().toString().trim();
         String password2 = editTextPassword2.getText().toString().trim();
@@ -134,6 +141,16 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
         }
         Log.e("test4",Integer.toString(t));
 
+        if(TextUtils.isEmpty(id)) {
+            //id is empty
+            Toast.makeText(this, "請輸入學號", Toast.LENGTH_SHORT).show();
+            //stopping the function execution further
+            t = 1;
+            return;
+        }else {
+            t = 0;
+        }
+
 
 
         if(TextUtils.isEmpty(email)) {
@@ -175,9 +192,9 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
         }
         else if (!password1.equals(password2)){
 
-                Toast.makeText(this,"密碼確認有誤",Toast.LENGTH_SHORT).show();
-                t = 1;
-                return ;
+            Toast.makeText(this,"密碼確認有誤",Toast.LENGTH_SHORT).show();
+            t = 1;
+            return ;
 
         }else {
             t = 0;
@@ -201,18 +218,19 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
 
 
 
-                                Map<String, Object> user = new HashMap<>();
-                                user.put("teacher_name", name);
-                                user.put("teacher_email", email);
-                                user.put("teacher_school", school);
-                                user.put("teacher_department", department);
+                        Map<String, Object> user = new HashMap<>();
+                        user.put("student_name", name);
+                        user.put("student_id",id);
+                        user.put("student_email", email);
+                        user.put("student_school", school);
+                        user.put("student_department", department);
 
 
-                                db.collection("Student").add(user);
+                        db.collection("Student").add(user);
 
-                                //user is successfully registered and logged in
-                                //we will start the profile activity here
-                                Toast.makeText(S_SignUp.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+                        //user is successfully registered and logged in
+                        //we will start the profile activity here
+                        Toast.makeText(S_SignUp.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
 
 
 

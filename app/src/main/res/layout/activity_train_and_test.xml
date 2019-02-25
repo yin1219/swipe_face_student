@@ -1,19 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".TrainAndTest">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context=".TrainAndTest"
+    android:background="@color/colorPrimary">
+
+    <Button
+        android:id="@+id/buttonTrain"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/bg_round_button_yellow"
+        android:text="@string/train"
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/buttonTest"
-        android:layout_width="130dp"
+        android:layout_below="@id/buttonTrain"
+        android:layout_width="150dp"
+        android:layout_marginTop="20dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="right|center_vertical"
-        android:layout_marginLeft="100dp"
+        android:layout_centerInParent="true"
         android:background="@drawable/bg_round_button_yellow"
         android:text="@string/test"
-        android:textSize="18sp" />
+        android:textSize="20sp" />
 
-</LinearLayout>
+</RelativeLayout>

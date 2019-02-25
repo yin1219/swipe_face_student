@@ -6,6 +6,7 @@
     <string name="title_user">帳戶管理</string>
     <string name="signup_name2">名字</string>
     <string name="signup_name1">姓氏</string>
+    <string name="signup_id">學號</string>
     <string name="signup_email">電子信箱</string>
     <string name="signup_password1">密碼(至少五碼)</string>
     <string name="signup_password2">再次輸入密碼</string>
@@ -21,7 +22,8 @@
     <string name="signin">Sign In</string>
     <string name="signup_">Sign Up</string>
     <string name="or">───────OR───────</string>
-    <string name="test">test</string>
+    <string name="test">辨識測試</string>
+    <string name="train">圖片上傳</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

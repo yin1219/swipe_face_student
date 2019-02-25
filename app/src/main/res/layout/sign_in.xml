@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -14,6 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+
 
 
         <ImageView
@@ -54,34 +55,53 @@
             android:textColor="#FFF"
             android:textSize="16sp" />
 
-        <Button
-            android:id="@+id/buttonSignup"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/bg_round_button_blue"
-            android:text="@string/signup_"
-            android:textColor="#FFF"
-            android:textSize="16sp" />
+
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
             android:text="@string/or"
             android:textColor="#FFF"
             android:textSize="16sp" />
 
-        <Button
-            android:id="@+id/button4"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/bg_round_button_blue"
-            android:text="FORGET YOUR PASSWORD?"
-            android:textColor="#FFF" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/buttonSignup"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_round_button_blue"
+                android:text="@string/signup_"
+                android:textColor="#FFF"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_round_button_blue"
+                android:text="FORGET YOUR PASSWORD?"
+                android:textColor="#FFF"
+                android:textSize="12sp"/>
+
+
+
+        </LinearLayout>
+
+
 
     </LinearLayout>
+
+
 
 
 </LinearLayout>

@@ -7,9 +7,19 @@ import android.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import net.gotev.uploadservice.MultipartUploadRequest;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /*
 在Bt設置點擊後加入
@@ -31,29 +41,42 @@ if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
 * */
 
 public class UploadPhoto {
-    private final String uri = "http://192.168.1.10:8080/ProjectApi/api/FaceApi/TrainFace/";
-    //http://localhost:8080/ProjectApi/api/FaceApi/TrainFace/
-    private final String parameterName = "photos";
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();//抓現在登入user
     String email = user.getEmail();//抓user.email
     String [] uriEmailArray = email.split("@");
     String uriEmail = uriEmailArray[0];
-
-    public void uploadMultipart(final Context context, List<Uri> result) {
-
-        try {
-            String uploadId =
-                    new MultipartUploadRequest(context, uri+uriEmail)
-                            // starting from 3.1+, you can also use content:// URI string instead of absolute file
-                            .addFileToUpload(result.get(0).toString(), parameterName)
-                            //.setNotificationConfig(new UploadNotificationConfig())
-                            .setMaxRetries(2)
-                            .startUpload();
-
-
-        } catch (Exception exc) {
-            Log.e("AndroidUploadService", exc.getMessage(), exc);
+    OkHttpClient client = new OkHttpClient();
+    String url = "http://192.168.43.172:8080/ProjectApi/api/FaceApi/TrainFace/"+uriEmail;
+    public void uploadFile(List<String> img) {
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);//setType一定要Multipart
+        for (int i = 0; i <img.size() ; i++) {//用迴圈去RUN多選照片
+            File file=new File(img.get(i));
+            if (file !=null) {
+                builder.addFormDataPart("photos", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
+            }//前面是para  中間是抓圖片名字 後面是創一個要求
         }
+
+        MultipartBody requestBody = builder.build();//建立要求
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i("Create Android", "Test失敗");
+
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.i("Create Android", "Test成功");
+
+            }
+        });
+
     }
+
 
 }

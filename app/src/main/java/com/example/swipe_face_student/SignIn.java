@@ -20,7 +20,7 @@ public class SignIn extends AppCompatActivity {
     private EditText input_account;
     private EditText input_password;
 
-    private Button buttonLogin;
+    private Button buttonLogin,buttonSignup;
 
     private FirebaseAuth mAuth;
 
@@ -38,6 +38,7 @@ public class SignIn extends AppCompatActivity {
         input_password = (EditText) findViewById(R.id.input_password);
 
         buttonLogin = (Button) findViewById(R.id.buttonLogin);
+        buttonSignup = (Button)findViewById(R.id.buttonSignup);
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -58,6 +59,13 @@ public class SignIn extends AppCompatActivity {
                 startSignIn();
 
             }
+        });
+
+        buttonSignup.setOnClickListener(v ->{
+            Intent i = new Intent();
+            i.setClass(SignIn.this,S_SignUp.class);
+            startActivity(i);
+
         });
 
 

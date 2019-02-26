@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="65dp"
         android:layout_centerHorizontal="true"
         android:text="@string/start"
         android:textSize="40dp"
@@ -18,8 +18,8 @@
 
     <TextView
         android:layout_width="350dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="120dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="110dp"
         android:layout_centerHorizontal="true"
         android:text="請上傳屬於自己五官清晰的照片"
         android:textSize="23dp"
@@ -32,11 +32,11 @@
        android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="220dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="160dp"
         android:layout_marginRight="115dp"
-        android:src="@drawable/leadingpage4">
+        android:src="@drawable/pic3">
 
     </ImageView>
    </LinearLayout>
@@ -45,7 +45,7 @@
         android:id="@+id/start"
         android:layout_alignParentBottom="true"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="110dp"
         android:layout_centerHorizontal="true"
         android:layout_width="150dp"
         android:background="@drawable/bg_round_button_blue"

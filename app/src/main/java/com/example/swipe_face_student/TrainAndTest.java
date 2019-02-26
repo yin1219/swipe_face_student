@@ -46,7 +46,7 @@ public class TrainAndTest extends AppCompatActivity {
     String responseData;
     String name,id,email,department,school;
     OkHttpClient client = new OkHttpClient();
-    String url = "http://192.168.43.172:8080/ProjectApi/api/FaceApi/RetrievePhoto";
+    String url = "http://192.168.1.10:8080/ProjectApi/api/FaceApi/RetrievePhoto";
     private static Context mContext;
 
     @Override
@@ -163,6 +163,7 @@ public class TrainAndTest extends AppCompatActivity {
     }
 
     private void parseJsonWithJsonObject(Response response) throws IOException {
+        int turn = 0;
         responseBody =response.body();
         responseData = responseBody.string();
         try{
@@ -190,6 +191,7 @@ public class TrainAndTest extends AppCompatActivity {
                 Log.i("department",department);
                 Log.i("school",school);
                 ToastUtils.show(getmContext(),"名字:"+name+"\n"+"學號: "+id+"\n"+"email:"+email+"\n"+"系所:"+department+"\n"+"學校:"+school);
+                turn += 1;
 
                 //heroList.add(hero);
 
@@ -202,6 +204,11 @@ public class TrainAndTest extends AppCompatActivity {
 
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+        if (turn != 0 && name != null){
+            Intent i = new Intent();
+            i.setClass(TrainAndTest.this,MainActivity.class);
+            startActivity(i);
         }
     }
 

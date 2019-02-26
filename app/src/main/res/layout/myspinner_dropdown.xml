@@ -9,5 +9,6 @@
     android:paddingLeft="8dp"
     android:singleLine="true"
     android:textColor="#000000"
+    android:background="#FFFFFF"
     android:textSize="18sp">
 </TextView>

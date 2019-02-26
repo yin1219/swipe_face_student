@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/start"
+        android:textSize="40dp"
+        android:textColor="#FFF"
+        android:gravity="center"
+        app:fontFamily="@font/asap_medium"/>
+
+    <TextView
+        android:layout_width="350dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="120dp"
+        android:layout_centerHorizontal="true"
+        android:text="請上傳屬於自己五官清晰的照片"
+        android:textSize="23dp"
+        android:textColor="#FFF"
+        android:gravity="center"
+        app:fontFamily="@font/asap_medium"/>
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="220dp"
+        android:layout_marginRight="115dp"
+        android:src="@drawable/leadingpage4">
+
+    </ImageView>
+   </LinearLayout>
+
+    <Button
+        android:id="@+id/start"
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="150dp"
+        android:background="@drawable/bg_round_button_blue"
+        android:textColor="#FFF"
+        android:text="Let's Go"
+        android:textSize="18sp">
+
+    </Button>
+
+</RelativeLayout>

@@ -13,8 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.swipe_face_student.Adapter.ClassListAdapter;
+import com.example.swipe_face_student.Model.Class;
+import com.example.swipe_face_student.Model.Student;
+import com.example.swipe_face_student.Model.Teacher;
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -22,7 +25,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 
 public class Fragment_ClassList extends Fragment implements FragmentBackHandler {
@@ -49,13 +51,14 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
         return inflater.inflate(R.layout.fragment_fragment__class_list, container, false);
     }
 
+
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
 
         db = FirebaseFirestore.getInstance();
 
         classList = new ArrayList<>();
-        classListAdapter = new ClassListAdapter(getActivity().getApplicationContext(),classList);
+        classListAdapter = new ClassListAdapter(getActivity().getApplicationContext(), classList);
 
         mMainList = (RecyclerView) getView().findViewById(R.id.class_list);
         mMainList.setHasFixedSize(true);
@@ -98,10 +101,10 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
 
                                                 if (doc.getType() == DocumentChange.Type.ADDED) {
 
-                                                    classId= new String();
+                                                    classId = new String();
                                                     classId = doc.getDocument().getId();
                                                     Class aClass = doc.getDocument().toObject(Class.class).withId(classId);
-                                                    Log.d(TAG, "DB2 classId:"+classId);
+                                                    Log.d(TAG, "DB2 classId:" + classId);
                                                     classList.add(aClass);
                                                     classListAdapter.notifyDataSetChanged();
 
@@ -118,12 +121,13 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
         Log.d(TAG, "out" + class_id.toString());
         Log.d(TAG, "out" + class_id.toString());
 
+
         classListAdapter.setOnTransPageClickListener(new ClassListAdapter.transPageListener() {
 
             @Override
             public void onTransPageClick(String classId2) {
-                Log.d(TAG,"onTransPageClick0" +classId2);
-                mCallback.onFragmentSelected(classId2 , "ClassList");//fragment傳值
+                Log.d(TAG, "onTransPageClick0" + classId2);
+                mCallback.onFragmentSelected(classId2, "ClassList");//fragment傳值
 //                Log.d(TAG," classId:"+classId);
 //
 //                fragmentManager = getChildFragmentManager();
@@ -147,19 +151,18 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
     }//fragment 返回鍵
 
     public interface OnFragmentSelectedListener {
-        public void onFragmentSelected(String info ,String fragmentKey);
+        public void onFragmentSelected(String info, String fragmentKey);
     }//Fragment傳值
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            mCallback = (OnFragmentSelectedListener)context;//fragment傳值
+            mCallback = (OnFragmentSelectedListener) context;//fragment傳值
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + "Mush implement OnFragmentSelectedListener ");
         }
     }
-
 
 
 }

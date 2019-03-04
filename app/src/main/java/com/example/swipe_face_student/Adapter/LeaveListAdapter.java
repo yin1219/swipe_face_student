@@ -1,14 +1,16 @@
-package com.example.swipe_face_student;
+package com.example.swipe_face_student.Adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.swipe_face_student.Model.Leave;
+import com.example.swipe_face_student.R;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -37,12 +39,12 @@ public class LeaveListAdapter extends RecyclerView.Adapter<LeaveListAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         SimpleDateFormat myFmt2=new SimpleDateFormat("yyyy-MM-dd");
-        String leaveDate = myFmt2.format(leaveList.get(position).getLeave_date()).toString();
+        String leave_uploaddate = myFmt2.format(leaveList.get(position).getLeave_uploaddate()).toString();
 
         holder.student_name.setText(leaveList.get(position).getStudent_name());
         holder.leave_reason.setText(leaveList.get(position).getLeave_reason());
         holder.leave_check.setText(leaveList.get(position).getLeave_check());
-        holder.leave_date.setText(leaveDate);
+        holder.leave_date.setText(leave_uploaddate);
 
 
         String leaveRecordId = leaveList.get(position).LeaveId;

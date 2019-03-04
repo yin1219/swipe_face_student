@@ -1,21 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragment_User">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="USER" />
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/bt"
-        android:layout_width="120dp"
-        android:layout_height="112dp"
-        android:text="Button" />
+        <android.support.design.widget.NavigationView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="top"
+            android:background="@color/colorPrimary"
+            android:fitsSystemWindows="false"
+            android:orientation="vertical"
+            android:theme="@style/Base.ThemeOverlay.AppCompat.Dark"
+            android:tooltipText="申請請假">
+
+            <TextView
+                android:id="@+id/title_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="帳戶管理"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/common_google_signin_btn_text_dark_default"
+                android:textSize="24sp" />
+
+        </android.support.design.widget.NavigationView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="USER" />
+
+    </LinearLayout>
+
+    <!-- TODO: Update blank fragment layout -->
 
 
 </FrameLayout>

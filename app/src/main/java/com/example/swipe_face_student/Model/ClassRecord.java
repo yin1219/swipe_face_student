@@ -1,4 +1,4 @@
-package com.example.swipe_face_student;
+package com.example.swipe_face_student.Model;
 
 public class ClassRecord {
 	public ClassRecord() {

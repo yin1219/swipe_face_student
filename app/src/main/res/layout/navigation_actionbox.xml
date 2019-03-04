@@ -2,7 +2,7 @@
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_action"
+    android:id="@+id/nav_search_class"
     android:layout_width="match_parent"
     android:layout_height="70dp"
     android:background="@color/colorPrimary"
@@ -26,11 +26,11 @@
             android:layout_marginBottom="9dp"
             android:background="@drawable/search_layout"
             android:ems="12"
+            android:hint="@string/search_class"
             android:inputType="textPersonName"
             android:padding="8dp"
-            android:hint="@string/search_student"
-            android:textColorHint="#939393"
-            android:textColor="#000" />
+            android:textColor="#000"
+            android:textColorHint="#939393" />
 
         <ImageButton
             android:id="@+id/imageButton3"
@@ -46,8 +46,6 @@
             app:srcCompat="@android:drawable/ic_menu_search" />
 
     </RelativeLayout>
-
-
 
 
 </android.support.v7.widget.Toolbar>

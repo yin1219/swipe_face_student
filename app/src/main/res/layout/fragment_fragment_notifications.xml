@@ -5,9 +5,36 @@
     tools:context="com.example.swipe_face_student.Fragment_Notifications">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical">
+        <android.support.design.widget.NavigationView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:background="@color/colorPrimary"
+            android:fitsSystemWindows="false"
+            android:orientation="vertical"
+            android:theme="@style/Base.ThemeOverlay.AppCompat.Dark"
+            android:tooltipText="申請請假">
+
+            <TextView
+                android:id="@+id/title_notifications"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="訊息通知"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/common_google_signin_btn_text_dark_default"
+                android:textSize="24sp" />
+
+        </android.support.design.widget.NavigationView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/hello_blank_fragment" />
+    </LinearLayout>
 
 </FrameLayout>

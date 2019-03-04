@@ -1,8 +1,6 @@
-package com.example.swipe_face_student;
+package com.example.swipe_face_student.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.example.swipe_face_student.Model.Class;
+import com.example.swipe_face_student.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,8 +57,6 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.View
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                Context context = view.getContext();
                 Log.d("Flag:", "click");
                 notifyItemChanged(position);
 

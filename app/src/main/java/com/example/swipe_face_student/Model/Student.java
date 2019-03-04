@@ -1,4 +1,4 @@
-package com.example.swipe_face_student;
+package com.example.swipe_face_student.Model;
 
 import java.util.ArrayList;
 

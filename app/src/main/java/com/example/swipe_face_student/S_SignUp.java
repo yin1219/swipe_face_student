@@ -171,9 +171,9 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
             t = 1;
             return;
         }
-        else if(password1.length() < 5){
-            //length of password1  is small than 5
-            Toast.makeText(this,"密碼請輸入至少五碼",Toast.LENGTH_SHORT).show();
+        else if(password1.length() < 6){
+            //length of password1  is small than 6
+            Toast.makeText(this,"密碼請輸入至少六碼",Toast.LENGTH_SHORT).show();
             //stopping the function execution further
             t = 1;
             return;
@@ -236,7 +236,7 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
 
                     });
             Intent i = new Intent();
-            i.setClass(S_SignUp.this,TrainAndTest.class);
+            i.setClass(S_SignUp.this,LeadingPage.class);
             startActivity(i);
             finish();
 

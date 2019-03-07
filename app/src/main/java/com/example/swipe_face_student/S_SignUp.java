@@ -95,6 +95,8 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
 
         final String school = spinner1.getSelectedItem().toString();
         final String department = spinner2.getSelectedItem().toString();
+        String [] uriEmailArray = email.split("@");
+        String uriEmail = uriEmailArray[0];
         int t ;
 
 
@@ -159,9 +161,20 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
             //stopping the function execution further
             t = 1;
             return;
-        }else {
+        }else if (isVaildEmailFormat() != true){
+            Toast.makeText(this,"請輸入email格式",Toast.LENGTH_SHORT).show();
+            t = 1;
+            return;
+
+        }else if(!uriEmail.equals(id)  ){
+            Toast.makeText(this,"請填有學號的學校信箱",Toast.LENGTH_LONG).show();
+            t = 1;
+            return;
+        }else{
             t = 0;
         }
+
+
         Log.e("test5",Integer.toString(t));
 
         if(TextUtils.isEmpty(password1)) {
@@ -258,5 +271,12 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
 
         }
 
+    }
+
+    private  boolean isVaildEmailFormat() {
+        EditText etMail = (EditText) findViewById(R.id.editTextEmail);
+        if (etMail == null)
+            return false;
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(etMail.getText().toString()).matches();
     }
 }

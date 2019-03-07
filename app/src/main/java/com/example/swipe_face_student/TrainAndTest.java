@@ -65,7 +65,7 @@ public class TrainAndTest extends AppCompatActivity {
                     .countable(false)//true:选中后显示数字;false:选中后显示对号
                     .maxSelectable(9)//可选的最大数
                     .capture(true)//选择照片时，是否显示拍照
-                    .captureStrategy(new CaptureStrategy(true, "com.example.kl.home.fileprovider"))//参数1 true表示拍照存储在共有目录，false表示存储在私有目录；参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
+                    .captureStrategy(new CaptureStrategy(true, "com.example.swipe_face_student.fileprovider"))//参数1 true表示拍照存储在共有目录，false表示存储在私有目录；参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
                     .imageEngine(new MyGlideEngine())//图片加载引擎
                     .theme(R.style.Matisse_Zhihu)
                     .forResult(REQUEST_CODE_CHOOSE = 6);//REQUEST_CODE_CHOOSE自定義
@@ -79,7 +79,7 @@ public class TrainAndTest extends AppCompatActivity {
                     .countable(false)//true:选中后显示数字;false:选中后显示对号
                     .maxSelectable(9)//可选的最大数
                     .capture(true)//选择照片时，是否显示拍照
-                    .captureStrategy(new CaptureStrategy(true, "com.example.kl.home.fileprovider"))//参数1 true表示拍照存储在共有目录，false表示存储在私有目录；参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
+                    .captureStrategy(new CaptureStrategy(true, "com.example.swipe_face_student.fileprovider"))//参数1 true表示拍照存储在共有目录，false表示存储在私有目录；参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
                     .imageEngine(new MyGlideEngine())//图片加载引擎
                     .theme(R.style.Matisse_Zhihu)
                     .forResult(REQUEST_CODE_CHOOSE = 9);//REQUEST_CODE_CHOOSE自定義

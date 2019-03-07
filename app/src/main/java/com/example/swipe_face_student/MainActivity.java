@@ -16,12 +16,12 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class MainActivity extends AppCompatActivity implements Fragment_ClassList.OnFragmentSelectedListener {
+public class MainActivity extends AppCompatActivity implements OnFragmentSelectedListener {
     private static final String TAG = "BACKFLAG";
     private TextView mTextMessage;
     private Fragment_ClassList fragment_classList;
     private Fragment_LeaveList fragment_leaveList;
-
+    private String student_id = "405401114";
     private ViewPager viewPager;
 
     private FragmentTransaction transaction;
@@ -117,15 +117,38 @@ public class MainActivity extends AppCompatActivity implements Fragment_ClassLis
     }//fragment退回鍵
 
     @Override
-    public void onFragmentSelected(String info ,String fragmentKey) {
-        if(fragmentKey.equals("ClassList")) {
-            FragmentClassDetail fragmentClassDetail = new FragmentClassDetail();
+    public void onFragmentSelected(String info, String fragmentKey) {
+        Log.d(TAG, "onFragmentSelected");
+        if (fragmentKey.equals("toClassList")) {
+            Fragment_ClassDetail fragmentClassDetail = new Fragment_ClassDetail();
             Bundle args = new Bundle();
             args.putString("info", info);
+            args.putString("student_id", student_id);
             fragmentClassDetail.setArguments(args);
             Log.d(TAG, " MAIN");
             getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.content, fragmentClassDetail).commit();
         }//判斷是哪個fragment傳來的請求
+
+        else if (fragmentKey.equals("toAttendanceList")) {
+            Fragment_AttendanceList fragment_attendanceList = new Fragment_AttendanceList();
+            Bundle args = new Bundle();
+            args.putString("info", info);
+            args.putString("student_id", student_id);
+            fragment_attendanceList.setArguments(args);
+            Log.d(TAG, " toAttendanceList");
+            getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.content, fragment_attendanceList).commit();
+        }//判斷是哪個fragment傳來的請求
+
+        else if (fragmentKey.equals("toTeacherInfo")) {
+            Fragment_TeacherInfo fragment_teacherInfo = new Fragment_TeacherInfo();
+            Bundle args = new Bundle();
+            args.putString("info", info);
+            fragment_teacherInfo.setArguments(args);
+            Log.d(TAG, " ToTeacherInfo");
+            getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.content, fragment_teacherInfo).commit();
+        }//判斷是哪個fragment傳來的請求
+
+
     }//fragment傳值並換頁
 
 

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dracula_item_checkCircle_borderColor"
-    tools:context="com.example.swipe_face_student.FragmentClassDetail">
+    tools:context="com.example.swipe_face_student.Fragment_ClassDetail">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
@@ -179,7 +179,7 @@
             <!-- COLUMN 1  -->
 
             <android.support.v7.widget.CardView
-                android:id="@+id/card_absence_list"
+                android:id="@+id/card_attendance_list"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_rowWeight="1"
@@ -200,7 +200,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/text_absence_list"
+                        android:id="@+id/text_attendance_list"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="出席狀況"
@@ -210,7 +210,7 @@
                         android:textStyle="bold" />
 
                     <ImageView
-                        android:id="@+id/img_absence_list"
+                        android:id="@+id/img_attendance_list"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"

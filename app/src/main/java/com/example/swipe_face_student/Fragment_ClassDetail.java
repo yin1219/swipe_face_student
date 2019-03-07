@@ -25,7 +25,7 @@ import io.opencensus.tags.Tag;
 import static com.example.swipe_face_student.BackHandlerHelper.handleBackPress;
 
 
-public class FragmentClassDetail extends Fragment implements FragmentBackHandler {
+public class Fragment_ClassDetail extends Fragment implements FragmentBackHandler {
 
 
     private String TAG = "ClassDetail";
@@ -36,6 +36,9 @@ public class FragmentClassDetail extends Fragment implements FragmentBackHandler
     private GridLayout gridLayout;
     private TextView text_class_id;
     private TextView text_class_title;
+
+
+    OnFragmentSelectedListener mCallback;//Fragment傳值
 
 
     @Override
@@ -60,17 +63,36 @@ public class FragmentClassDetail extends Fragment implements FragmentBackHandler
         text_class_id = (TextView) view.findViewById(R.id.text_class_id);
         gridLayout = (GridLayout) view.findViewById(R.id.grid_class_detail);
 
-        setClass(new FirebaseCallback(){
+        setClass(new FirebaseCallback() {
             @Override
             public void onCallback(Class firestore_class) {
 
                 text_class_title.setText(firestore_class.getClass_name());
                 text_class_id.setText(firestore_class.getClass_id());
+
+                setSingleEvent(gridLayout , firestore_class);
             }
         });
 
 
-        setSingleEvent(gridLayout);
+    }
+
+
+    private void setClass(FirebaseCallback firebaseCallback) {
+        firestore_class = new Class();
+        Log.d(TAG, "setClass class_id:" + classId);
+        Task<DocumentSnapshot> documentSnapshotTask = db.collection("Class")
+                .document(classId)
+                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        firestore_class = documentSnapshot.toObject(Class.class);
+                        Log.d(TAG, "setClass here");
+                        firebaseCallback.onCallback(firestore_class);
+                    }
+                });
+
+
     }
 
     @Override
@@ -88,29 +110,26 @@ public class FragmentClassDetail extends Fragment implements FragmentBackHandler
         }
     }//fragment 返回鍵
 
-    private void setClass(FirebaseCallback firebaseCallback) {
-        firestore_class = new Class();
-        Log.d(TAG,"setClass class_id:"+classId);
-        Task<DocumentSnapshot> documentSnapshotTask = db.collection("Class")
-                .document(classId)
-                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        firestore_class = documentSnapshot.toObject(Class.class);
-                        Log.d(TAG, "setClass here");
-                        firebaseCallback.onCallback(firestore_class);
-                    }
-                });
-
-
-    }
-
     public interface FirebaseCallback {
         void onCallback(Class firestore_class);
     }//處理firestore非同步的問題 回調接頭
 
-    // we are setting onClickListener for each element
-    private void setSingleEvent(GridLayout gridLayout) {
+//    public interface OnFragmentSelectedListener {
+//        public void onFragmentSelected(String info, String fragmentKey);
+//    }//Fragment傳值
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mCallback = (OnFragmentSelectedListener) context;//fragment傳值
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + "Mush implement OnFragmentSelectedListener ");
+        }
+    }
+
+    // we are setting onClickListener for each element 處理選項
+    private void setSingleEvent(GridLayout gridLayout , Class firestore_class) {
         for (int i = 0; i < gridLayout.getChildCount(); i++) {
             CardView cardView = (CardView) gridLayout.getChildAt(i);
             final int finalI = i;
@@ -119,23 +138,31 @@ public class FragmentClassDetail extends Fragment implements FragmentBackHandler
                 public void onClick(View view) {
                     Toast.makeText(getContext(), "Clicked at index " + finalI,
                             Toast.LENGTH_SHORT).show();
-                    switch (finalI){
+                    switch (finalI) {
                         case 0:
-
+                            //intent activity
                             break;
                         case 1:
+                            //intent activity
 
                             break;
                         case 2:
 
+                            mCallback.onFragmentSelected(firestore_class.getClass_id(), "toAttendanceList");//fragment傳值
+
                             break;
                         case 3:
 
+                            mCallback.onFragmentSelected("", "toClassPerformance");//fragment傳值
                             break;
                         case 4:
 
+                            mCallback.onFragmentSelected(firestore_class.getClass_id(), "toLeaveManage");//fragment傳值
+
                             break;
                         case 5:
+                            Log.d(TAG, "case5"+firestore_class.getTeacher_email());
+                            mCallback.onFragmentSelected(firestore_class.getTeacher_email(), "toTeacherInfo");//fragment傳值
 
                             break;
                     }
@@ -143,5 +170,6 @@ public class FragmentClassDetail extends Fragment implements FragmentBackHandler
             });
         }
     }
+
 
 }

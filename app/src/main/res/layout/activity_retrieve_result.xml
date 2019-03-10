@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorPrimary">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="50dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="90dp"
+            android:text="@string/retrieve_result"
+            android:textColor="#FFF"
+            android:textSize="32sp"
+            app:fontFamily="@font/asap_medium">
+
+        </TextView>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="30dp"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="112dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:text="@string/signup_id"
+                    android:textSize="20sp"
+                    android:textColor="#FFF"
+                    tools:layout_editor_absoluteX="40dp"
+                    tools:layout_editor_absoluteY="135dp" />
+
+                <TextView
+                    android:id="@+id/result_id"
+                    android:layout_width="179dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:ems="10"
+                    android:textColor="#FFF"
+                    android:textColorHint="#FFF"
+                    tools:layout_editor_absoluteX="162dp"
+                    tools:layout_editor_absoluteY="135dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp">
+
+                <TextView
+
+                    android:layout_width="112dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:text="姓名"
+                    android:textSize="20sp"
+                    android:textColor="#FFF"
+                    tools:layout_editor_absoluteX="40dp"
+                    tools:layout_editor_absoluteY="135dp" />
+
+                <TextView
+                    android:id="@+id/result_name"
+                    android:layout_width="179dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:ems="10"
+                    android:textColor="#FFF"
+                    android:textColorHint="#FFF"
+                    tools:layout_editor_absoluteX="162dp"
+                    tools:layout_editor_absoluteY="135dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp">
+
+                <TextView
+
+                    android:layout_width="112dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:text="系所"
+                    android:textSize="20sp"
+                    android:textColor="#FFF"
+                    tools:layout_editor_absoluteX="40dp"
+                    tools:layout_editor_absoluteY="135dp" />
+
+                <TextView
+                    android:id="@+id/result_department"
+                    android:layout_width="179dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:ems="10"
+                    android:textColor="#FFF"
+                    android:textColorHint="#FFF"
+                    tools:layout_editor_absoluteX="162dp"
+                    tools:layout_editor_absoluteY="135dp" />
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp">
+
+                <TextView
+
+                    android:layout_width="112dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:text="學校"
+                    android:textSize="20sp"
+                    android:textColor="#FFF"
+                    tools:layout_editor_absoluteX="40dp"
+                    tools:layout_editor_absoluteY="135dp" />
+
+                <TextView
+                    android:id="@+id/result_school"
+                    android:layout_width="179dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:ems="10"
+                    android:textColor="#FFF"
+                    android:textColorHint="#FFF"
+                    tools:layout_editor_absoluteX="162dp"
+                    tools:layout_editor_absoluteY="135dp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp">
+
+                <TextView
+
+                    android:layout_width="112dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:text="@string/signup_email"
+                    android:textSize="15sp"
+                    android:textColor="#FFF"
+                    tools:layout_editor_absoluteX="40dp"
+                    tools:layout_editor_absoluteY="135dp" />
+
+                <TextView
+                    android:id="@+id/result_email"
+                    android:layout_width="179dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:ems="10"
+                    android:textColor="#FFF"
+                    android:textColorHint="#FFF"
+                    tools:layout_editor_absoluteX="162dp"
+                    tools:layout_editor_absoluteY="135dp" />
+            </LinearLayout>
+
+
+
+
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -15,12 +15,12 @@ import android.widget.TextView;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
+import static com.google.android.gms.common.internal.safeparcel.SafeParcelable.NULL;
+
 @RuntimePermissions
 public class MainActivity extends AppCompatActivity implements OnFragmentSelectedListener {
     private static final String TAG = "BACKFLAG";
     private TextView mTextMessage;
-    private Fragment_ClassList fragment_classList;
-    private Fragment_LeaveList fragment_leaveList;
     private String student_id = "405401114";
     private ViewPager viewPager;
 
@@ -51,9 +51,15 @@ public class MainActivity extends AppCompatActivity implements OnFragmentSelecte
 
                     return true;
                 case R.id.navigation_leave:
+
+                    Fragment_LeaveList fragment_leaveList = new Fragment_LeaveList();
+                    Bundle args = new Bundle();
+                    args.putString("info",null);
+                    args.putString("student_id", student_id);
+                    Log.d(TAG,"MAIN ARG:"+args);
+                    fragment_leaveList.setArguments(args);
                     transaction.replace(R.id.content, new Fragment_LeaveList());
                     transaction.addToBackStack(new Fragment_LeaveList().getClass().getName());
-
                     transaction.commit();
                     return true;
                 case R.id.navigation_notification:
@@ -101,13 +107,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentSelecte
 
     @Override
     public void onBackPressed() {
-        int count = getFragmentManager().getBackStackEntryCount();
 
-//        if (count == 0) {
-//            super.onBackPressed();
-//        } else {
-//            getFragmentManager().popBackStack();
-//        }
         if (!BackHandlerHelper.handleBackPress(this)) {
             super.onBackPressed();
             Log.d(TAG, "ERROR");
@@ -137,6 +137,16 @@ public class MainActivity extends AppCompatActivity implements OnFragmentSelecte
             fragment_attendanceList.setArguments(args);
             Log.d(TAG, " toAttendanceList");
             getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.content, fragment_attendanceList).commit();
+        }//判斷是哪個fragment傳來的請求
+
+        else if (fragmentKey.equals("toLeaveManage")) {
+            Fragment_LeaveList fragment_leaveList = new Fragment_LeaveList();
+            Bundle args = new Bundle();
+            args.putString("info", info);
+            args.putString("student_id", student_id);
+            fragment_leaveList.setArguments(args);
+            Log.d(TAG, " toLeaveManage");
+            getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.content, fragment_leaveList).commit();
         }//判斷是哪個fragment傳來的請求
 
         else if (fragmentKey.equals("toTeacherInfo")) {

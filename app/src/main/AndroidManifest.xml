@@ -12,7 +12,7 @@
         <activity android:name=".LeaveApplications">
 
         </activity>
-
+        <activity android:name=".LeaveRecord"></activity>
         <activity android:name=".LeadingPage"></activity>
         <activity android:name=".TrainAndTest"></activity>
         <activity android:name=".S_SignUp"></activity>

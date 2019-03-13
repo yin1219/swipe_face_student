@@ -1,6 +1,8 @@
 package com.example.swipe_face_student.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.swipe_face_student.Model.Leave;
+import com.example.swipe_face_student.LeaveRecord;
+import com.example.swipe_face_student.Model.LeaveRcord;
 import com.example.swipe_face_student.R;
 
 import java.text.SimpleDateFormat;
@@ -50,6 +54,9 @@ public class LeaveListAdapter extends RecyclerView.Adapter<LeaveListAdapter.View
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(context, LeaveRecord.class);
+                intent.putExtra("leaveId",leaveRecordId);
+                context.startActivity(intent);
                 Toast.makeText(context, "Id  :  " + leaveRecordId, Toast.LENGTH_SHORT).show();
             }
         });

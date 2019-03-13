@@ -47,6 +47,7 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_fragment__class_list, container, false);
     }
@@ -103,6 +104,7 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
 
                                                     classId = new String();
                                                     classId = doc.getDocument().getId();
+                                                    Log.d(TAG, "DB2 classId0:" + classId);
                                                     Class aClass = doc.getDocument().toObject(Class.class).withId(classId);
                                                     Log.d(TAG, "DB2 classId:" + classId);
                                                     classList.add(aClass);
@@ -127,15 +129,15 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
             @Override
             public void onTransPageClick(String classId2) {
                 Log.d(TAG, "onTransPageClick0" + classId2);
-                mCallback.onFragmentSelected(classId2, "ClassList");//fragment傳值
+                mCallback.onFragmentSelected(classId2, "toClassList");//fragment傳值
 //                Log.d(TAG," classId:"+classId);
 //
 //                fragmentManager = getChildFragmentManager();
 //                Log.d(TAG,"onTransPageClick1");
 //                transaction = fragmentManager.beginTransaction();
 //                Log.d(TAG,"onTransPageClick2");
-//                transaction.replace(R.id.fragment_class_list, new FragmentClassDetail());
-//                transaction.addToBackStack(new FragmentClassDetail().getClass().getName());
+//                transaction.replace(R.id.fragment_class_list, new Fragment_ClassDetail());
+//                transaction.addToBackStack(new Fragment_ClassDetail().getClass().getName());
 //                transaction.commit();
 
             }
@@ -150,9 +152,9 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
         return BackHandlerHelper.handleBackPress(this);
     }//fragment 返回鍵
 
-    public interface OnFragmentSelectedListener {
-        public void onFragmentSelected(String info, String fragmentKey);
-    }//Fragment傳值
+//    public interface OnFragmentSelectedListener {
+//        public void onFragmentSelected(String info, String fragmentKey);
+//    }//Fragment傳值
 
     @Override
     public void onAttach(Context context) {

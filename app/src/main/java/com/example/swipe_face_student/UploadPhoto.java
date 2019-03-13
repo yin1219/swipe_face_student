@@ -2,10 +2,17 @@ package com.example.swipe_face_student;
 
 import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 
 import java.io.File;
@@ -41,12 +48,13 @@ if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
 * */
 
 public class UploadPhoto {
+    Context context;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();//抓現在登入user
     String email = user.getEmail();//抓user.email
     String [] uriEmailArray = email.split("@");
     String uriEmail = uriEmailArray[0];
     OkHttpClient client = new OkHttpClient();
-    String url = "http://192.168.0.13:8080/ProjectApi/api/FaceApi/TrainFace/"+uriEmail;
+    String url = "http://192.168.1.10:8080/ProjectApi/api/FaceApi/TrainFace/"+uriEmail;
     public void uploadFile(List<String> img) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);//setType一定要Multipart
         for (int i = 0; i <img.size() ; i++) {//用迴圈去RUN多選照片
@@ -67,11 +75,14 @@ public class UploadPhoto {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.i("Create Android", "Test失敗");
+                //Toast.makeText(context,"上傳失敗 !",Toast.LENGTH_SHORT).show();
 
             }
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 Log.i("Create Android", "Test成功");
+                //Toast.makeText(context,"上傳成功 !",Toast.LENGTH_SHORT).show();
+
 
             }
         });

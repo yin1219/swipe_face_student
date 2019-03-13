@@ -47,7 +47,7 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.View
 
 
         holder.class_name.setText(ClassList.get(position).getClass_name());
-        holder.class_schoolyear.setText(ClassList.get(position).getClass_schoolyear());
+        holder.class_schoolyear.setText(ClassList.get(position).getClass_year());
         holder.student_total.setText(ClassList.get(position).getStudent_total().toString());
         holder.class_id.setText(ClassList.get(position).getClass_id());
         String classId= ClassList.get(position).classId;

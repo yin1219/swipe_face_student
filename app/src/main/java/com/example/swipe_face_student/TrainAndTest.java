@@ -10,7 +10,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
@@ -36,6 +44,8 @@ import okhttp3.ResponseBody;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
+import static com.zhihu.matisse.internal.utils.PathUtils.getPath;
+
 @RuntimePermissions
 public class TrainAndTest extends AppCompatActivity {
 
@@ -46,13 +56,19 @@ public class TrainAndTest extends AppCompatActivity {
     String responseData;
     String name,id,email,department,school;
     OkHttpClient client = new OkHttpClient();
-    String url = "http://192.168.0.13:8080/ProjectApi/api/FaceApi/RetrievePhoto";
+    String url = "http://192.168.1.10:8080/ProjectApi/api/FaceApi/RetrievePhoto";
     private static Context mContext;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();//抓現在登入user
+    String email1 = user.getEmail();//抓user.email
+    String [] uriEmailArray = email1.split("@");
+    String uriEmail = uriEmailArray[0];
+    private StorageReference mStorageRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_train_and_test);
+        mStorageRef = FirebaseStorage.getInstance().getReference();
 
         TrainAndTestPermissionsDispatcher.StoragePermissionsWithPermissionCheck(this);
         mContext = getApplicationContext();
@@ -65,7 +81,7 @@ public class TrainAndTest extends AppCompatActivity {
                     .countable(false)//true:选中后显示数字;false:选中后显示对号
                     .maxSelectable(9)//可选的最大数
                     .capture(true)//选择照片时，是否显示拍照
-                    .captureStrategy(new CaptureStrategy(true, "com.example.kl.home.fileprovider"))//参数1 true表示拍照存储在共有目录，false表示存储在私有目录；参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
+                    .captureStrategy(new CaptureStrategy(true, "com.example.swipe_face_student.fileprovider"))//参数1 true表示拍照存储在共有目录，false表示存储在私有目录；参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
                     .imageEngine(new MyGlideEngine())//图片加载引擎
                     .theme(R.style.Matisse_Zhihu)
                     .forResult(REQUEST_CODE_CHOOSE = 6);//REQUEST_CODE_CHOOSE自定義
@@ -79,11 +95,12 @@ public class TrainAndTest extends AppCompatActivity {
                     .countable(false)//true:选中后显示数字;false:选中后显示对号
                     .maxSelectable(9)//可选的最大数
                     .capture(true)//选择照片时，是否显示拍照
-                    .captureStrategy(new CaptureStrategy(true, "com.example.kl.home.fileprovider"))//参数1 true表示拍照存储在共有目录，false表示存储在私有目录；参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
+                    .captureStrategy(new CaptureStrategy(true, "com.example.swipe_face_student.fileprovider"))//参数1 true表示拍照存储在共有目录，false表示存储在私有目录；参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
                     .imageEngine(new MyGlideEngine())//图片加载引擎
                     .theme(R.style.Matisse_Zhihu)
-                    .forResult(REQUEST_CODE_CHOOSE = 9);//REQUEST_CODE_CHOOSE自定義
+                    .forResult(REQUEST_CODE_CHOOSE = 9);//REQUEST_CODE_CHOOSE自定
             Log.i("Create Android", "Test選圖");
+
 
         });
     }
@@ -91,6 +108,14 @@ public class TrainAndTest extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK && requestCode == 6) {
+            List<Uri> a;
+            a = Matisse.obtainResult(data);
+
+
+            Uri uri = a.get(0);
+            Log.i("uri:",uri.toString());
+            String path = getPath(TrainAndTest.this, uri);
+            Uri file = Uri.fromFile(new File(path));
             Log.i("Create Android", "Test4");
             Log.d("Matisse", "Uris: " + Matisse.obtainResult(data));
             Log.d("Matisse", "Paths: " + Matisse.obtainPathResult(data));
@@ -99,6 +124,20 @@ public class TrainAndTest extends AppCompatActivity {
             result = Matisse.obtainPathResult(data);
             example.uploadFile(result);
             Log.i("Create Android", "Test5");
+
+            StorageReference riversRef = mStorageRef.child("student_photo/" + uriEmail);
+            UploadTask uploadTask = riversRef.putFile(file);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Toast.makeText(TrainAndTest.this,"上傳圖片失敗 !",Toast.LENGTH_SHORT).show();
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(TrainAndTest.this,"上傳圖片成功",Toast.LENGTH_SHORT).show();
+                }
+            });
 
 
         }
@@ -111,6 +150,7 @@ public class TrainAndTest extends AppCompatActivity {
             result = Matisse.obtainPathResult(data);
             example.retrieveFile(result);
             Log.i("Create Android", "Test5");
+
         }
 
     }
@@ -141,19 +181,7 @@ public class TrainAndTest extends AppCompatActivity {
                 Log.i("Create Android", "Test成功");
                 parseJsonWithJsonObject(response);
 
-
-
-
-
-
-
             }
-
-
-
-
-
-
 
         });
 
@@ -189,7 +217,25 @@ public class TrainAndTest extends AppCompatActivity {
                 Log.i("email",email);
                 Log.i("department",department);
                 Log.i("school",school);
-                ToastUtils.show(getmContext(),"名字:"+name+"\n"+"學號: "+id+"\n"+"email:"+email+"\n"+"系所:"+department+"\n"+"學校:"+school);
+                if (id.equals(uriEmail)){
+
+                    ToastUtils.show(getmContext(),"辨識成功 !");
+                    /*new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent i = new Intent();
+                            i.setClass(mContext,RetrieveResult.class);
+                            startActivity(i);
+
+                        }
+                    });*/
+
+
+                }else{
+                    ToastUtils.show(getmContext(),"辨識失敗 !");
+                }
+
+                //ToastUtils.show(getmContext(),"名字:"+name+"\n"+"學號: "+id+"\n"+"email:"+email+"\n"+"系所:"+department+"\n"+"學校:"+school);
 
                 //heroList.add(hero);
 
@@ -204,6 +250,8 @@ public class TrainAndTest extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

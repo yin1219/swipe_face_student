@@ -354,28 +354,6 @@ public class LeaveApplications extends AppCompatActivity {
         Log.d(TAG, "leave_photoUrl:" + leave_photoUrl);
         StorageReference ref = storageReference.child("Leave_photo/" + leave_photoUrl);
         ref.putFile(filePath);
-//                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                        progressDialogs.dismiss();
-//                        Toast.makeText(LeaveApplications.this, "Uploaded", Toast.LENGTH_SHORT).show();
-//
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        progressDialogs.dismiss();
-//                        Toast.makeText(LeaveApplications.this, "Failed" + e.getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                })
-//                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-//                        double prodress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-//                        progressDialogs.setMessage("Upload" + (int) prodress + "%");
-//                    }
-//                });
 
         Log.d(TAG, "afterStudent_name" + student_name);
         Log.d(TAG, "afterTeacher_email:" + teacher_email);

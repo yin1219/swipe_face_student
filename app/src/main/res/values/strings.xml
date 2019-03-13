@@ -7,7 +7,7 @@
     <string name="signup_name2">名字</string>
     <string name="signup_name1">姓氏</string>
     <string name="signup_id">學號</string>
-    <string name="signup_email">電子信箱</string>
+    <string name="signup_email">學校電子信箱</string>
     <string name="signup_password1">密碼(至少六碼)</string>
     <string name="signup_password2">再次輸入密碼</string>
     <string name="signup_key">老師金鑰</string>
@@ -24,6 +24,7 @@
     <string name="signup_">Sign Up</string>
     <string name="or">───────OR───────</string>
     <string name="test">辨識測試</string>
+    <string name="retrieve_result"><b>辨識結果</b></string>
     <string name="train">圖片上傳</string>
     <string name="start"><b>START !</b></string>
 

@@ -41,7 +41,6 @@ public class LeaveListAdapter extends RecyclerView.Adapter<LeaveListAdapter.View
         SimpleDateFormat myFmt2=new SimpleDateFormat("yyyy-MM-dd");
         String leave_uploaddate = myFmt2.format(leaveList.get(position).getLeave_uploaddate()).toString();
 
-        holder.student_name.setText(leaveList.get(position).getStudent_name());
         holder.leave_reason.setText(leaveList.get(position).getLeave_reason());
         holder.leave_check.setText(leaveList.get(position).getLeave_check());
         holder.leave_date.setText(leave_uploaddate);
@@ -65,7 +64,6 @@ public class LeaveListAdapter extends RecyclerView.Adapter<LeaveListAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         View mView;
-        public TextView student_name;
         public TextView leave_reason;
         public TextView leave_check;
         public TextView leave_date;
@@ -75,7 +73,7 @@ public class LeaveListAdapter extends RecyclerView.Adapter<LeaveListAdapter.View
             super(itemView);
             mView = itemView;
 
-            student_name = (TextView) mView.findViewById(R.id.studentName);
+
             leave_reason = (TextView) mView.findViewById(R.id.leaveReason);
             leave_check = (TextView) mView.findViewById(R.id.leaveCheck);
             leave_date = (TextView) mView.findViewById(R.id.leaveDate);

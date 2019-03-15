@@ -19,5 +19,13 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="Theme.SearchView" parent="Base.Widget.AppCompat.SearchView">
+        <item name="searchIcon">@drawable/ic_search_black_24dp</item>
+        <item name="closeIcon">@drawable/ic_close_black_24dp</item>
+        <item name="queryHint">搜尋課程</item>
+        <item name="android:background">@drawable/bg_searchbar</item>
+        <item name="queryBackground">@drawable/bg_searchbar</item>
+    </style>
+
 
 </resources>

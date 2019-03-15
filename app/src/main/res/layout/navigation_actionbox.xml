@@ -11,40 +11,21 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginRight="60dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp">
 
 
-        <EditText
-            android:id="@+id/editText"
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.SearchView
+            style="@style/Theme.SearchView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="17dp"
-            android:layout_marginLeft="17dp"
-            android:layout_marginBottom="9dp"
-            android:background="@drawable/search_layout"
-            android:ems="12"
-            android:hint="@string/search_class"
-            android:inputType="textPersonName"
-            android:padding="8dp"
-            android:textColor="#000"
-            android:textColorHint="#939393" />
-
-        <ImageButton
-            android:id="@+id/imageButton3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="106dp"
-            android:layout_marginRight="106dp"
-            android:layout_marginBottom="13dp"
-            android:background="#FFF"
-            app:srcCompat="@android:drawable/ic_menu_search" />
-
+            android:layout_marginStart="41dp"
+            />
     </RelativeLayout>
 
 

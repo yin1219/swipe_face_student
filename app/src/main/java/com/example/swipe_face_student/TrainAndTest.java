@@ -12,10 +12,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.swipe_face_student.Model.Rollcall;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -31,7 +36,9 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -59,6 +66,7 @@ public class TrainAndTest extends AppCompatActivity {
     String url = "http://192.168.1.10:8080/ProjectApi/api/FaceApi/RetrievePhoto";
     private static Context mContext;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();//抓現在登入user
+    private FirebaseFirestore db;
     String email1 = user.getEmail();//抓user.email
     String [] uriEmailArray = email1.split("@");
     String uriEmail = uriEmailArray[0];
@@ -69,6 +77,7 @@ public class TrainAndTest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_train_and_test);
         mStorageRef = FirebaseStorage.getInstance().getReference();
+        db = FirebaseFirestore.getInstance();
 
         TrainAndTestPermissionsDispatcher.StoragePermissionsWithPermissionCheck(this);
         mContext = getApplicationContext();
@@ -125,6 +134,7 @@ public class TrainAndTest extends AppCompatActivity {
             example.uploadFile(result);
             Log.i("Create Android", "Test5");
 
+            //上傳圖片到storage
             StorageReference riversRef = mStorageRef.child("student_photo/" + uriEmail);
             UploadTask uploadTask = riversRef.putFile(file);
             uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -135,6 +145,24 @@ public class TrainAndTest extends AppCompatActivity {
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Map<String, Object> user = new HashMap<>();
+                    user.put("image_url",riversRef.toString() );
+                    Log.i("imageUrl",riversRef.toString());
+
+                    //查詢符合使用者學號的docId並寫入圖片的網址
+                    Query query = db.collection("Student").whereEqualTo("student_id",uriEmail);
+                    query.get().addOnCompleteListener(task -> {
+                        QuerySnapshot querySnapshot = task.isSuccessful() ? task.getResult(): null;
+
+                        for(DocumentSnapshot documentSnapshot : querySnapshot.getDocuments()){
+                            Log.i("documentUrl",documentSnapshot.getId());
+                            String docId = documentSnapshot.getId();
+                            db.collection("Student").document(docId).update(user);
+
+
+                        }
+                    });
+
                     Toast.makeText(TrainAndTest.this,"上傳圖片成功",Toast.LENGTH_SHORT).show();
                 }
             });

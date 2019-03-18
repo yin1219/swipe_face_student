@@ -10,29 +10,27 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.swipe_face_student.Model.Attendance;
-import com.example.swipe_face_student.Model.Class;
-import com.example.swipe_face_student.Model.Rollcall;
+import com.example.swipe_face_student.Model.Bonus;
 import com.example.swipe_face_student.R;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-public class AttendanceListAdapter extends RecyclerView.Adapter<AttendanceListAdapter.ViewHolder> {
+public class BonusListAdapter extends RecyclerView.Adapter<BonusListAdapter.ViewHolder> {
 
 
     @NonNull
 
 
-    public List<Attendance> AttendanceList;
+    public List<Bonus> BonusList;
     public Context context;
 
 
-    public AttendanceListAdapter(Context context, List<Attendance> AttendanceList) {
+    public BonusListAdapter(Context context, List<Bonus> BonusList) {
 
-        this.AttendanceList = AttendanceList;
+        this.BonusList = BonusList;
         this.context = context;
 
     }
@@ -40,17 +38,17 @@ public class AttendanceListAdapter extends RecyclerView.Adapter<AttendanceListAd
 
     @Override
 
-    public AttendanceListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.attendance_item, parent, false);
-        return new AttendanceListAdapter.ViewHolder(view);
+    public BonusListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.bouns_list_item, parent, false);
+        return new BonusListAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AttendanceListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BonusListAdapter.ViewHolder holder, int position) {
 
         SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         sdFormat.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
-        Date attendanceDate = AttendanceList.get(position).getAttendance_time();
+        Date attendanceDate = BonusList.get(position).getBonus_time();
 
         holder.text_bonus_date.setText(sdFormat.format(attendanceDate));
 
@@ -70,12 +68,13 @@ public class AttendanceListAdapter extends RecyclerView.Adapter<AttendanceListAd
 
     @Override
     public int getItemCount() {
-        return AttendanceList.size();
+        return BonusList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         View mView;
         public TextView text_bonus_date;
+
 
 
         public ViewHolder(View itemView) {
@@ -86,6 +85,5 @@ public class AttendanceListAdapter extends RecyclerView.Adapter<AttendanceListAd
 
         }
     }
-
-
 }
+

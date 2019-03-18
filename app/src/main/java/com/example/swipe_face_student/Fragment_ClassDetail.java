@@ -153,7 +153,7 @@ public class Fragment_ClassDetail extends Fragment implements FragmentBackHandle
                             break;
                         case 3:
 
-                            mCallback.onFragmentSelected("", "toClassPerformance");//fragment傳值
+                            mCallback.onFragmentSelected(firestore_class.getClass_id(), "toClassPerformance");//fragment傳值
                             break;
                         case 4:
 

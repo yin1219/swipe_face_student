@@ -21,7 +21,7 @@ import static com.google.android.gms.common.internal.safeparcel.SafeParcelable.N
 public class MainActivity extends AppCompatActivity implements OnFragmentSelectedListener {
     private static final String TAG = "BACKFLAG";
     private TextView mTextMessage;
-    private String student_id = "405401114";
+    private String student_id = "405401217";
     private ViewPager viewPager;
 
     private FragmentTransaction transaction;
@@ -157,9 +157,17 @@ public class MainActivity extends AppCompatActivity implements OnFragmentSelecte
             Log.d(TAG, " ToTeacherInfo");
             getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.content, fragment_teacherInfo).commit();
         }//判斷是哪個fragment傳來的請求
+        else if (fragmentKey.equals("toClassPerformance")) {
+            Fragment_ClassPerformance fragment_classPerformance = new Fragment_ClassPerformance();
+            Bundle args = new Bundle();
+            args.putString("info", info);
+            args.putString("student_id", student_id);
+            fragment_classPerformance.setArguments(args);
+            Log.d(TAG, " ToTeacherInfo");
+            getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.content, fragment_classPerformance).commit();
+        }//判斷是哪個fragment傳來的請求
 
 
     }//fragment傳值並換頁
-
 
 }

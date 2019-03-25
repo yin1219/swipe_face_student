@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.swipe_face_student">
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".LeaveApplications">
-
-        </activity>
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".CreateClassGroupByCam" />
+        <activity android:name=".CreateClassGroupByHand"/>
+        <activity android:name=".GroupPage"/>
+        <activity android:name=".CreateClassGroupSt1"/>
+        <activity android:name=".LeaveApplications" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,22 +28,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LeaveRecord"></activity>
-        <activity android:name=".LeadingPage"></activity>
-        <activity android:name=".TrainAndTest"></activity>
-        <activity android:name=".RetrieveResult"></activity>
+        <activity android:name=".LeaveRecord" />
+        <activity android:name=".LeadingPage" />
+        <activity android:name=".TrainAndTest" />
+        <activity android:name=".RetrieveResult" />
         <activity
             android:name=".SignIn"
             android:label="@string/app_name"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
-
-        </activity>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".S_SignUp"
-            android:label="@string/app_name">
+            android:label="@string/app_name" />
 
-
-        </activity>
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

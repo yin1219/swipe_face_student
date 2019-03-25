@@ -1,10 +1,11 @@
 package com.example.swipe_face_student.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Student {
+public class Student extends StudentId implements Serializable {
 	public Student() {
-		
+
 	}
 	ArrayList<String> class_id=new ArrayList<>();
 	String student_department;
@@ -12,9 +13,8 @@ public class Student {
 	String student_id;
 	String student_name;
 	String student_school;
-	ArrayList<ClassRecord> classRecordList;
-	ArrayList<LeaveRcord> leaveRcordList;
-	ArrayList<Rollcall> rollcallList;
+	String image_url;
+
 	public ArrayList<String> getClass_id() {
 		return class_id;
 	}
@@ -24,6 +24,15 @@ public class Student {
 	public String getStudent_department() {
 		return student_department;
 	}
+
+	public String getImage_url() {
+		return image_url;
+	}
+
+	public void setImage_url(String image_url) {
+		this.image_url = image_url;
+	}
+
 	public void setStudent_department(String student_department) {
 		this.student_department = student_department;
 	}
@@ -51,25 +60,7 @@ public class Student {
 	public void setStudent_school(String student_school) {
 		this.student_school = student_school;
 	}
-	public ArrayList<ClassRecord> getClassRecordList() {
-		return classRecordList;
-	}
-	public void setClassRecordList(ArrayList<ClassRecord> classRecordList) {
-		this.classRecordList = classRecordList;
-	}
-	public ArrayList<LeaveRcord> getLeaveRcordList() {
-		return leaveRcordList;
-	}
-	public void setLeaveRcordList(ArrayList<LeaveRcord> leaveRcordList) {
-		this.leaveRcordList = leaveRcordList;
-	}
-	public ArrayList<Rollcall> getRollcallList() {
-		return rollcallList;
-	}
-	public void setRollcallList(ArrayList<Rollcall> rollcallList) {
-		this.rollcallList = rollcallList;
-	}
-	
-	
+
+
 
 }

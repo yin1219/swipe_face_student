@@ -1,6 +1,7 @@
 package com.example.swipe_face_student;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.example.swipe_face_student.Model.Class;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -143,7 +145,43 @@ public class Fragment_ClassDetail extends Fragment implements FragmentBackHandle
                             //intent activity
                             break;
                         case 1:
-                            //intent activity
+                            DocumentReference docRef = db.collection("Class").document(classId);
+                            docRef.get().addOnSuccessListener(documentSnapshot -> {
+                                Class classG = documentSnapshot.toObject(Class.class);
+                                Log.d(TAG+"Group","groupNumHigh\t"+String.valueOf(classG.getGroup_numHigh())
+                                        +"\ngroupNumLow\t"+String.valueOf(classG.getGroup_numLow())+"\nclass_id"+String.valueOf(classG.getClass_id())
+                                        +"\ngroup_state\t"+String.valueOf(classG.isGroup_state()));
+                                if (!classG.isGroup_state()&&!classG.isGroup_state_go()) {
+                                    Toast.makeText(getContext(), "尚未分組",
+                                            Toast.LENGTH_SHORT).show();
+                                }//判斷是否分組
+                                if(!classG.isGroup_state()&&classG.isGroup_state_go()){
+
+                                    Intent intent = new Intent();
+                                    intent.setClass(getActivity(), CreateClassGroupSt1.class);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("classId",classId);
+                                    bundle.putString("class_Id", classG.getClass_id());
+                                    bundle.putString("classYear", classG.getClass_year());
+                                    bundle.putString("className", classG.getClass_name());
+                                    bundle.putInt("classStuNum", classG.getStudent_id().size());
+                                    intent.putExtras(bundle);
+                                    getActivity().startActivity(intent);
+                                } if(classG.isGroup_state()&&classG.isGroup_state_go()) {
+                                    Intent intent = new Intent();
+                                    intent.setClass(getActivity(), GroupPage.class);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("classId",classId);
+                                    bundle.putString("class_Id", classG.getClass_id());
+                                    bundle.putString("classYear", classG.getClass_year());
+                                    bundle.putString("className", classG.getClass_name());
+                                    bundle.putInt("classStuNum", classG.getStudent_id().size());
+                                    intent.putExtras(bundle);
+                                    getActivity().startActivity(intent);
+                                }
+
+
+                            });
 
                             break;
                         case 2:
@@ -157,7 +195,6 @@ public class Fragment_ClassDetail extends Fragment implements FragmentBackHandle
                             break;
                         case 4:
 
-                            mCallback.onFragmentSelected(firestore_class.getClass_id(), "toLeaveManage");//fragment傳值
 
                             break;
                         case 5:

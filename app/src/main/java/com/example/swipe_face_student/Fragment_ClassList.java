@@ -37,7 +37,7 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
     private String teacher_email = "053792@mail.fju.edu.tw";
     private String student_id = "405401217";
     private Teacher teacher;
-    private ArrayList<String> class_id = new ArrayList<String>();
+    private ArrayList<String> class_id = new ArrayList<>();
     private FragmentTransaction transaction;
     private FragmentManager fragmentManager;
     private String classId;

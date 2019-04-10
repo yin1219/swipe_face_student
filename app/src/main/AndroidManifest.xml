@@ -16,10 +16,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".CreateGroupEndStep"></activity>
+        <activity android:name=".CreateGroupDecideLeader" />
         <activity android:name=".CreateClassGroupByCam" />
-        <activity android:name=".CreateClassGroupByHand"/>
-        <activity android:name=".GroupPage"/>
-        <activity android:name=".CreateClassGroupSt1"/>
+        <activity android:name=".CreateClassGroupByHand" />
+        <activity android:name=".GroupPage" />
+        <activity android:name=".CreateClassGroupSt1" />
         <activity android:name=".LeaveApplications" />
         <activity android:name=".MainActivity">
             <intent-filter>

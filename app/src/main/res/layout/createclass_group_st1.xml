@@ -50,6 +50,7 @@
         android:textSize="20sp"
         android:textStyle="bold" />
     <TextView
+        android:id="@+id/tvGroupNum"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:text="每組人數"
@@ -58,6 +59,7 @@
         android:textSize="20sp"
         android:textStyle="bold" />
     <TextView
+        android:id="@+id/tvCreateTime"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:text="結束時間"

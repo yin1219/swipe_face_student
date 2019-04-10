@@ -92,6 +92,15 @@ public class MainActivity extends AppCompatActivity implements OnFragmentSelecte
         setDefaultFragment();
 
         MainActivityPermissionsDispatcher.PermissionsWithPermissionCheck(this);
+
+//        int id = getIntent().getIntExtra("id", 0);
+//        if (id == 1) {
+//            getSupportFragmentManager()
+//                    .beginTransaction()
+//                    .replace(R.id.content,new Fragment_ClassDetail())
+//                    .addToBackStack(null)
+//                    .commit();
+//        }
     }
 
 
@@ -169,5 +178,8 @@ public class MainActivity extends AppCompatActivity implements OnFragmentSelecte
 
 
     }//fragment傳值並換頁
+
+
+
 
 }

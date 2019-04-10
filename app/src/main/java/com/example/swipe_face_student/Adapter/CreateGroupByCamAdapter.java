@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 
+import com.example.swipe_face_student.CreateClassGroupByCam;
 import com.example.swipe_face_student.CreateClassGroupByHand;
 import com.example.swipe_face_student.Model.Student;
 import com.example.swipe_face_student.Model.Class;
@@ -23,18 +24,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
-public class CreateGroupByHandAdapter extends RecyclerView.Adapter<CreateGroupByHandAdapter.ViewHolder> {
+public class CreateGroupByCamAdapter extends RecyclerView.Adapter<CreateGroupByCamAdapter.ViewHolder> {
 
     public Context context;
     public List<Student> studentList;
-    String TAG = "CreateGroupByHandAdapter";
-    String groupLeader;
+    String TAG = "CreateGroupByCamAdapter";
 
-    private CreateGroupByHandAdapter.transPageListener mTransPageListener;//adapter跳轉fragment
+    private CreateGroupByCamAdapter.transPageListener mTransPageListener;//adapter跳轉fragment
 
 
-    public CreateGroupByHandAdapter(CreateClassGroupByHand createClassGroupByHand, List<Student> studentList) {
-        this.context = createClassGroupByHand;
+    public CreateGroupByCamAdapter(CreateClassGroupByCam createClassGroupByCam, List<Student> studentList) {
+        this.context = createClassGroupByCam;
         this.studentList = studentList;
     }
 
@@ -88,7 +88,7 @@ public class CreateGroupByHandAdapter extends RecyclerView.Adapter<CreateGroupBy
         public void onTransPageClick(String student_Id,Student student);
     }//adapter跳轉fragment並攜帶需要的資料
 
-    public void setOnTransPageClickListener(CreateGroupByHandAdapter.transPageListener transPageListener) {
+    public void setOnTransPageClickListener(CreateGroupByCamAdapter.transPageListener transPageListener) {
         this.mTransPageListener = transPageListener;
     }//adapter跳轉fragment
 }

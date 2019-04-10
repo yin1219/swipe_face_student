@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateClassGroupByHand"
+    tools:context=".CreateClassGroupByCam"
     android:orientation="vertical">
     <android.support.design.widget.NavigationView
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="手動分組"
+            android:text="拍照分組"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/common_google_signin_btn_text_dark_default"
             android:textSize="24sp" />

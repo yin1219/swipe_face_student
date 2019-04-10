@@ -38,26 +38,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:id="@+id/groupDetailSetPlus"
+            android:id="@+id/groupStudentSetAdd"
             android:orientation="horizontal"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
             android:background="#AAAA"
             >
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/ic_add_black_24dp"
-                android:layout_gravity="center_vertical"
-                />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:layout_marginLeft="15dp"
                 android:gravity="center"
-                android:text="新增成員"
+                android:text="請選擇組長"
                 android:textSize="20dp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -69,13 +62,12 @@
         android:layout_height="match_parent"
         android:layout_weight="9"/>
     <Button
-        android:id="@+id/nextStepButton"
+        android:id="@+id/finishButton"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="完成"
+        android:text="送出"
         android:textSize="20dp"
         android:textStyle="bold"
-        android:layout_marginBottom="60dp"
         />
 
 

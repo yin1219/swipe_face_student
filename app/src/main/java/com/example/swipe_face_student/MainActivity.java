@@ -88,7 +88,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentSelecte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_s__homepage);
         Log.d("FCMToken", "token "+ FirebaseInstanceId.getInstance().getToken());
-        Log.d(TAG, "FMC token: " + MyFirebaseMessagingService.getToken(getApplicationContext()));
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

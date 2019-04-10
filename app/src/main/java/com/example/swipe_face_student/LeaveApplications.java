@@ -34,6 +34,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -334,8 +335,10 @@ public class LeaveApplications extends AppCompatActivity {
         final String student_id = this.student_id;
         final String teacher_email = leave.getTeacher_email();
         final Date leave_uploaddate = new Date();
+        final String student_registrationToken = FirebaseInstanceId.getInstance().getToken();
         final String leave_photoUrl = UUID.randomUUID().toString();
 
+        Log.d("FCMToken LeaveApp", "token "+ FirebaseInstanceId.getInstance().getToken());
 
         db = FirebaseFirestore.getInstance();
 
@@ -349,6 +352,7 @@ public class LeaveApplications extends AppCompatActivity {
         leave.setClass_id(class_id);
         leave.setLeave_uploaddate(leave_uploaddate);
         leave.setStudent_id(student_id);
+        leave.setStudent_registrationToken(student_registrationToken);
         leave.setLeave_photoUrl(leave_photoUrl);
 
         Log.d(TAG, "leave_photoUrl:" + leave_photoUrl);

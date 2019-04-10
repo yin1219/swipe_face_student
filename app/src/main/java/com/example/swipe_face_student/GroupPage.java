@@ -1,0 +1,126 @@
+package com.example.swipe_face_student;
+
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.widget.TextView;
+
+import com.example.swipe_face_student.Adapter.GroupPageAdapter;
+import com.example.swipe_face_student.Model.Group;
+import com.example.swipe_face_student.Model.Student;
+import com.example.swipe_face_student.GroupNumberForCh;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class GroupPage extends AppCompatActivity {
+
+    final String TAG = "GroupPage";
+    private TextView tvGroupNum;
+    private TextView tvGroupLeader;
+    private TextView tvGroupBonus;
+    private FirebaseFirestore db;
+    private RecyclerView recyclerView;
+    private GroupPageAdapter groupPageAdapter;
+    String classId;//課程DocId
+    String class_Id;//課程Id
+    String classYear;//課程學年度
+    String className;//課程名
+    String userId;//現在使用者學號
+    List<Student> studentList;//For Adapter
+    List<String> studentListFromGroup = new ArrayList();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.group_page);
+
+        //init db
+        db = FirebaseFirestore.getInstance();
+
+        //init xml
+        tvGroupBonus = findViewById(R.id.groupBonus);
+        tvGroupLeader = findViewById(R.id.groupLeader);
+        tvGroupNum = findViewById(R.id.groupNum);
+
+
+        //init Intent
+        Intent Intent = getIntent();
+        Bundle bundle = Intent.getExtras();
+//        userId = bundle.getString("userId");
+        class_Id = bundle.getString("class_Id");
+        classId = bundle.getString("classId");
+        classYear = bundle.getString("classYear");
+        className = bundle.getString("className");
+
+        //init Adapter
+        studentList = new ArrayList<>();
+        groupPageAdapter = new GroupPageAdapter(this, studentList);
+
+        //init RecycleView
+        recyclerView = findViewById(R.id.groupPageRecyclerView);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager mgr = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(mgr);
+        recyclerView.setAdapter(groupPageAdapter);
+
+        //init Method
+        GroupNumberForCh groupNumberForCh = new GroupNumberForCh();
+
+        //抓現在user判斷在Group裡哪個Doc
+        db.collection("Class")
+                .document(classId)
+                .collection("Group")
+                .whereArrayContains("student_id", "405401217")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Group group = document.toObject(Group.class);
+                            Log.d(TAG, "groupNum\t" + group.getGroup_num() + "\ngroupLeader\t" + group.getGroup_leader() + "\ngroupBonus\t" + group.getGroup_bonus());
+                            studentListFromGroup = group.getStudent_id();
+                            tvGroupNum.setText("小組組別 : "+groupNumberForCh.transNum(group.getGroup_num()));
+                            tvGroupLeader.setText("小組組長 : "+group.getGroup_leader());
+                            tvGroupBonus.setText("小組得分 : "+group.getGroup_bonus().toString());
+                        }
+                        setData();
+
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                    }
+                });
+
+
+    }
+
+    private void setData() {
+        for ( int i = 0; i < studentListFromGroup.size(); i++) {
+            Log.d(TAG, "studentListFromGroup\t" + studentListFromGroup.get(i));
+            int finalI = i;
+            db.collection("Student").whereEqualTo("student_id", studentListFromGroup.get(i))
+                    .addSnapshotListener((documentSnapshots, e) -> {
+                        if (e != null) {
+                            Log.d(TAG, "Error :" + e.getMessage());
+                        }
+                        for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
+
+                            if (doc.getType() == DocumentChange.Type.ADDED) {
+                                Student aStudent = doc.getDocument().toObject(Student.class).withId(studentListFromGroup.get(finalI));
+                                Log.d(TAG,"aStudent_id"+ aStudent.getStudent_id());
+                                Log.d(TAG,"aStudent_name"+ aStudent.getStudent_name());
+                                Log.d(TAG,"aStudent"+ aStudent.toString());
+                                studentList.add(aStudent);
+
+                                groupPageAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    });
+        }
+    }
+}

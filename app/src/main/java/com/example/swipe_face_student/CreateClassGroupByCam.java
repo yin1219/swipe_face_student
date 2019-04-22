@@ -61,19 +61,25 @@ public class CreateClassGroupByCam extends AppCompatActivity {
         //init Intent
         Intent Intent = getIntent();
         Bundle bundle = Intent.getExtras();
-        class_Id = bundle.getString("class_Id");
         classId = bundle.getString("classId");
-        classYear = bundle.getString("classYear");
-        className = bundle.getString("className");
-        classStuNum = bundle.getInt("classStuNum");
-        groupNum = bundle.getInt("groupNum");
-        groupNumHigh = bundle.getInt("groupNumHigh");
-        groupNumLow = bundle.getInt("groupNumLow");
         studentIdList = bundle.getStringArrayList("listStudentIdFromUpload");
         for(int i =0;i<studentIdList.size();i++){
-            Log.d(TAG,"listStudentIdFromUpload"+studentIdList.get(i));
 
+            Log.d(TAG,"listStudentIdFromUpload"+studentIdList.get(i));
         }
+
+        //query DB
+        DocumentReference docRef = db.collection("Class").document(classId);
+        docRef.get().addOnSuccessListener(documentSnapshot -> {
+            Class aClass = documentSnapshot.toObject(Class.class);
+            class_Id = aClass.getClass_id();
+            groupNum = aClass.getGroup_num();
+            groupNumHigh = aClass.getGroup_numHigh();
+            groupNumLow = aClass.getGroup_numLow();
+            Log.d(TAG,aClass.toString());
+            Log.d(TAG,"class_Id"+class_Id+"classId"+classId+"classYear"+classYear+"className"+className+"classNum"+classStuNum);
+
+        });
 
         //init xml
         btNextStepButton = findViewById(R.id.nextStepButton);
@@ -157,11 +163,7 @@ public class CreateClassGroupByCam extends AppCompatActivity {
             Intent intent = new Intent();
             Bundle bundle = new Bundle();
             intent.setClass(CreateClassGroupByCam.this,CreateGroupDecideLeader.class);
-            bundle.putString("class_Id",class_Id);
             bundle.putString("classId",classId);
-            bundle.putString("classYear",classYear);
-            bundle.putString("className",className);
-            bundle.putInt("groupNum",groupNum);
             bundle.putParcelableArrayList("studentList", (ArrayList<? extends Parcelable>) studentList);
             intent.putExtras(bundle);
             startActivity(intent);

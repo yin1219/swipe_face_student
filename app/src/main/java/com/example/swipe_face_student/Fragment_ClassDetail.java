@@ -184,15 +184,6 @@ public class Fragment_ClassDetail extends Fragment implements FragmentBackHandle
                                         intent.setClass(getActivity(), CreateClassGroupSt1.class);
                                         Bundle bundle = new Bundle();
                                         bundle.putString("classId", classId);
-                                        bundle.putString("class_Id", classG.getClass_id());
-                                        bundle.putString("classYear", classG.getClass_year());
-                                        bundle.putString("className", classG.getClass_name());
-                                        bundle.putInt("classStuNum", classG.getStudent_id().size());
-                                        bundle.putInt("groupNumHigh",classG.getGroup_numHigh());
-                                        bundle.putInt("groupNumLow",classG.getGroup_numLow());
-                                        bundle.putInt("groupNum",classG.getGroup_num());
-                                        bundle.putString("groupCreateTime", sdf.format(groupCreateTime));
-//                                        bundle.putString("groupCreateTime",String.)
                                         intent.putExtras(bundle);
                                         getActivity().startActivity(intent);
                                     }
@@ -224,7 +215,7 @@ public class Fragment_ClassDetail extends Fragment implements FragmentBackHandle
                             mCallback.onFragmentSelected(firestore_class.getClass_id(), "toClassPerformance");//fragment傳值
                             break;
                         case 4:
-
+                            mCallback.onFragmentSelected(firestore_class.getClass_id(), "toLeaveManage");//fragment傳值
 
                             break;
                         case 5:

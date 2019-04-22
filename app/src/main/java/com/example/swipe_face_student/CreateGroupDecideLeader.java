@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.swipe_face_student.Adapter.CreateGroupDecideLeaderAdapter;
+import com.example.swipe_face_student.Model.Class;
 import com.example.swipe_face_student.Model.Student;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,13 +33,8 @@ import java.util.Map;
 
 public class CreateGroupDecideLeader extends AppCompatActivity {
     String classId;//課程DocId
-    String class_Id;//課程Id
-    String classYear;//課程學年度
-    String className;//課程名
     String groupLeader;//小組組長學號
     Integer groupNum;//課程小組數
-    Integer groupNumHigh;//課程小組人數上限
-    Integer groupNumLow;//課程小組人數下限
     Integer group_bonus=0;//小組得分初始化
     List<Student> studentList = null;
     private final String TAG = "CreateGroupDecideLeader";
@@ -59,17 +55,22 @@ public class CreateGroupDecideLeader extends AppCompatActivity {
         //init bundle
         Intent Intent = getIntent();
         Bundle bundle = Intent.getExtras();
-        class_Id = bundle.getString("class_Id");
         classId = bundle.getString("classId");
-        classYear = bundle.getString("classYear");
-        className = bundle.getString("className");
-        groupNum = bundle.getInt("groupNum");
-        groupNumHigh = bundle.getInt("groupNumHigh");
-        groupNumLow = bundle.getInt("groupNumLow");
         studentList = bundle.getParcelableArrayList("studentList");
         for(int i = studentList.size() - 1; i >= 0; i--){
             Student item = studentList.get(i);
             Log.d(TAG,"\t63行"+item.getStudent_id());
+        }
+
+
+        //query DB
+        if(!classId.isEmpty()) {
+            DocumentReference docRef = db.collection("Class").document(classId);
+            docRef.get().addOnSuccessListener(documentSnapshot -> {
+                Class aClass = documentSnapshot.toObject(Class.class);
+                groupNum = aClass.getGroup_num();
+
+            });
         }
 
         //init xml
@@ -130,14 +131,7 @@ public class CreateGroupDecideLeader extends AppCompatActivity {
         intent.setClass(CreateGroupDecideLeader.this, CreateClassGroupSt1.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         Bundle bundleGroup = new Bundle();
-        bundleGroup.putString("class_Id", class_Id);
         bundleGroup.putString("classId", classId);
-        bundleGroup.putString("classYear", classYear);
-        bundleGroup.putString("className", className);
-//        bundleGroup.putInt("classStuNum", classStuNum);
-        bundleGroup.putInt("groupNum", groupNum);
-        bundleGroup.putInt("groupNumHigh", groupNumHigh);
-        bundleGroup.putInt("groupNumLow", groupNumLow);
         intent.putExtras(bundleGroup);
         startActivity(intent);
 

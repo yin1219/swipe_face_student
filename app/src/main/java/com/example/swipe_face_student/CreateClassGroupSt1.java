@@ -12,9 +12,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.swipe_face_student.Model.Class;
 import com.example.swipe_face_student.Model.Group;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
@@ -28,6 +33,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.Call;
@@ -47,7 +53,7 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
     String class_Id;//課程Id
     String classYear;//課程學年度
     String className;//課程名
-    String groupCreateTime;//課程創建時間
+    Date groupCreateTime;//課程創建時間
     Integer classStuNum;//課程學生人數
     Integer groupNum;//課程小組數
     Integer groupNumHigh;//課程小組人數上限
@@ -64,9 +70,9 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
     ResponseBody responseBody;
     String responseData;
     final int REQUEST_CODE_CHOOSE = 123;
-    String url = "http://192.168.1.137:8080/ProjectApi/api/FaceApi/RetrievePhoto";
+    String url = "http://192.168.11.5:8080/ProjectApi/api/FaceApi/RetrievePhoto";
     boolean isGroup = false;
-    SimpleDateFormat sdf = new SimpleDateFormat("E yyyy/MM/dd");
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
 
 
@@ -90,20 +96,30 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
         //init Intent
         Intent Intent = getIntent();
         Bundle bundle = Intent.getExtras();
-        class_Id = bundle.getString("class_Id");
         classId = bundle.getString("classId");
-        classYear = bundle.getString("classYear");
-        className = bundle.getString("className");
-        classStuNum = bundle.getInt("classStuNum");
-        groupNum = bundle.getInt("groupNum");
-        groupNumHigh = bundle.getInt("groupNumHigh");
-        groupNumLow = bundle.getInt("groupNumLow");
-        groupCreateTime =bundle.getString("groupCreateTime");
 
-        //set TextView
-        tvClassName.setText(String.format("%s\t%s", classYear, className));
-        tvGroupNum.setText("人數限制\t" + groupNumLow.toString() + "\t~\t" + groupNumHigh.toString());
-        tvCreateTime.setText("結束時間 : "+groupCreateTime);
+        //query DB
+        if(!classId.isEmpty()){
+            DocumentReference docRef = db.collection("Class").document(classId);
+            docRef.get().addOnSuccessListener(documentSnapshot -> {
+                Class aClass = documentSnapshot.toObject(Class.class);
+                class_Id = aClass.getClass_id();
+                classYear = aClass.getClass_year();
+                className = aClass.getClass_name();
+                classStuNum = aClass.getStudent_total();
+                groupNum = aClass.getGroup_num();
+                groupNumHigh = aClass.getGroup_numHigh();
+                groupNumLow = aClass.getGroup_numLow();
+                groupCreateTime = aClass.getCreate_time();
+                Log.d(TAG,aClass.toString());
+
+                //set TextView
+                tvClassName.setText(String.format("%s\t%s", classYear, className));
+                tvGroupNum.setText("人數限制\t" + groupNumLow.toString() + "\t~\t" + groupNumHigh.toString());
+                tvCreateTime.setText("結束時間 : "+sdf.format(groupCreateTime));
+            });
+        }
+
 
         //check isGroup
         db.collection("Class")
@@ -130,14 +146,7 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
                 Intent intentCreateClassGroupByHand = new Intent();
                 intentCreateClassGroupByHand.setClass(this, CreateClassGroupByHand.class);
                 Bundle bundleGroup = new Bundle();
-                bundleGroup.putString("class_Id", class_Id);
                 bundleGroup.putString("classId", classId);
-                bundleGroup.putString("classYear", classYear);
-                bundleGroup.putString("className", className);
-                bundleGroup.putInt("classStuNum", classStuNum);
-                bundleGroup.putInt("groupNum", groupNum);
-                bundleGroup.putInt("groupNumHigh", groupNumHigh);
-                bundleGroup.putInt("groupNumLow", groupNumLow);
                 intentCreateClassGroupByHand.putExtras(bundleGroup);
                 startActivity(intentCreateClassGroupByHand);
             }
@@ -209,15 +218,7 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
         Intent intentCreateClassGroupByHand = new Intent();
         intentCreateClassGroupByHand.setClass(this, CreateClassGroupByCam.class);
         Bundle bundleGroup = new Bundle();
-        bundleGroup.putString("class_Id", class_Id);
         bundleGroup.putString("classId", classId);
-        bundleGroup.putString("classYear", classYear);
-        bundleGroup.putString("className", className);
-        bundleGroup.putInt("classStuNum", classStuNum);
-        bundleGroup.putInt("groupNum", groupNum);
-        bundleGroup.putInt("groupNumHigh", groupNumHigh);
-        bundleGroup.putInt("groupNumLow", groupNumLow);
-        bundleGroup.putString("photoPathToUploadClass",photoPathToUploadClass.get(0));
         bundleGroup.putStringArrayList("listStudentIdFromUpload", (ArrayList<String>) listStudentIdFromUpload);
         intentCreateClassGroupByHand.putExtras(bundleGroup);
         startActivity(intentCreateClassGroupByHand);

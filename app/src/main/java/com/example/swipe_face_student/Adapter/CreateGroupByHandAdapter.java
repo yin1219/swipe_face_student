@@ -85,7 +85,7 @@ public class CreateGroupByHandAdapter extends RecyclerView.Adapter<CreateGroupBy
     }
 
     public interface transPageListener {
-        public void onTransPageClick(String student_Id,Student student);
+        void onTransPageClick(String student_Id, Student student);
     }//adapter跳轉fragment並攜帶需要的資料
 
     public void setOnTransPageClickListener(CreateGroupByHandAdapter.transPageListener transPageListener) {

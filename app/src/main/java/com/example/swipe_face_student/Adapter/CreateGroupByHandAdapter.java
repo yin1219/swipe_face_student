@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 
@@ -49,8 +50,9 @@ public class CreateGroupByHandAdapter extends RecyclerView.Adapter<CreateGroupBy
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder");
-        holder.tvGroupStudentName.setText(studentList.get(position).getStudent_id()+studentList.get(position).getStudent_department()+studentList.get(position).getStudent_name());
-        holder.btDeleteStudent.setOnClickListener(v -> {
+        holder.tvGroupStudentName.setText(String.format("%s\t\t%s\t\t%s", studentList.get(position).getStudent_id(),
+                studentList.get(position).getStudent_department(), studentList.get(position).getStudent_name()));
+        holder.ibDeleteStudent.setOnClickListener(v -> {
             notifyItemChanged(position);
             String student_Id = studentList.get(position).StudentId;
             mTransPageListener.onTransPageClick(student_Id,studentList.get(position));
@@ -73,14 +75,14 @@ public class CreateGroupByHandAdapter extends RecyclerView.Adapter<CreateGroupBy
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         View mView;
-        public TextView tvGroupStudentName;
-        public Button btDeleteStudent;
+        TextView tvGroupStudentName;
+        ImageButton ibDeleteStudent;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
             tvGroupStudentName = mView.findViewById(R.id.groupDetailName);
-            btDeleteStudent = mView.findViewById(R.id.deleteStudent);
+            ibDeleteStudent = mView.findViewById(R.id.deleteStudent);
         }
     }
 

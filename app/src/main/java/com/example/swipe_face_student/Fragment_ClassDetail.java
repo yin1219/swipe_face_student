@@ -146,84 +146,77 @@ public class Fragment_ClassDetail extends Fragment implements FragmentBackHandle
         for (int i = 0; i < gridLayout.getChildCount(); i++) {
             CardView cardView = (CardView) gridLayout.getChildAt(i);
             final int finalI = i;
-            cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(getContext(), "Clicked at index " + finalI,
-                            Toast.LENGTH_SHORT).show();
-                    switch (finalI) {
-                        case 0:
-                            //intent activity
-                            break;
-                        case 1:
-                            //抓Class->DocClass資料
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                            DocumentReference docRef = db.collection("Class").document(classId);
-                            docRef.get().addOnSuccessListener(documentSnapshot -> {
-                                Class classG = documentSnapshot.toObject(Class.class);
+            cardView.setOnClickListener(view -> {
+                Toast.makeText(getContext(), "Clicked at index " + finalI,
+                        Toast.LENGTH_SHORT).show();
+                switch (finalI) {
+                    case 0:
+                        //intent activity
+                        break;
+                    case 1:
+                        //抓Class->DocClass資料
+                        DocumentReference docRef = db.collection("Class").document(classId);
+                        docRef.get().addOnSuccessListener(documentSnapshot -> {
+                            Class classG = documentSnapshot.toObject(Class.class);
 
-                                Date groupCreateTime = classG.getCreate_time();
-                                Log.d(TAG, "groupCreateDate" + groupCreateTime.toString());
-                                Date date = new Date();
-                                Log.d(TAG, "NowDate" + date.toString());
+                            Date groupCreateTime = classG.getCreate_time();
+                            Log.d(TAG, "groupCreateDate" + groupCreateTime.toString());
+                            Date date = new Date();
+                            Log.d(TAG, "NowDate" + date.toString());
 
-                                //判斷狀態 -> 開始分組尚未確認時間已過
-                                if (groupCreateTime.before(date) && !classG.isGroup_state()) {
+                            //判斷狀態 -> 開始分組尚未確認時間已過
+                            if(!classG.isGroup_state() && !classG.isGroup_state_go()){
+                                Toast.makeText(getContext(), "尚未分組",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                            else if(!classG.isGroup_state() && classG.isGroup_state_go()){
+                                if (groupCreateTime.before(date)) {
                                     Toast.makeText(getContext(), "分組時間已過",
                                             Toast.LENGTH_SHORT).show();
-                                } else {
-                                    //判斷狀態 -> 尚未分組尚未確認
-                                    if (!classG.isGroup_state() && !classG.isGroup_state_go()) {
-                                        Toast.makeText(getContext(), "尚未分組",
-                                                Toast.LENGTH_SHORT).show();
-                                    }
-                                    //判斷狀態 -> 開始分組尚未確認
-                                    if (!classG.isGroup_state() && classG.isGroup_state_go()) {
-
-                                        Intent intent = new Intent();
-                                        intent.setClass(getActivity(), CreateClassGroupSt1.class);
-                                        Bundle bundle = new Bundle();
-                                        bundle.putString("classId", classId);
-                                        intent.putExtras(bundle);
-                                        getActivity().startActivity(intent);
-                                    }
-                                    //判斷狀態 -> 已經建立小組
-                                    if (classG.isGroup_state() && classG.isGroup_state_go()) {
-                                        Intent intent = new Intent();
-                                        intent.setClass(getActivity(), GroupPage.class);
-                                        Bundle bundle = new Bundle();
-                                        bundle.putString("classId", classId);
-//                                        bundle.putString("userId",userId);
-                                        bundle.putString("class_Id", classG.getClass_id());
-                                        bundle.putString("classYear", classG.getClass_year());
-                                        bundle.putString("className", classG.getClass_name());
-                                        bundle.putInt("classStuNum", classG.getStudent_id().size());
-                                        intent.putExtras(bundle);
-                                        getActivity().startActivity(intent);
-                                    }
                                 }
-                            });
+                                else{
+                                    Intent intent = new Intent();
+                                    intent.setClass(getActivity(), CreateClassGroupSt1.class);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("classId", classId);
+                                    intent.putExtras(bundle);
+                                    getActivity().startActivity(intent);
+                                }
+                            }
+                            else{
+                                Intent intent = new Intent();
+                                intent.setClass(getActivity(), GroupPage.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putString("classId", classId);
+//                                        bundle.putString("userId",userId);
+                                bundle.putString("class_Id", classG.getClass_id());
+                                bundle.putString("classYear", classG.getClass_year());
+                                bundle.putString("className", classG.getClass_name());
+                                bundle.putInt("classStuNum", classG.getStudent_id().size());
+                                intent.putExtras(bundle);
+                                getActivity().startActivity(intent);
+                            }
+                        });
 
-                            break;
-                        case 2:
+                        break;
+                    case 2:
 
-                            mCallback.onFragmentSelected(firestore_class.getClass_id(), "toAttendanceList");//fragment傳值
+                        mCallback.onFragmentSelected(firestore_class.getClass_id(), "toAttendanceList");//fragment傳值
 
-                            break;
-                        case 3:
+                        break;
+                    case 3:
 
-                            mCallback.onFragmentSelected(firestore_class.getClass_id(), "toClassPerformance");//fragment傳值
-                            break;
-                        case 4:
-                            mCallback.onFragmentSelected(firestore_class.getClass_id(), "toLeaveManage");//fragment傳值
+                        mCallback.onFragmentSelected(firestore_class.getClass_id(), "toClassPerformance");//fragment傳值
+                        break;
+                    case 4:
+                        mCallback.onFragmentSelected(firestore_class.getClass_id(), "toLeaveManage");//fragment傳值
 
-                            break;
-                        case 5:
-                            Log.d(TAG, "case5" + firestore_class.getTeacher_email());
-                            mCallback.onFragmentSelected(firestore_class.getTeacher_email(), "toTeacherInfo");//fragment傳值
+                        break;
+                    case 5:
+                        Log.d(TAG, "case5" + firestore_class.getTeacher_email());
+                        mCallback.onFragmentSelected(firestore_class.getTeacher_email(), "toTeacherInfo");//fragment傳值
 
-                            break;
-                    }
+                        break;
                 }
             });
         }

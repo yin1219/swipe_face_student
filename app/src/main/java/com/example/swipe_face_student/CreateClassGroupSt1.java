@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
@@ -61,8 +62,8 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
     TextView tvClassName;//課程名TV
     TextView tvGroupNum;//人數限制TV
     TextView tvCreateTime;//結束時間TV
-    Button btGroupDividerByhand;//手動分組按鈕
-    Button btGroupDividerByCam;//拍照分組按鈕
+    CardView cvGroupDividerByhand;//手動分組按鈕
+    CardView cvGroupDividerByCam;//拍照分組按鈕
     String studentIdFromUpload;//接收回傳JSON的studentId
     List<String> listStudentIdFromUpload = new ArrayList<>();
     List<String> photoPathToUploadClass;//接收Matisse的路徑
@@ -90,8 +91,8 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
         tvClassName = findViewById(R.id.textViewClassName);
         tvGroupNum = findViewById(R.id.tvGroupNum);
         tvCreateTime = findViewById(R.id.tvCreateTime);
-        btGroupDividerByhand = findViewById(R.id.group_divider_byhand);
-        btGroupDividerByCam = findViewById(R.id.group_divider_byCam);
+        cvGroupDividerByhand = findViewById(R.id.group_divider_byhand);
+        cvGroupDividerByCam = findViewById(R.id.group_divider_byCam);
 
         //init Intent
         Intent Intent = getIntent();
@@ -141,7 +142,7 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
                 });
 
         //Button
-        btGroupDividerByhand.setOnClickListener(v -> {
+        cvGroupDividerByhand.setOnClickListener(v -> {
             if(!isGroup){
                 Intent intentCreateClassGroupByHand = new Intent();
                 intentCreateClassGroupByHand.setClass(this, CreateClassGroupByHand.class);
@@ -155,7 +156,7 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
             }
 
         });
-        btGroupDividerByCam.setOnClickListener(v -> {
+        cvGroupDividerByCam.setOnClickListener(v -> {
             if(!isGroup){
                 Matisse.from(CreateClassGroupSt1.this)
                         .choose(MimeType.ofAll())//图片类型

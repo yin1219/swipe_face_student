@@ -7,6 +7,8 @@ import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -41,7 +43,7 @@ public class CreateClassGroupByHand extends AppCompatActivity {
     Integer groupNum;//課程小組數
     Integer groupNumHigh;//課程小組人數上限
     Integer groupNumLow;//課程小組人數下限
-    Button btNextStepButton;//下一步->確認組長
+    CardView cvNextStepButton;//下一步->確認組長
     FirebaseFirestore db;
     CreateGroupByHandAdapter createGroupByHandAdapter;
     RecyclerView studentListRecycleView;
@@ -80,8 +82,8 @@ public class CreateClassGroupByHand extends AppCompatActivity {
         });
 
         //init xml
-        btNextStepButton = findViewById(R.id.nextStepButton);
-        btNextStepButton.setOnClickListener(v -> nextStep());
+        cvNextStepButton = findViewById(R.id.nextStepButton);
+        cvNextStepButton.setOnClickListener(v -> nextStep());
         groupStudentSetAddLl = findViewById(R.id.groupStudentSetAdd);
         groupStudentSetAddLl.setOnClickListener(this::customClick);
 
@@ -95,6 +97,10 @@ public class CreateClassGroupByHand extends AppCompatActivity {
         LinearLayoutManager mgr = new LinearLayoutManager(this);
         studentListRecycleView.setLayoutManager(mgr);
         studentListRecycleView.setAdapter(createGroupByHandAdapter);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(studentListRecycleView.getContext(),
+                mgr.getOrientation());
+        studentListRecycleView.addItemDecoration(dividerItemDecoration);
+
 
         createGroupByHandAdapter.setOnTransPageClickListener((student_id, student) -> {
             for(int i = studentList.size() - 1; i >= 0; i--){

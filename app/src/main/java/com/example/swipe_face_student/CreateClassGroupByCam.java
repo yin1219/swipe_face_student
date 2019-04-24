@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -47,7 +49,7 @@ public class CreateClassGroupByCam extends AppCompatActivity {
     RecyclerView studentListRecycleView;
     CreateGroupByCamAdapter createGroupByCamAdapter;
     LinearLayout groupStudentSetAddLl;//Dialog For Add Student
-    Button btNextStepButton;//下一步->確認組長
+    CardView cvNextStepButton;//下一步->確認組長
 
 
     @Override
@@ -82,8 +84,8 @@ public class CreateClassGroupByCam extends AppCompatActivity {
         });
 
         //init xml
-        btNextStepButton = findViewById(R.id.nextStepButton);
-        btNextStepButton.setOnClickListener(v -> nextStep());
+        cvNextStepButton = findViewById(R.id.nextStepButton);
+        cvNextStepButton.setOnClickListener(v -> nextStep());
         groupStudentSetAddLl = findViewById(R.id.groupStudentSetAdd);
         groupStudentSetAddLl.setOnClickListener(v -> customClick(v));
 
@@ -97,6 +99,10 @@ public class CreateClassGroupByCam extends AppCompatActivity {
         LinearLayoutManager mgr = new LinearLayoutManager(this);
         studentListRecycleView.setLayoutManager(mgr);
         studentListRecycleView.setAdapter(createGroupByCamAdapter);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(studentListRecycleView.getContext(),
+                mgr.getOrientation());
+        studentListRecycleView.addItemDecoration(dividerItemDecoration);
+
 
         //set data for adapter
         setAll();

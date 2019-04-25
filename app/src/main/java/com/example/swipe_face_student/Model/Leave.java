@@ -14,25 +14,28 @@ public class Leave extends LeaveId {
     String student_id;
     String teacher_email;
     String leave_photoUrl;
+    String student_registrationToken;
+
 
     Date leave_uploaddate;
 
     public Leave() {
     }
 
-    public Leave(String student_name, String leave_reason, String leave_check, String leave_date, String leave_content, String leave_class, String class_id, String student_id, String teacher_email, Date leave_uploaddate) {
+    public Leave(String student_name, String leave_reason, String leave_check, String leave_date, String leave_content, String class_name, String class_id, String student_id, String teacher_email, String leave_photoUrl, String student_registrationToken, Date leave_uploaddate) {
         this.student_name = student_name;
         this.leave_reason = leave_reason;
         this.leave_check = leave_check;
         this.leave_date = leave_date;
         this.leave_content = leave_content;
-        this.class_name = leave_class;
+        this.class_name = class_name;
         this.class_id = class_id;
         this.student_id = student_id;
         this.teacher_email = teacher_email;
+        this.leave_photoUrl = leave_photoUrl;
+        this.student_registrationToken = student_registrationToken;
         this.leave_uploaddate = leave_uploaddate;
     }
-
 
     public String getStudent_name() {
         return student_name;
@@ -56,14 +59,6 @@ public class Leave extends LeaveId {
 
     public void setLeave_check(String leave_check) {
         this.leave_check = leave_check;
-    }
-
-    public Date getLeave_uploaddate() {
-        return leave_uploaddate;
-    }
-
-    public void setLeave_uploaddate(Date leave_date) {
-        this.leave_uploaddate = leave_date;
     }
 
     public String getLeave_date() {
@@ -120,5 +115,21 @@ public class Leave extends LeaveId {
 
     public void setLeave_photoUrl(String leave_photoUrl) {
         this.leave_photoUrl = leave_photoUrl;
+    }
+
+    public String getStudent_registrationToken() {
+        return student_registrationToken;
+    }
+
+    public void setStudent_registrationToken(String student_registrationToken) {
+        this.student_registrationToken = student_registrationToken;
+    }
+
+    public Date getLeave_uploaddate() {
+        return leave_uploaddate;
+    }
+
+    public void setLeave_uploaddate(Date leave_uploaddate) {
+        this.leave_uploaddate = leave_uploaddate;
     }
 }

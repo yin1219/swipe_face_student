@@ -52,7 +52,8 @@ public class AttendanceListAdapter extends RecyclerView.Adapter<AttendanceListAd
         sdFormat.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
         Date attendanceDate = AttendanceList.get(position).getAttendance_time();
 
-        holder.text_bonus_date.setText(sdFormat.format(attendanceDate));
+        holder.text_attendance_date.setText(sdFormat.format(attendanceDate));
+        holder.text_attendance_status.setText(AttendanceList.get(position).getAttendance_status());
 
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -75,14 +76,16 @@ public class AttendanceListAdapter extends RecyclerView.Adapter<AttendanceListAd
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         View mView;
-        public TextView text_bonus_date;
+        public TextView text_attendance_date;
+        public TextView text_attendance_status;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
 
-            text_bonus_date = (TextView) mView.findViewById(R.id.text_bonus_date);
+            text_attendance_date = (TextView) mView.findViewById(R.id.text_attendance_date);
+            text_attendance_status = (TextView) mView.findViewById(R.id.text_attendance_status);
 
         }
     }

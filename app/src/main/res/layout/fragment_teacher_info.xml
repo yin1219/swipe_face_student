@@ -13,9 +13,9 @@
 
         <android.support.design.widget.NavigationView
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="56dp"
             android:layout_gravity="top"
-            android:background="@color/colorPrimary"
+            android:background="#ffffff"
             android:fitsSystemWindows="false"
             android:orientation="vertical"
             android:theme="@style/Base.ThemeOverlay.AppCompat.Dark"
@@ -26,10 +26,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:lineSpacingExtra="9sp"
                 android:text="老師資訊"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/common_google_signin_btn_text_dark_default"
-                android:textSize="24sp" />
+                android:textColor="#000000"
+                android:textSize="16sp"
+                tools:text="老師資訊" />
 
         </android.support.design.widget.NavigationView>
 

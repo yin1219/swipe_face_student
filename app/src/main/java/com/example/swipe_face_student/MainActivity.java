@@ -1,6 +1,7 @@
 package com.example.swipe_face_student;
 
 import android.Manifest;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -11,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
@@ -54,9 +57,9 @@ public class MainActivity extends AppCompatActivity implements OnFragmentSelecte
 
                     Fragment_LeaveList fragment_leaveList = new Fragment_LeaveList();
                     Bundle args = new Bundle();
-                    args.putString("info",null);
+                    args.putString("info", null);
                     args.putString("student_id", student_id);
-                    Log.d(TAG,"MAIN ARG:"+args);
+                    Log.d(TAG, "MAIN ARG:" + args);
                     fragment_leaveList.setArguments(args);
                     transaction.replace(R.id.content, new Fragment_LeaveList());
                     transaction.addToBackStack(new Fragment_LeaveList().getClass().getName());
@@ -84,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentSelecte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_s__homepage);
-
+        Log.d("FCMToken", "token "+ FirebaseInstanceId.getInstance().getToken());
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

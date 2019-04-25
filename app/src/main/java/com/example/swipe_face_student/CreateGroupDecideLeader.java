@@ -10,6 +10,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -87,6 +88,10 @@ public class CreateGroupDecideLeader extends AppCompatActivity {
         LinearLayoutManager mgr = new LinearLayoutManager(this);
         studentListRecycleView.setLayoutManager(mgr);
         studentListRecycleView.setAdapter(createGroupDecideLeaderAdapter);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(studentListRecycleView.getContext(),
+                mgr.getOrientation());
+        studentListRecycleView.addItemDecoration(dividerItemDecoration);
+
 
         //Send value from adapter to activity
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,

@@ -41,7 +41,8 @@ public class CreateGroupDecideLeaderAdapter extends  RecyclerView.Adapter<Create
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.tvGroupStudentName.setText(studentList.get(position).getStudent_id()+studentList.get(position).getStudent_department()+studentList.get(position).getStudent_name());
+        holder.tvGroupStudentName.setText(String.format("%s\t\t%s\t\t%s", studentList.get(position).getStudent_id(),
+                studentList.get(position).getStudent_department(), studentList.get(position).getStudent_name()));
         holder.rbGroupLeader.setChecked(lastSelectedPosition == position);
         if(lastSelectedPosition != -1){
             Log.d(TAG,"rbPosition"+studentList.get(lastSelectedPosition).getStudent_id());
@@ -64,17 +65,17 @@ public class CreateGroupDecideLeaderAdapter extends  RecyclerView.Adapter<Create
         return studentList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         View mView;
-        public TextView tvGroupStudentName;
-        public RadioGroup rgGroupLeader;
-        public RadioButton rbGroupLeader;
-        public ViewHolder(@NonNull View itemView) {
+        TextView tvGroupStudentName;
+//        RadioGroup rgGroupLeader;
+        RadioButton rbGroupLeader;
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
             tvGroupStudentName = mView.findViewById(R.id.groupDetailName);
-            rgGroupLeader = mView.findViewById(R.id.rgGroupLeader);
+//            rgGroupLeader = mView.findViewById(R.id.rgGroupLeader);
             rbGroupLeader = mView.findViewById(R.id.rbGroupLeader);
 
             rbGroupLeader.setOnClickListener(v -> {

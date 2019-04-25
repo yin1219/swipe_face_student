@@ -5,30 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
-<RadioGroup
-    android:id="@+id/rgGroupLeader"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_vertical">
     <RadioButton
+        android:layout_marginLeft="20dp"
         android:id="@+id/rbGroupLeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
        />
-</RadioGroup>
 
-
-
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/ic_outline_account_circle_24px" />
 
     <TextView
         android:id="@+id/groupDetailName"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:text="學號系級名字"
-        android:textSize="15dp"
-        android:textStyle="bold"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="15dp"
         android:layout_weight="1"
-        />
+        android:gravity="center_vertical"
+        android:text="載入中"
+        android:textColor="#000000"
+        android:textSize="14sp" />
 </LinearLayout>

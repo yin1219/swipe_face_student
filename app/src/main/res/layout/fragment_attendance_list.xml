@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_gravity="top"
-            android:background="@color/colorPrimary"
+            android:background="#FFFFFF"
             android:fitsSystemWindows="false"
             android:orientation="vertical"
             android:theme="@style/Base.ThemeOverlay.AppCompat.Dark"
@@ -33,8 +33,8 @@
                 android:layout_gravity="center"
                 android:text="出席狀況"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/common_google_signin_btn_text_dark_default"
-                android:textSize="24sp" />
+                android:textColor="#000000"
+                android:textSize="18dp" />
 
         </android.support.design.widget.NavigationView>
 
@@ -42,18 +42,19 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:background="#FFFFFF">
 
             <TextView
                 android:id="@+id/textView6"
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="30dp"
                 android:layout_weight="0"
                 android:padding="1dp"
                 android:text="目前出席分數"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textColor="#000000"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/text_class_totalpoints"
@@ -62,8 +63,8 @@
                 android:layout_weight="0"
                 android:padding="1dp"
                 android:text="0"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textColor="#000000"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/textView8"
@@ -72,8 +73,9 @@
                 android:layout_weight="0"
                 android:padding="1dp"
                 android:text="分"
+                android:layout_marginLeft="10dp"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textColor="#000000"/>
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView

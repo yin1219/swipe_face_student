@@ -6,76 +6,90 @@
     android:layout_height="match_parent"
     tools:context=".CreateClassGroupByCam"
     android:orientation="vertical">
-    <android.support.design.widget.NavigationView
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_gravity="top"
-        android:background="@color/colorPrimary"
-        android:fitsSystemWindows="false"
-        android:orientation="vertical"
-        android:theme="@style/Base.ThemeOverlay.AppCompat.Dark"
-        android:tooltipText="小組">
-        <TextView
-            android:id="@+id/title_class"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="拍照分組"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/common_google_signin_btn_text_dark_default"
-            android:textSize="24sp" />
-    </android.support.design.widget.NavigationView>
+    <LinearLayout
+        style="@style/Header"
+        android:orientation="horizontal"
+        android:background="#FFFFFF">
 
-    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/card_view"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/backIBtn"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@drawable/ic_chevron_left_black_24dp" />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:gravity="center"
+            android:text="小組分組"
+            android:textColor="#000000"
+            style="@style/Header.TextViewSize" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="10"></LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:id="@+id/groupStudentSetAdd"
+        android:orientation="horizontal"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
-        card_view:cardCornerRadius="0dp">
-        <LinearLayout
-            android:layout_width="match_parent"
+        >
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="31dp"
+            android:background="@drawable/ic_add_circle_blue_24dp"
+            android:layout_gravity="center_vertical"
+            />
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="60dp"
-            android:id="@+id/groupStudentSetAdd"
-            android:orientation="horizontal"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:background="#AAAA"
-            >
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/ic_add_black_24dp"
-                android:layout_gravity="center_vertical"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_marginLeft="15dp"
-                android:gravity="center"
-                android:text="新增成員"
-                android:textSize="20dp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-    </android.support.v7.widget.CardView>
+            android:layout_marginLeft="15dp"
+            android:gravity="center"
+            android:textColor="#0806b1"
+            android:text="新增成員"
+            android:textSize="16sp" />
+    </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/groupDividerStudentList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="9"/>
-    <Button
+    <android.support.v7.widget.CardView
         android:id="@+id/nextStepButton"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="完成"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        />
+        android:layout_height="57dp"
+        android:layout_gravity="bottom"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardBackgroundColor="#0806b1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center"
+            android:text="完成"
+            android:textColor="#FFFF"
+            android:textSize="18sp" />
+    </android.support.v7.widget.CardView>
 
 
 </LinearLayout>

@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_gravity="top"
-            android:background="@color/colorPrimary"
+            android:background="#FFFFFF"
             android:fitsSystemWindows="false"
             android:orientation="vertical"
             android:theme="@style/Base.ThemeOverlay.AppCompat.Dark"
@@ -30,14 +30,14 @@
                 android:layout_gravity="center"
                 android:text="課程"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/common_google_signin_btn_text_dark_default"
-                android:textSize="20sp" />
+                android:textColor="#000000"
+                android:textSize="18sp" />
 
         </android.support.design.widget.NavigationView>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="90dp"
+            android:layout_height="80dp"
             android:layout_gravity="center"
             android:gravity="center_vertical"
             android:orientation="vertical">
@@ -48,39 +48,14 @@
                 android:layout_height="wrap_content"
                 android:text="課程讀取中..."
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="22sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
-                android:layout_marginLeft="20dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/text_title_class_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="課程代碼"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"/>
-
-                <TextView
-                    android:id="@+id/text_class_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="讀取中..."
-                    android:textSize="18sp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"/>
-            </LinearLayout>
+                android:layout_marginLeft="22dp"/>
 
         </LinearLayout>
 
         <GridLayout
             android:id="@+id/grid_class_detail"
-            android:background="#F9F9F9"
             android:rowCount="3"
             android:columnCount="2"
             android:alignmentMode="alignMargins"
@@ -88,7 +63,10 @@
             android:layout_weight="8"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:padding="5dp">
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:paddingBottom="20dp"
+            >
 
             <!-- ROW 1  -->
             <!-- COLUMN 1  -->
@@ -100,13 +78,12 @@
                 android:layout_height="0dp"
                 android:layout_rowWeight="1"
                 android:layout_columnWeight="1"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="15dp"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                app:cardElevation="0dp"
+                android:layout_marginRight="10dp"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="3dp"
                 >
 
                 <LinearLayout
@@ -117,11 +94,11 @@
 
                     <ImageView
                         android:id="@+id/img_answer_question"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="2dp"
-                        android:src="@drawable/ask" />
+                        android:layout_marginBottom="15dp"
+                        android:src="@drawable/function1" />
                     <TextView
                         android:id="@+id/text_answer_question"
                         android:layout_width="wrap_content"
@@ -129,7 +106,7 @@
                         android:layout_gravity="center"
                         android:text="回答問題"
                         android:textColor="#000"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
 
 
@@ -145,13 +122,12 @@
                 android:layout_height="0dp"
                 android:layout_rowWeight="1"
                 android:layout_columnWeight="1"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="15dp"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                app:cardElevation="0dp">
+                app:cardElevation="3dp"
+                app:cardCornerRadius="15dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -161,11 +137,11 @@
 
                     <ImageView
                         android:id="@+id/img_team_list"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="2dp"
-                        android:src="@drawable/group2" />
+                        android:layout_marginBottom="15dp"
+                        android:src="@drawable/function2" />
 
                     <TextView
                         android:id="@+id/text_team_list"
@@ -174,7 +150,7 @@
                         android:layout_gravity="center"
                         android:text="小組清單"
                         android:textColor="#000"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
 
                 </LinearLayout>
@@ -192,12 +168,12 @@
                 android:layout_height="0dp"
                 android:layout_rowWeight="1"
                 android:layout_columnWeight="1"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="15dp"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                app:cardElevation="0dp">
+                app:cardElevation="3dp"
+                app:cardCornerRadius="15dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -207,11 +183,11 @@
 
                     <ImageView
                         android:id="@+id/img_absence_list"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="2dp"
-                        android:src="@drawable/clock" />
+                        android:layout_marginBottom="15dp"
+                        android:src="@drawable/function3" />
 
                     <TextView
                         android:id="@+id/text_absence_list"
@@ -220,7 +196,7 @@
                         android:layout_gravity="center"
                         android:text="出席狀況"
                         android:textColor="#000"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
 
 
@@ -236,12 +212,12 @@
                 android:layout_height="0dp"
                 android:layout_rowWeight="1"
                 android:layout_columnWeight="1"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="15dp"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                app:cardElevation="0dp">
+                app:cardElevation="3dp"
+                app:cardCornerRadius="15dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -251,11 +227,11 @@
 
                     <ImageView
                         android:id="@+id/img_class_performance"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="2dp"
-                        android:src="@drawable/communication" />
+                        android:layout_marginBottom="15dp"
+                        android:src="@drawable/function4" />
 
                     <TextView
                         android:id="@+id/text_class_performance"
@@ -264,7 +240,7 @@
                         android:text="課堂表現"
                         android:layout_gravity="center"
                         android:textColor="#000"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
 
                 </LinearLayout>
@@ -281,12 +257,12 @@
                 android:layout_height="0dp"
                 android:layout_rowWeight="1"
                 android:layout_columnWeight="1"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="15dp"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                app:cardElevation="0dp">
+                app:cardElevation="3dp"
+                app:cardCornerRadius="15dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -296,11 +272,11 @@
 
                     <ImageView
                         android:id="@+id/img_leave_manage"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="2dp"
-                        android:src="@drawable/leave2" />
+                        android:layout_marginBottom="15dp"
+                        android:src="@drawable/function5" />
 
                     <TextView
                         android:id="@+id/text_leave_manage"
@@ -309,7 +285,7 @@
                         android:text="假單管理"
                         android:layout_gravity="center"
                         android:textColor="#000"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
                 </LinearLayout>
 
@@ -323,27 +299,26 @@
                 android:layout_height="0dp"
                 android:layout_rowWeight="1"
                 android:layout_columnWeight="1"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="15dp"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                app:cardElevation="0dp">
+                app:cardElevation="3dp"
+                app:cardCornerRadius="15dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|center_vertical"
-
                     android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/img_teacher_info"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="2dp"
-                        android:src="@drawable/learning" />
+                        android:layout_marginBottom="15dp"
+                        android:src="@drawable/function6" />
 
                     <TextView
                         android:id="@+id/text_teacher_info"
@@ -352,7 +327,7 @@
                         android:text="老師資訊"
                         android:layout_gravity="center"
                         android:textColor="#000"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
                 </LinearLayout>
 

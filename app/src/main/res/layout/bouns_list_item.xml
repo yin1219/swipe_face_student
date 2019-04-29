@@ -4,25 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_class_performance_item"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:layout_margin="5dp"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="20dp"
+    android:layout_height="60dp"
     android:background="?android:attr/selectableItemBackground"
-
     android:clickable="true"
-
     android:focusable="true"
     android:orientation="horizontal"
-    app:layout_gravity="clip_vertical">
+    app:layout_gravity="clip_vertical"
+    app:cardElevation="0dp">
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <LinearLayout
-            android:layout_width="500dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal">
@@ -32,11 +29,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginLeft="30dp"
                 android:layout_weight="0"
                 android:text="課堂表現"
-                android:textSize="24sp" />
+                android:textColor="#000000"
+                android:textSize="18dp" />
         </LinearLayout>
 
     </LinearLayout>

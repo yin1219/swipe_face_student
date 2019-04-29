@@ -3,9 +3,11 @@ package com.example.swipe_face_student;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.swipe_face_student.Adapter.GroupPageAdapter;
@@ -26,7 +28,7 @@ public class GroupPage extends AppCompatActivity {
     private TextView tvGroupLeader;
     private TextView tvGroupBonus;
     private FirebaseFirestore db;
-    private RecyclerView recyclerView;
+    private RecyclerView groupPageRecyclerView;
     private GroupPageAdapter groupPageAdapter;
     String classId;//課程DocId
     String class_Id;//課程Id
@@ -35,6 +37,9 @@ public class GroupPage extends AppCompatActivity {
     String userId;//現在使用者學號
     List<Student> studentList;//For Adapter
     List<String> studentListFromGroup = new ArrayList();
+    ImageButton ibBackIBtn;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +53,8 @@ public class GroupPage extends AppCompatActivity {
         tvGroupBonus = findViewById(R.id.groupBonus);
         tvGroupLeader = findViewById(R.id.groupLeader);
         tvGroupNum = findViewById(R.id.groupNum);
+        ibBackIBtn = findViewById(R.id.backIBtn);
+        ibBackIBtn.setOnClickListener(v -> finish());
 
 
         //init Intent
@@ -64,11 +71,16 @@ public class GroupPage extends AppCompatActivity {
         groupPageAdapter = new GroupPageAdapter(this, studentList);
 
         //init RecycleView
-        recyclerView = findViewById(R.id.groupPageRecyclerView);
-        recyclerView.setHasFixedSize(true);
+        groupPageRecyclerView = findViewById(R.id.groupPageRecyclerView);
+        groupPageRecyclerView.setHasFixedSize(true);
         LinearLayoutManager mgr = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(mgr);
-        recyclerView.setAdapter(groupPageAdapter);
+        groupPageRecyclerView.setLayoutManager(mgr);
+        groupPageRecyclerView.setAdapter(groupPageAdapter);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(groupPageRecyclerView.getContext(),
+                mgr.getOrientation());
+        groupPageRecyclerView.addItemDecoration(dividerItemDecoration);
+
+
 
         //init Method
         GroupNumberForCh groupNumberForCh = new GroupNumberForCh();
@@ -85,9 +97,18 @@ public class GroupPage extends AppCompatActivity {
                             Group group = document.toObject(Group.class);
                             Log.d(TAG, "groupNum\t" + group.getGroup_num() + "\ngroupLeader\t" + group.getGroup_leader() + "\ngroupBonus\t" + group.getGroup_bonus());
                             studentListFromGroup = group.getStudent_id();
-                            tvGroupNum.setText("小組組別 : "+groupNumberForCh.transNum(group.getGroup_num()));
-                            tvGroupLeader.setText("小組組長 : "+group.getGroup_leader());
-                            tvGroupBonus.setText("小組得分 : "+group.getGroup_bonus().toString());
+                            tvGroupNum.setText(groupNumberForCh.transNum(group.getGroup_num()));
+                            tvGroupBonus.setText("小組得分 : "+group.getGroup_bonus().toString()+"\t分");
+                            db.collection("Student")
+                                    .whereEqualTo("student_id",group.getGroup_leader())
+                                    .get()
+                                    .addOnCompleteListener(task1 -> {
+                                                for (QueryDocumentSnapshot document2 : task1.getResult()) {
+                                                    Student student = document2.toObject(Student.class);
+                                                    tvGroupLeader.setText("小組組長 : " +student.getStudent_name());
+                                                }
+
+                                    } );
                         }
                         setData();
 

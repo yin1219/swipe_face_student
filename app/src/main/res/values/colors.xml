@@ -6,4 +6,6 @@
     <color name="Transparent">#00ffffff</color>
     <color name="Black">#000</color>
     <color name="White">#ffffff</color>
+    <color name="radiobuttonTrue">#597AC5</color>
+    <color name="radiobuttonFalse">#FFFFFF</color>
 </resources>

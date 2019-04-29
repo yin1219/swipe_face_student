@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.swipe_face_student.Model.Class;
+import com.example.swipe_face_student.Model.Question;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -73,7 +74,6 @@ public class Fragment_ClassDetail extends Fragment implements FragmentBackHandle
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "classId2:" + classId);
         text_class_title = (TextView) view.findViewById(R.id.text_class_title);
-        text_class_id = (TextView) view.findViewById(R.id.text_class_id);
         gridLayout = (GridLayout) view.findViewById(R.id.grid_class_detail);
 
         setClass(new FirebaseCallback() {
@@ -81,7 +81,6 @@ public class Fragment_ClassDetail extends Fragment implements FragmentBackHandle
             public void onCallback(Class firestore_class) {
 
                 text_class_title.setText(firestore_class.getClass_name());
-                text_class_id.setText(firestore_class.getClass_id());
 
                 setSingleEvent(gridLayout, firestore_class);
             }
@@ -146,84 +145,113 @@ public class Fragment_ClassDetail extends Fragment implements FragmentBackHandle
         for (int i = 0; i < gridLayout.getChildCount(); i++) {
             CardView cardView = (CardView) gridLayout.getChildAt(i);
             final int finalI = i;
-            cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(getContext(), "Clicked at index " + finalI,
-                            Toast.LENGTH_SHORT).show();
-                    switch (finalI) {
-                        case 0:
-                            //intent activity
-                            break;
-                        case 1:
-                            //抓Class->DocClass資料
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                            DocumentReference docRef = db.collection("Class").document(classId);
-                            docRef.get().addOnSuccessListener(documentSnapshot -> {
-                                Class classG = documentSnapshot.toObject(Class.class);
+            cardView.setOnClickListener(view -> {
+                Toast.makeText(getContext(), "Clicked at index " + finalI,
+                        Toast.LENGTH_SHORT).show();
+                switch (finalI) {
+                    case 0:
+                        DocumentReference docRefClass = db.collection("Class").document(classId);
+                        docRefClass.get().addOnSuccessListener(documentSnapshot -> {
+                            Class classCheckQuestion = documentSnapshot.toObject(Class.class);
+                            if(!classCheckQuestion.isQuestion_state()){
+                                Toast.makeText(getContext(), "尚未開始",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                DocumentReference questionDoc = db.collection("Class").document(classId)
+                                        .collection("Question").document("question");
+                                questionDoc.get().addOnSuccessListener(documentSnapshot2 -> {
+                                    Question question = documentSnapshot2.toObject(Question.class);
+                                    Date create_time = question.getCreate_time();
+                                    Date nowDate = new Date();
 
-                                Date groupCreateTime = classG.getCreate_time();
-                                Log.d(TAG, "groupCreateDate" + groupCreateTime.toString());
-                                Date date = new Date();
-                                Log.d(TAG, "NowDate" + date.toString());
+                                    if(create_time.before(nowDate)){
+                                        Intent intentToAnalysis = new Intent();
+                                        intentToAnalysis.setClass(getActivity(), QuestionAnalysis.class);
+                                        Bundle bundleToAnalysis = new Bundle();
+                                        bundleToAnalysis.putString("classId", classId);
+                                        intentToAnalysis.putExtras(bundleToAnalysis);
+                                        getActivity().startActivity(intentToAnalysis);
+                                    }
+                                    else{
+                                        Intent intentToQuestion = new Intent();
+                                        intentToQuestion.setClass(getActivity(), QuestionResponse.class);
+                                        Bundle bundleToQuestion = new Bundle();
+                                        bundleToQuestion.putString("classId", classId);
+                                        intentToQuestion.putExtras(bundleToQuestion);
+                                        getActivity().startActivity(intentToQuestion);
+                                    }
 
-                                //判斷狀態 -> 開始分組尚未確認時間已過
-                                if (groupCreateTime.before(date) && !classG.isGroup_state()) {
+                                });
+                            }
+                        });
+
+
+                        break;
+                    case 1:
+                        //抓Class->DocClass資料
+                        DocumentReference docRef = db.collection("Class").document(classId);
+                        docRef.get().addOnSuccessListener(documentSnapshot -> {
+                            Class classG = documentSnapshot.toObject(Class.class);
+
+                            Date groupCreateTime = classG.getCreate_time();
+                            Log.d(TAG, "groupCreateDate" + groupCreateTime.toString());
+                            Date date = new Date();
+                            Log.d(TAG, "NowDate" + date.toString());
+
+                            //判斷狀態 -> 開始分組尚未確認時間已過
+                            if(!classG.isGroup_state() && !classG.isGroup_state_go()){
+                                Toast.makeText(getContext(), "尚未分組",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                            else if(!classG.isGroup_state() && classG.isGroup_state_go()){
+                                if (groupCreateTime.before(date)) {
                                     Toast.makeText(getContext(), "分組時間已過",
                                             Toast.LENGTH_SHORT).show();
-                                } else {
-                                    //判斷狀態 -> 尚未分組尚未確認
-                                    if (!classG.isGroup_state() && !classG.isGroup_state_go()) {
-                                        Toast.makeText(getContext(), "尚未分組",
-                                                Toast.LENGTH_SHORT).show();
-                                    }
-                                    //判斷狀態 -> 開始分組尚未確認
-                                    if (!classG.isGroup_state() && classG.isGroup_state_go()) {
-
-                                        Intent intent = new Intent();
-                                        intent.setClass(getActivity(), CreateClassGroupSt1.class);
-                                        Bundle bundle = new Bundle();
-                                        bundle.putString("classId", classId);
-                                        intent.putExtras(bundle);
-                                        getActivity().startActivity(intent);
-                                    }
-                                    //判斷狀態 -> 已經建立小組
-                                    if (classG.isGroup_state() && classG.isGroup_state_go()) {
-                                        Intent intent = new Intent();
-                                        intent.setClass(getActivity(), GroupPage.class);
-                                        Bundle bundle = new Bundle();
-                                        bundle.putString("classId", classId);
-//                                        bundle.putString("userId",userId);
-                                        bundle.putString("class_Id", classG.getClass_id());
-                                        bundle.putString("classYear", classG.getClass_year());
-                                        bundle.putString("className", classG.getClass_name());
-                                        bundle.putInt("classStuNum", classG.getStudent_id().size());
-                                        intent.putExtras(bundle);
-                                        getActivity().startActivity(intent);
-                                    }
                                 }
-                            });
+                                else{
+                                    Intent intent = new Intent();
+                                    intent.setClass(getActivity(), CreateClassGroupSt1.class);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("classId", classId);
+                                    intent.putExtras(bundle);
+                                    getActivity().startActivity(intent);
+                                }
+                            }
+                            else{
+                                Intent intent = new Intent();
+                                intent.setClass(getActivity(), GroupPage.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putString("classId", classId);
+//                                        bundle.putString("userId",userId);
+                                bundle.putString("class_Id", classG.getClass_id());
+                                bundle.putString("classYear", classG.getClass_year());
+                                bundle.putString("className", classG.getClass_name());
+                                bundle.putInt("classStuNum", classG.getStudent_id().size());
+                                intent.putExtras(bundle);
+                                getActivity().startActivity(intent);
+                            }
+                        });
 
-                            break;
-                        case 2:
+                        break;
+                    case 2:
 
-                            mCallback.onFragmentSelected(firestore_class.getClass_id(), "toAttendanceList");//fragment傳值
+                        mCallback.onFragmentSelected(firestore_class.getClass_id(), "toAttendanceList");//fragment傳值
 
-                            break;
-                        case 3:
+                        break;
+                    case 3:
 
-                            mCallback.onFragmentSelected(firestore_class.getClass_id(), "toClassPerformance");//fragment傳值
-                            break;
-                        case 4:
-                            mCallback.onFragmentSelected(firestore_class.getClass_id(), "toLeaveManage");//fragment傳值
+                        mCallback.onFragmentSelected(firestore_class.getClass_id(), "toClassPerformance");//fragment傳值
+                        break;
+                    case 4:
+                        mCallback.onFragmentSelected(firestore_class.getClass_id(), "toLeaveManage");//fragment傳值
 
-                            break;
-                        case 5:
-                            Log.d(TAG, "case5" + firestore_class.getTeacher_email());
-                            mCallback.onFragmentSelected(firestore_class.getTeacher_email(), "toTeacherInfo");//fragment傳值
+                        break;
+                    case 5:
+                        Log.d(TAG, "case5" + firestore_class.getTeacher_email());
+                        mCallback.onFragmentSelected(firestore_class.getTeacher_email(), "toTeacherInfo");//fragment傳值
 
-                            break;
-                    }
+                        break;
                 }
             });
         }

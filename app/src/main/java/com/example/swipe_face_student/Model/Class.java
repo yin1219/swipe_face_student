@@ -32,6 +32,15 @@ public class Class extends ClassId{
     private Integer group_numHigh;//小組人數上限
     private Integer group_numLow;//小組人數下限
     private Date create_time;//小組創立時間
+    private boolean question_state;
+
+    public boolean isQuestion_state() {
+        return question_state;
+    }
+
+    public void setQuestion_state(boolean question_state) {
+        this.question_state = question_state;
+    }
 
     public String getClass_id() {
         return class_id;

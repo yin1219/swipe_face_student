@@ -71,7 +71,7 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
     ResponseBody responseBody;
     String responseData;
     final int REQUEST_CODE_CHOOSE = 123;
-    String url = "http://192.168.11.5:8080/ProjectApi/api/FaceApi/RetrievePhoto";
+    String url = "http://172.20.10.8:8080/ProjectApi/api/FaceApi/RetrievePhoto";
     boolean isGroup = false;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 

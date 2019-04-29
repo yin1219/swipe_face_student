@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.swipe_face_student.Model.Class;
+import com.example.swipe_face_student.Model.Question;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -149,7 +150,43 @@ public class Fragment_ClassDetail extends Fragment implements FragmentBackHandle
                         Toast.LENGTH_SHORT).show();
                 switch (finalI) {
                     case 0:
-                        //intent activity
+                        DocumentReference docRefClass = db.collection("Class").document(classId);
+                        docRefClass.get().addOnSuccessListener(documentSnapshot -> {
+                            Class classCheckQuestion = documentSnapshot.toObject(Class.class);
+                            if(!classCheckQuestion.isQuestion_state()){
+                                Toast.makeText(getContext(), "尚未開始",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                DocumentReference questionDoc = db.collection("Class").document(classId)
+                                        .collection("Question").document("question");
+                                questionDoc.get().addOnSuccessListener(documentSnapshot2 -> {
+                                    Question question = documentSnapshot2.toObject(Question.class);
+                                    Date create_time = question.getCreate_time();
+                                    Date nowDate = new Date();
+
+                                    if(create_time.before(nowDate)){
+                                        Intent intentToAnalysis = new Intent();
+                                        intentToAnalysis.setClass(getActivity(), QuestionAnalysis.class);
+                                        Bundle bundleToAnalysis = new Bundle();
+                                        bundleToAnalysis.putString("classId", classId);
+                                        intentToAnalysis.putExtras(bundleToAnalysis);
+                                        getActivity().startActivity(intentToAnalysis);
+                                    }
+                                    else{
+                                        Intent intentToQuestion = new Intent();
+                                        intentToQuestion.setClass(getActivity(), QuestionResponse.class);
+                                        Bundle bundleToQuestion = new Bundle();
+                                        bundleToQuestion.putString("classId", classId);
+                                        intentToQuestion.putExtras(bundleToQuestion);
+                                        getActivity().startActivity(intentToQuestion);
+                                    }
+
+                                });
+                            }
+                        });
+
+
                         break;
                     case 1:
                         //抓Class->DocClass資料

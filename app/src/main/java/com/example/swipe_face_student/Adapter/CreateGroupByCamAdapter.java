@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 
@@ -50,7 +52,8 @@ public class CreateGroupByCamAdapter extends RecyclerView.Adapter<CreateGroupByC
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder");
         holder.tvGroupStudentName.setText(studentList.get(position).getStudent_id()+studentList.get(position).getStudent_department()+studentList.get(position).getStudent_name());
-        holder.btDeleteStudent.setOnClickListener(v -> {
+        holder.ibDeleteStudent
+                .setOnClickListener(v -> {
             notifyItemChanged(position);
             String student_Id = studentList.get(position).StudentId;
             mTransPageListener.onTransPageClick(student_Id,studentList.get(position));
@@ -74,13 +77,13 @@ public class CreateGroupByCamAdapter extends RecyclerView.Adapter<CreateGroupByC
 
         View mView;
         public TextView tvGroupStudentName;
-        public Button btDeleteStudent;
+        public ImageButton ibDeleteStudent;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
             tvGroupStudentName = mView.findViewById(R.id.groupDetailName);
-            btDeleteStudent = mView.findViewById(R.id.deleteStudent);
+            ibDeleteStudent = mView.findViewById(R.id.deleteStudent);
         }
     }
 

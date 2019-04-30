@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -60,6 +61,7 @@ public class LeaveApplications extends AppCompatActivity {
     private String student_id = "405401217";
     private String student_name;
     private String class_id;
+    private String class_name;
     private String teacher_email;
     private ArrayList<String> class_idList;
 
@@ -68,6 +70,7 @@ public class LeaveApplications extends AppCompatActivity {
     private Spinner spinner_leave_reason;
     private static TextView text_leave_date;
     private EditText edittext_leave_content;
+    private TextView text_name;
     private Button btn_leave_date;
     private Button btn_upload_leave_photo;
     private Button btn_leave_cancel;
@@ -77,7 +80,7 @@ public class LeaveApplications extends AppCompatActivity {
     private ArrayList<String> classList;
     private ImageView img_leave_photo;
     private Context context;
-
+    private Boolean isAllClass;
     private final int PICK_IMAGE_REQUEST = 71;
 
 
@@ -88,6 +91,10 @@ public class LeaveApplications extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leave_applications);
+
+        Bundle formLeaveList = getIntent().getExtras();
+        isAllClass =  formLeaveList.getBoolean("isAllClass");
+        class_id =formLeaveList.getString("class_id");
         context = this;
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
@@ -97,12 +104,14 @@ public class LeaveApplications extends AppCompatActivity {
         spinner_leave_class = (Spinner) findViewById(R.id.spinner_leave_class);
         spinner_leave_reason = (Spinner) findViewById(R.id.spinner_leave_reason);
         text_leave_date = (TextView) findViewById(R.id.text_leave_date);
+        text_name = findViewById(R.id.text_name);
         edittext_leave_content = (EditText) findViewById(R.id.edittext_leave_content);
         btn_upload_leave_photo = (Button) findViewById(R.id.btn_upload_leave_photo);
         btn_leave_date = (Button) findViewById(R.id.btn_leave_date);
         btn_leave_apply = (Button) findViewById(R.id.btn_leave_apply);
         btn_leave_cancel = (Button) findViewById(R.id.btn_leave_cancel) ;
         img_leave_photo = (ImageView) findViewById(R.id.img_leave_photo);
+
 
         ArrayAdapter<CharSequence> leave_reasonList = ArrayAdapter.createFromResource(this,
                 R.array.leave_reason,
@@ -117,22 +126,26 @@ public class LeaveApplications extends AppCompatActivity {
         getClassList();
         classList.add("--請選擇課程--");
 
-        ArrayAdapter<String> leave_classList = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_dropdown_item, classList);
-        spinner_leave_class.setAdapter(leave_classList);
+        if (isAllClass) {
+            ((ViewManager)text_name.getParent()).removeView(text_name);
+            ArrayAdapter<String> leave_classList = new ArrayAdapter<>(this,
+                    android.R.layout.simple_spinner_dropdown_item, classList);
+            spinner_leave_class.setAdapter(leave_classList);
 
-        spinner_leave_class.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                setTeacher_email(class_idList.get(spinner_leave_class.getSelectedItemPosition()));
+            spinner_leave_class.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    setTeacher_email(class_idList.get(spinner_leave_class.getSelectedItemPosition()));
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+        }else{
+            ((ViewManager)spinner_leave_class.getParent()).removeView(spinner_leave_class);
+        setClassName(class_id);
+        }
 
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         setStudent_name();
 
@@ -265,6 +278,25 @@ public class LeaveApplications extends AppCompatActivity {
         });
 
     }
+    private void setClassName(String class_id){
+        db = FirebaseFirestore.getInstance();
+        db.collection("Class").whereEqualTo("class_id", class_id)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                class_name = document.get("class_name").toString();
+                                text_name.setText(class_name);
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+    }
 
     private void setStudent_name() {
 
@@ -330,8 +362,13 @@ public class LeaveApplications extends AppCompatActivity {
         final String leave_reason = spinner_leave_reason.getSelectedItem().toString();
         final String leave_class = spinner_leave_class.getSelectedItem().toString();
         final String student_name = leave.getStudent_name();
-        final String leave_check = "核准中";
-        final String class_id = class_idList.get(spinner_leave_class.getSelectedItemPosition());
+        final String leave_check = "未審核";
+        String apply_class_id;
+        if(isAllClass) {
+        apply_class_id = class_idList.get(spinner_leave_class.getSelectedItemPosition());
+        }else{
+        apply_class_id = class_id;
+        }
         final String student_id = this.student_id;
         final String teacher_email = leave.getTeacher_email();
         final Date leave_uploaddate = new Date();
@@ -349,7 +386,7 @@ public class LeaveApplications extends AppCompatActivity {
         leave.setLeave_date(leave_date);
         leave.setLeave_reason(leave_reason);
         leave.setClass_name(leave_class);
-        leave.setClass_id(class_id);
+        leave.setClass_id(apply_class_id);
         leave.setLeave_uploaddate(leave_uploaddate);
         leave.setStudent_id(student_id);
         leave.setStudent_registrationToken(student_registrationToken);

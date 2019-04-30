@@ -25,6 +25,7 @@ import com.example.swipe_face_student.Model.Class;
 import com.example.swipe_face_student.Model.Student;
 import com.example.swipe_face_student.Model.Teacher;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentChange;
@@ -99,8 +100,8 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Log.d(TAG, document.getId() + " => " + document.getData());
                             studentId = document.getId();
-                            Log.d(TAG,"studentId : "+studentId);
-                            if(studentId != null){
+                            Log.d(TAG, "studentId : " + studentId);
+                            if (studentId != null) {
                                 setAllClassList();
 
                             }
@@ -109,9 +110,6 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
                         Log.d(TAG, "Error getting documents: ", task.getException());
                     }
                 });
-
-
-
 
 
         classListAdapter.setOnTransPageClickListener(new ClassListAdapter.transPageListener() {
@@ -164,11 +162,11 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
 //    }
 
 
-
     private void fabAddClass() {
+
         LayoutInflater lf = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         @SuppressLint("InflateParams")
-        ViewGroup vg = (ViewGroup) lf.inflate(R.layout.dialog_group_detail_setting, null);
+        ViewGroup vg = (ViewGroup) lf.inflate(R.layout.dialog_add_class, null);
         final EditText etShow = vg.findViewById(R.id.et_name);
         new AlertDialog.Builder(getActivity())
                 .setView(vg)
@@ -190,65 +188,90 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
                                         if (doc.getType() == DocumentChange.Type.ADDED) {
                                             Class aClass = doc.getDocument().toObject(Class.class).withId(classId);
                                             class_idForCheck.add(aClass.getClass_id());
-                                            Log.d(TAG, class_idForCheck.get(0));
+                                            for (int i = 0; i < class_idForCheck.size(); i++) {
+                                                Log.d(TAG, "class_idForCheck : " + class_idForCheck.get(i));
+
+                                            }
+
                                         }
                                     }
+                                    if (!class_idForCheck.contains(classKey)) {
+                                        Toast.makeText(getActivity(), "查無此課程代碼", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Log.d(TAG, "check classKey : " + classKey);
+                                        Query drQueryTotalAttendance = db.collection("Class")
+                                                .whereEqualTo("class_id", classKey);
+                                        drQueryTotalAttendance.get().addOnCompleteListener(task -> {
+                                            if (task.isSuccessful()) {
+                                                String classId = null;
+                                                for (QueryDocumentSnapshot dsQueryTotalAttendance : task.getResult()) {
+                                                    classId = dsQueryTotalAttendance.getId();
+
+                                                }
+                                                DocumentReference drQueryAttendancePoint = db.collection("Class").document(classId);
+                                                drQueryAttendancePoint.get().addOnCompleteListener(task1 -> {
+                                                    if (task1.isSuccessful()) {
+                                                        DocumentSnapshot dsQueryAttendancePoint = task1.getResult();
+                                                        if (dsQueryAttendancePoint.exists()) {
+                                                            int performanceTotalAttendance = dsQueryAttendancePoint.toObject(Class.class).getClass_totalpoints();
+                                                            Map<String, Object> addPerformance = new HashMap<>();
+                                                            addPerformance.put("class_id", classKey);
+                                                            addPerformance.put("performance_totalAttendance", performanceTotalAttendance);
+                                                            addPerformance.put("performance_totalBonus", (0));
+                                                            addPerformance.put("student_id", "405401217");//user.get..... 不是這個測試的
+                                                            db.collection("Performance")
+                                                                    .add(addPerformance)
+                                                                    .addOnSuccessListener(aVoid -> {
+                                                                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                                                                    });
+                                                        }
+                                                    }
+                                                });
+
+                                            } else {
+                                                Log.d(TAG, "get failed with ", task.getException());
+                                            }
+                                        });
+
+                                        //db upload Class
+                                        db.collection("Class")
+                                                .whereEqualTo("class_id", classKey)
+                                                .get()
+                                                .addOnCompleteListener(task -> {
+                                                    if (task.isSuccessful()) {
+                                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                                            Log.d(TAG, document.getId() + " => " + document.getData());
+                                                            String classIdForSearch = document.getId();
+                                                            Map<String, Object> addClass = new HashMap<>();
+                                                            addClass.put("student_id", FieldValue.arrayUnion(student_id));
+                                                            db.collection("Class")
+                                                                    .document(classIdForSearch)
+                                                                    .update(addClass)
+                                                                    .addOnSuccessListener(aVoid -> {
+                                                                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                                                                    });
+                                                        }
+                                                    }
+                                                });
+
+                                        //db upload Student
+                                        Map<String, Object> addStudent = new HashMap<>();
+                                        addStudent.put("class_id", FieldValue.arrayUnion(classKey));
+                                        db.collection("Student")
+                                                .document(studentId)
+                                                .update(addStudent)
+                                                .addOnSuccessListener(aVoid -> {
+                                                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                                                });
+                                        setAllClassList();
+                                        classListAdapter.notifyDataSetChanged();
+
+
+                                    }
+
 
                                 });
-                        if (class_idForCheck.equals(classKey)) {
-                            Toast.makeText(getActivity(), "查無此課程代碼", Toast.LENGTH_SHORT).show();
-                        } else {
-                            // db upload Performance
-                            Map<String, Object> addPerformance = new HashMap<>();
-                            addPerformance.put("class_id", classKey);
-                            addPerformance.put("performance_totalAttendance",(int)(0));
-                            addPerformance.put("performance_totalBonus",(int)(0));
-                            addPerformance.put("student_id","405401217");//user.get..... 不是這個測試的
-                            db.collection("Performance")
-                                    .add(addPerformance)
-                                    .addOnSuccessListener(aVoid -> {
-                                        Log.d(TAG, "DocumentSnapshot successfully written!");
-                                    })
-                                    .addOnFailureListener(e -> Log.w(TAG, "Error writing document", e));
 
-
-                            //db upload Class
-                            db.collection("Class")
-                                    .whereEqualTo("class_id", classKey)
-                                    .get()
-                                    .addOnCompleteListener(task -> {
-                                        if (task.isSuccessful()) {
-                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                                String classIdForSearch = document.getId();
-                                                Map<String, Object> addClass = new HashMap<>();
-                                                addClass.put("student_id", FieldValue.arrayUnion(student_id));
-                                                db.collection("Class")
-                                                        .document(classIdForSearch)
-                                                        .update(addClass)
-                                                        .addOnSuccessListener(aVoid -> {
-                                                            Log.d(TAG, "DocumentSnapshot successfully written!");
-                                                        })
-                                                        .addOnFailureListener(e -> Log.w(TAG, "Error writing document", e));
-                                            }
-                                        }
-                                    });
-
-                            //db upload Student
-                            Map<String, Object> addStudent = new HashMap<>();
-                            addStudent.put("class_id", FieldValue.arrayUnion(classKey));
-                            db.collection("Student")
-                                    .document(studentId)
-                                    .update(addStudent)
-                                    .addOnSuccessListener(aVoid -> {
-                                        Log.d(TAG, "DocumentSnapshot successfully written!");
-                                    })
-                                    .addOnFailureListener(e -> Log.w(TAG, "Error writing document", e));
-                            setAllClassList();
-                            classListAdapter.notifyDataSetChanged();
-
-
-                        }
                     }
                 })
                 .setNegativeButton("取消", null).show();
@@ -302,7 +325,7 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
 //                });
 
         classList.clear();
-        if(classList.isEmpty()) {
+        if (classList.isEmpty()) {
 
 
             DocumentReference docRef = db.collection("Student")

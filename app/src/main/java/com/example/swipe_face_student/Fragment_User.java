@@ -1,21 +1,39 @@
 package com.example.swipe_face_student;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.example.swipe_face_student.Model.Student;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Fragment_User.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Fragment_User#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class Fragment_User extends Fragment implements FragmentBackHandler {
+
+    private final String TAG = "Fragment_User";
+    private CardView cvInfo;
+
+    OnFragmentSelectedListener mCallback;//Fragment傳值
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,5 +48,31 @@ public class Fragment_User extends Fragment implements FragmentBackHandler {
         return BackHandlerHelper.handleBackPress(this);
     }//fragment 返回鍵
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
+        //inti xml
+        cvInfo = view.findViewById(R.id.cvInfo);
+
+        cvInfo.setOnClickListener(v -> {
+            mCallback.onFragmentSelected(TAG, "toUserInfo");//fragment傳值
+        });
+
+
+
+
+
+    }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mCallback = (OnFragmentSelectedListener) context;//fragment傳值
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + "Mush implement OnFragmentSelectedListener ");
+        }
+    }
 
 }

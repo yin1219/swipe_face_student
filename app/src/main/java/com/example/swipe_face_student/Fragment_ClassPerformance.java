@@ -89,32 +89,36 @@ public class Fragment_ClassPerformance extends Fragment {
                         if (e != null) {
                             Log.d(TAG, "Error :" + e.getMessage());
                         }
-                        performance  = documentSnapshots.getDocuments().get(0).toObject(Performance.class);
-                        performanceId = documentSnapshots.getDocuments().get(0).getId();
-                        text_performance_totalBonus.setText(""+performance.getPerformance_totalBonus());
-                        Log.d(TAG, "in" + performance.getPerformance_totalBonus());
+                        if(documentSnapshots.size()!=0){
+                            performance  = documentSnapshots.getDocuments().get(0).toObject(Performance.class);
+                            performanceId = documentSnapshots.getDocuments().get(0).getId();
+                            text_performance_totalBonus.setText(""+performance.getPerformance_totalBonus());
+                            Log.d(TAG, "in" + performance.getPerformance_totalBonus());
 
-                        db.collection("/Performance/"+performanceId+"/Bonus")
-                                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onEvent(QuerySnapshot
-                                                                documentSnapshots, FirebaseFirestoreException e) {
-                                        if (e != null) {
+                            db.collection("/Performance/"+performanceId+"/Bonus")
+                                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onEvent(QuerySnapshot
+                                                                    documentSnapshots, FirebaseFirestoreException e) {
+                                            if (e != null) {
 
-                                            Log.d(TAG, "Error :" + e.getMessage());
-                                        }
-                                        for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
-                                            if (doc.getType() == DocumentChange.Type.ADDED) {
-                                                bonus = doc.getDocument().toObject(Bonus.class);
-                                                bonusList.add(bonus);
-
-                                                bonusListAdapter.notifyDataSetChanged();
-
+                                                Log.d(TAG, "Error :" + e.getMessage());
                                             }
-                                        }
+                                            for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
+                                                if (doc.getType() == DocumentChange.Type.ADDED) {
+                                                    bonus = doc.getDocument().toObject(Bonus.class);
+                                                    bonusList.add(bonus);
 
-                                    }
-                                });
+                                                    bonusListAdapter.notifyDataSetChanged();
+
+                                                }
+                                            }
+
+                                        }
+                                    });
+                        }
+
+
                     }
 
 

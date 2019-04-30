@@ -73,9 +73,9 @@ public class MainActivity extends AppCompatActivity implements OnFragmentSelecte
                     return true;
 
                 case R.id.navigation_user:
+                    Fragment_User fragment_user = new Fragment_User();
                     transaction.replace(R.id.content, new Fragment_User());
                     transaction.addToBackStack(new Fragment_User().getClass().getName());
-
                     transaction.commit();
                     return true;
             }
@@ -177,6 +177,10 @@ public class MainActivity extends AppCompatActivity implements OnFragmentSelecte
             fragment_classPerformance.setArguments(args);
             Log.d(TAG, " ToTeacherInfo");
             getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.content, fragment_classPerformance).commit();
+        }else if (fragmentKey.equals("toUserInfo")) {
+            Fragment_User_Infor fragment_user_infor = new Fragment_User_Infor();
+
+            getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.content, fragment_user_infor).commit();
         }//判斷是哪個fragment傳來的請求
 
 

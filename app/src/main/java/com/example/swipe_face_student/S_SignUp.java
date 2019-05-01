@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,6 +52,7 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
     private ArrayAdapter<String> listAdapter2; //宣告listAdapter物件
 
     int t,request;
+    private String student_registrationToken;
 
 
     @Override
@@ -318,6 +320,7 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
             firebaseAuth.createUserWithEmailAndPassword(email, password1)
 
                     .addOnCompleteListener(v -> {
+                        student_registrationToken = FirebaseInstanceId.getInstance().getToken();
 
                         Map<String, Object> user = new HashMap<>();
                         user.put("student_name", name);
@@ -325,6 +328,7 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
                         user.put("student_email", email);
                         user.put("student_school", school);
                         user.put("student_department", department);
+                        user.put("student_registrationToken",student_registrationToken);
 
 
                         db.collection("Student").add(user).addOnCompleteListener(task -> {

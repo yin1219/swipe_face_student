@@ -13,9 +13,9 @@
 
         <android.support.design.widget.NavigationView
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="56dp"
             android:layout_gravity="top"
-            android:background="@color/colorPrimary"
+            android:background="#ffffff"
             android:fitsSystemWindows="false"
             android:orientation="vertical"
             android:theme="@style/Base.ThemeOverlay.AppCompat.Dark"
@@ -26,10 +26,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:lineSpacingExtra="9sp"
                 android:text="老師資訊"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/common_google_signin_btn_text_dark_default"
-                android:textSize="24sp" />
+                android:textColor="#000000"
+                android:textSize="16sp"
+                tools:text="老師資訊" />
 
         </android.support.design.widget.NavigationView>
 
@@ -37,29 +39,27 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:showDividers="middle"
-            android:divider="@android:drawable/divider_horizontal_textfield"
+            android:showDividers="middle|end"
+            android:divider="@drawable/divider"
             >
 
             <LinearLayout
                 android:id="@+id/layout_teacher_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="56dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/title_teacher_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginBottom="25dp"
                     android:layout_weight="0"
                     android:singleLine="false"
                     android:text="姓名"
-                    android:textSize="30sp"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -68,27 +68,26 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
                     android:text="讀取中"
-                    android:textSize="24sp" />
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/layout_teacher_office"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="56dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/title_teacher_office"
-                    android:layout_width="wrap_content"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginBottom="25dp"
                     android:layout_weight="0"
                     android:text="辦公室"
-                    android:textSize="30sp"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -97,27 +96,26 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
                     android:text="讀取中"
-                    android:textSize="24sp" />
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/layout_teacher_email"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="56dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/title_teacher_email"
-                    android:layout_width="wrap_content"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginBottom="25dp"
                     android:layout_weight="0"
                     android:text="信箱"
-                    android:textSize="30sp"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -126,27 +124,26 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
                     android:text="讀取中"
-                    android:textSize="24sp" />
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/layout_teacher_officetime"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/title_teacher_officetime"
-                    android:layout_width="wrap_content"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="top"
+                    android:layout_gravity="center"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginBottom="25dp"
                     android:layout_weight="0"
                     android:text="office\n time"
-                    android:textSize="30sp"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -158,7 +155,8 @@
                     android:gravity="fill_vertical"
                     android:singleLine="false"
                     android:text="讀取中"
-                    android:textSize="24sp" />
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
             </LinearLayout>
 
         </LinearLayout>

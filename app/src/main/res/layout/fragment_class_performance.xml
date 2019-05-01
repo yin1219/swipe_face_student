@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragment_ClassPerformance">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.design.widget.NavigationView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="top"
+            android:background="@color/colorPrimary"
+            android:fitsSystemWindows="false"
+            android:orientation="vertical"
+            android:theme="@style/Base.ThemeOverlay.AppCompat.Dark"
+            android:tooltipText="申請請假">
+
+            <TextView
+                android:id="@+id/title_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="課堂表現"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/common_google_signin_btn_text_dark_default"
+                android:textSize="24sp" />
+
+        </android.support.design.widget.NavigationView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:background="#FFFFFF">
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="105dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_weight="0"
+                android:padding="1dp"
+                android:text="目前總加分"
+                android:textSize="18dp"
+                android:textColor="#000000"/>
+
+            <TextView
+                android:id="@+id/text_performance_totalBonus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:padding="1dp"
+                android:text="0"
+                android:textColor="#000000"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:padding="1dp"
+                android:layout_marginLeft="10dp"
+                android:text="分"
+                android:textSize="18dp"
+                android:textColor="#000000" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/bonus_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</FrameLayout>

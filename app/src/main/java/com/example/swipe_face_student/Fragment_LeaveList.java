@@ -33,6 +33,7 @@ public class Fragment_LeaveList extends Fragment implements FragmentBackHandler 
     private LeaveListAdapter leaveListAdapter;
     private String class_id;
     private String student_id;
+    private boolean isAllClass = true;
 
 
     private List<Leave> leaveList;
@@ -82,6 +83,14 @@ public class Fragment_LeaveList extends Fragment implements FragmentBackHandler 
             @Override
             public void onClick(View v) {
                 Intent i = new Intent();
+                Bundle formLeaveList = new Bundle();
+                formLeaveList.putString("class_id",class_id);
+                if (isAllClass){
+                formLeaveList.putBoolean("isAllClass",true);
+                }else{
+                    formLeaveList.putBoolean("isAllClass",false);
+                }
+                i.putExtras(formLeaveList);
                 i.setClass(getActivity().getApplicationContext(), LeaveApplications.class);
                 startActivity(i);
             }
@@ -108,6 +117,7 @@ public class Fragment_LeaveList extends Fragment implements FragmentBackHandler 
 
 
     private void setAllLeave() {
+        isAllClass=true;
         mFirestore = FirebaseFirestore.getInstance();
 
         mFirestore.collection("Leave").addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -139,6 +149,8 @@ public class Fragment_LeaveList extends Fragment implements FragmentBackHandler 
 
 
     private void setClassLeave() {
+        isAllClass=false;
+
         mFirestore = FirebaseFirestore.getInstance();
 
         mFirestore.collection("Leave").whereEqualTo("class_id", class_id).addSnapshotListener(new EventListener<QuerySnapshot>() {

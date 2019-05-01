@@ -1,10 +1,16 @@
 package com.example.swipe_face_student.Model;
 
-import java.util.ArrayList;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Student {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class Student extends StudentId implements Parcelable {
 	public Student() {
-		
+
 	}
 	ArrayList<String> class_id=new ArrayList<>();
 	String student_department;
@@ -12,9 +18,8 @@ public class Student {
 	String student_id;
 	String student_name;
 	String student_school;
-	ArrayList<ClassRecord> classRecordList;
-	ArrayList<LeaveRcord> leaveRcordList;
-	ArrayList<Rollcall> rollcallList;
+	String image_url;
+
 	public ArrayList<String> getClass_id() {
 		return class_id;
 	}
@@ -24,6 +29,15 @@ public class Student {
 	public String getStudent_department() {
 		return student_department;
 	}
+
+	public String getImage_url() {
+		return image_url;
+	}
+
+	public void setImage_url(String image_url) {
+		this.image_url = image_url;
+	}
+
 	public void setStudent_department(String student_department) {
 		this.student_department = student_department;
 	}
@@ -51,25 +65,43 @@ public class Student {
 	public void setStudent_school(String student_school) {
 		this.student_school = student_school;
 	}
-	public ArrayList<ClassRecord> getClassRecordList() {
-		return classRecordList;
-	}
-	public void setClassRecordList(ArrayList<ClassRecord> classRecordList) {
-		this.classRecordList = classRecordList;
-	}
-	public ArrayList<LeaveRcord> getLeaveRcordList() {
-		return leaveRcordList;
-	}
-	public void setLeaveRcordList(ArrayList<LeaveRcord> leaveRcordList) {
-		this.leaveRcordList = leaveRcordList;
-	}
-	public ArrayList<Rollcall> getRollcallList() {
-		return rollcallList;
-	}
-	public void setRollcallList(ArrayList<Rollcall> rollcallList) {
-		this.rollcallList = rollcallList;
-	}
-	
-	
+      protected Student(Parcel in) {
+          class_id = (ArrayList<String>) in.readSerializable();
+          student_department = in.readString();
+          student_email = in.readString();
+          student_id = in.readString();
+          student_name = in.readString();
+          student_school = in.readString();
+          image_url = in.readString();
+		}
+
+		@Override
+		public int describeContents() {
+			return 0;
+		}
+
+		// 寫入參數，參數順序要和建構子一樣
+		@Override
+		public void writeToParcel(Parcel parcel, int i) {
+            parcel.writeSerializable(class_id);
+			parcel.writeString(student_department);
+			parcel.writeString(student_email);
+			parcel.writeString(student_id);
+			parcel.writeString(student_name);
+			parcel.writeString(student_school);
+			parcel.writeString(image_url);
+		}
+
+		public static final Creator<Student> CREATOR = new Creator<Student>() {
+			@Override
+			public Student createFromParcel(Parcel in) {
+				return new Student(in);
+			}
+
+			@Override
+			public Student[] newArray(int size) {
+				return new Student[size];
+			}
+		};
 
 }

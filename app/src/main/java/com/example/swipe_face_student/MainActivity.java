@@ -1,6 +1,7 @@
 package com.example.swipe_face_student;
 
 import android.Manifest;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -12,6 +13,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
@@ -21,7 +24,7 @@ import static com.google.android.gms.common.internal.safeparcel.SafeParcelable.N
 public class MainActivity extends AppCompatActivity implements OnFragmentSelectedListener {
     private static final String TAG = "BACKFLAG";
     private TextView mTextMessage;
-    private String student_id = "405401114";
+    private String student_id = "405401217";
     private ViewPager viewPager;
 
     private FragmentTransaction transaction;
@@ -54,9 +57,9 @@ public class MainActivity extends AppCompatActivity implements OnFragmentSelecte
 
                     Fragment_LeaveList fragment_leaveList = new Fragment_LeaveList();
                     Bundle args = new Bundle();
-                    args.putString("info",null);
+                    args.putString("info", null);
                     args.putString("student_id", student_id);
-                    Log.d(TAG,"MAIN ARG:"+args);
+                    Log.d(TAG, "MAIN ARG:" + args);
                     fragment_leaveList.setArguments(args);
                     transaction.replace(R.id.content, new Fragment_LeaveList());
                     transaction.addToBackStack(new Fragment_LeaveList().getClass().getName());
@@ -70,9 +73,9 @@ public class MainActivity extends AppCompatActivity implements OnFragmentSelecte
                     return true;
 
                 case R.id.navigation_user:
+                    Fragment_User fragment_user = new Fragment_User();
                     transaction.replace(R.id.content, new Fragment_User());
                     transaction.addToBackStack(new Fragment_User().getClass().getName());
-
                     transaction.commit();
                     return true;
             }
@@ -84,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentSelecte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_s__homepage);
-
+        Log.d("FCMToken", "token "+ FirebaseInstanceId.getInstance().getToken());
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -92,6 +95,15 @@ public class MainActivity extends AppCompatActivity implements OnFragmentSelecte
         setDefaultFragment();
 
         MainActivityPermissionsDispatcher.PermissionsWithPermissionCheck(this);
+
+//        int id = getIntent().getIntExtra("id", 0);
+//        if (id == 1) {
+//            getSupportFragmentManager()
+//                    .beginTransaction()
+//                    .replace(R.id.content,new Fragment_ClassDetail())
+//                    .addToBackStack(null)
+//                    .commit();
+//        }
     }
 
 
@@ -157,9 +169,24 @@ public class MainActivity extends AppCompatActivity implements OnFragmentSelecte
             Log.d(TAG, " ToTeacherInfo");
             getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.content, fragment_teacherInfo).commit();
         }//判斷是哪個fragment傳來的請求
+        else if (fragmentKey.equals("toClassPerformance")) {
+            Fragment_ClassPerformance fragment_classPerformance = new Fragment_ClassPerformance();
+            Bundle args = new Bundle();
+            args.putString("info", info);
+            args.putString("student_id", student_id);
+            fragment_classPerformance.setArguments(args);
+            Log.d(TAG, " ToTeacherInfo");
+            getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.content, fragment_classPerformance).commit();
+        }else if (fragmentKey.equals("toUserInfo")) {
+            Fragment_User_Infor fragment_user_infor = new Fragment_User_Infor();
+
+            getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.content, fragment_user_infor).commit();
+        }//判斷是哪個fragment傳來的請求
 
 
     }//fragment傳值並換頁
+
+
 
 
 }

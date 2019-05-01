@@ -2,6 +2,7 @@ package com.example.swipe_face_student;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -27,8 +29,8 @@ import java.util.Map;
 public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
 
     private Button buttonRegister;
-    private EditText editTextName1;
-    private EditText editTextName2;
+    private ImageButton backBtn;
+    private EditText editTextName;
     private EditText editTextId;
     private EditText editTextEmail;
     private EditText editTextPassword1;
@@ -48,6 +50,8 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
     private ArrayAdapter<String> listAdapter; //宣告listAdapter物件
     private ArrayAdapter<String> listAdapter2; //宣告listAdapter物件
 
+    int t,request;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,16 +65,118 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
 
 
         buttonRegister = (Button) findViewById(R.id.buttonRegister);
+        backBtn = (ImageButton) findViewById(R.id.backIBtn);
 
-        editTextName1 = (EditText) findViewById(R.id.editTextName1);
-        editTextName2 = (EditText) findViewById(R.id.editTextName2);
+        editTextName = (EditText) findViewById(R.id.input_name);
         editTextId = (EditText)findViewById(R.id.editTextId);
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPassword1 = (EditText) findViewById(R.id.editTextPassword1);
         editTextPassword2 = (EditText) findViewById(R.id.editTextPassword2);
 
+        Bundle bundle = this.getIntent().getExtras();
+        if (bundle.getInt("request") == 0){
+            request = 0;
+        }
+        if(bundle.getInt("request") == 1){
+            request =1;
+        }
+
 
         buttonRegister.setOnClickListener(this);
+        backBtn.setOnClickListener(view -> {
+            Intent i = new Intent();
+            if (request == 0){
+                i.setClass(this,WelcomePage.class);
+            }
+            if (request == 1){
+                i.setClass(this,SignIn.class);
+            }
+            startActivity(i);
+            finish();
+        });
+
+        editTextPassword1.setOnFocusChangeListener(new android.view.View.
+                OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    Drawable d = getResources().getDrawable(R.drawable.baseline_check_circle_24px);
+                    d.setBounds(0, 0, 70, 70);
+                    editTextPassword1.setCompoundDrawables(null,null,d,null);
+                    //d.setBounds(0, 0, 10, 30); //必须设置大小，否则不显示
+                    //editTextPassword2.setError("密碼確認成功", d);
+                    t = 0;
+                    // 此处为得到焦点时的处理内容
+                } else {
+                    String password1 = editTextPassword1.getText().toString().trim();
+                    if(password1.length() < 6){
+                        //length of password1  is small than 6
+                        //Drawable d = getResources().getDrawable(R.drawable.baseline_cancel_24px);
+                        //d.setBounds(0, 0, 40, 40);
+                        // editTextPassword1.setCompoundDrawables(null,null,d,null);
+
+                        //Toast.makeText(this,"密碼確認有誤",Toast.LENGTH_SHORT).show();
+                        //Drawable d = getResources().getDrawable(R.drawable.baseline_cancel_24px);
+                        //d.setBounds(0, 0, 10, 30); //必须设置大小，否则不显示
+                        editTextPassword1.setError("密碼至少六碼");
+                        //stopping the function execution further
+                        t = 1;
+                        return;
+                    }else{
+                        t = 0;
+                    }
+
+                    // 此处为失去焦点时的处理内容
+                }
+            }
+        });
+
+        editTextPassword2.setOnFocusChangeListener(new android.view.View.
+                OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    Drawable d = getResources().getDrawable(R.drawable.baseline_check_circle_24px);
+                    d.setBounds(0, 0, 70, 70);
+                    editTextPassword2.setCompoundDrawables(null,null,d,null);
+                    //d.setBounds(0, 0, 10, 30); //必须设置大小，否则不显示
+                    //editTextPassword2.setError("密碼確認成功", d);
+                    t = 0;
+                    // 此处为得到焦点时的处理内容
+                } else {
+                    String password1 = editTextPassword1.getText().toString().trim();
+                    String password2 = editTextPassword2.getText().toString().trim();
+                    if (!password1.equals(password2)){
+                        // Drawable d = getResources().getDrawable(R.drawable.baseline_cancel_24px);
+                        // d.setBounds(0, 0, 40, 40);
+                        //editTextPassword2.setCompoundDrawables(null,null,d,null);
+
+                        //Toast.makeText(this,"密碼確認有誤",Toast.LENGTH_SHORT).show();
+                        //Drawable d = getResources().getDrawable(R.drawable.baseline_cancel_24px);
+                        //d.setBounds(0, 0, 10, 30); //必须设置大小，否则不显示
+                        editTextPassword2.setError("密碼確認錯誤");
+                        t = 1;
+                        return ;
+
+                    }
+                    else if(TextUtils.isEmpty(password2)){
+                        //Drawable d = getResources().getDrawable(R.drawable.baseline_cancel_24px);
+                        //d.setBounds(0, 0, 40, 40);
+                        // editTextPassword2.setCompoundDrawables(null,null,d,null);
+
+                        //Toast.makeText(this,"密碼確認有誤",Toast.LENGTH_SHORT).show();
+                        //Drawable d = getResources().getDrawable(R.drawable.baseline_cancel_24px);
+                        //d.setBounds(0, 0, 10, 30); //必须设置大小，否则不显示
+                        editTextPassword2.setError("請再次確認密碼");
+                        t = 1;
+                        return ;
+                    }else {
+                        t = 0;
+                    }
+                    // 此处为失去焦点时的处理内容
+                }
+            }
+        });
 
         spinner1=(Spinner)findViewById(R.id.spinner_school); //指向畫面上id為changetype1的Spinner物件
         spinner2=(Spinner)findViewById(R.id.spinner_department); //指向畫面上id為changetype1的Spinner物件
@@ -85,25 +191,22 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
     }
 
     private void registerUser() {
-        String name1 = editTextName1.getText().toString().trim();
-        String name2 = editTextName2.getText().toString().trim();
+        String name = editTextName.getText().toString().trim();
         String id = editTextId.getText().toString().trim();
         final String email = editTextEmail.getText().toString().trim();
         final String password1 = editTextPassword1.getText().toString().trim();
         String password2 = editTextPassword2.getText().toString().trim();
-        final String name = name1 + name2;
 
         final String school = spinner1.getSelectedItem().toString();
         final String department = spinner2.getSelectedItem().toString();
         String [] uriEmailArray = email.split("@");
         String uriEmail = uriEmailArray[0];
-        int t ;
 
 
 
-        if(TextUtils.isEmpty(name1)) {
+        if(TextUtils.isEmpty(name)) {
             //name1 is empty
-            Toast.makeText(this, "請輸入姓氏", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "請輸入名字", Toast.LENGTH_SHORT).show();
             t = 1;
             //stopping the function execution further
             return;
@@ -112,16 +215,6 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
         }
         Log.e("test1",Integer.toString(t));
 
-        if(TextUtils.isEmpty(name2)) {
-            //name2 is empty
-            Toast.makeText(this, "請輸入名字", Toast.LENGTH_SHORT).show();
-            //stopping the function execution further
-            t =1;
-            return;
-        }else{
-            t = 0;
-        }
-        Log.e("test2",Integer.toString(t));
         if(school == "請選擇學校") {
             //school is empty
             Toast.makeText(this, "請選擇學校", Toast.LENGTH_SHORT).show();
@@ -152,9 +245,6 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
         }else {
             t = 0;
         }
-
-
-
         if(TextUtils.isEmpty(email)) {
             //email is empty
             Toast.makeText(this, "請輸入email", Toast.LENGTH_SHORT).show();
@@ -229,8 +319,6 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
 
                     .addOnCompleteListener(v -> {
 
-
-
                         Map<String, Object> user = new HashMap<>();
                         user.put("student_name", name);
                         user.put("student_id",id);
@@ -239,38 +327,25 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
                         user.put("student_department", department);
 
 
-                        db.collection("Student").add(user);
+                        db.collection("Student").add(user).addOnCompleteListener(task -> {
+                            Toast.makeText(S_SignUp.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent();
+                            i.setClass(S_SignUp.this,LeadingPage.class);
+                            startActivity(i);
+                            finish();
+                        });
 
                         //user is successfully registered and logged in
                         //we will start the profile activity here
-                        Toast.makeText(S_SignUp.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
-
-
-
                     });
-            Intent i = new Intent();
-            i.setClass(S_SignUp.this,LeadingPage.class);
-            startActivity(i);
-            finish();
-
         }
-
-
-
-
-
-
-
     }
-
 
     @Override
     public void onClick(View view) {
         if(view == buttonRegister) {
             registerUser();
-
         }
-
     }
 
     private  boolean isVaildEmailFormat() {

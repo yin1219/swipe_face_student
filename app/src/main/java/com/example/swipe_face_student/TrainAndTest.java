@@ -51,6 +51,7 @@ import okhttp3.ResponseBody;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
+import static android.app.Activity.RESULT_OK;
 import static com.zhihu.matisse.internal.utils.PathUtils.getPath;
 
 @RuntimePermissions

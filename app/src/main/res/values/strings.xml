@@ -27,6 +27,7 @@
     <string name="retrieve_result"><b>辨識結果</b></string>
     <string name="train">圖片上傳</string>
     <string name="start"><b>START !</b></string>
+    <string name="login">Log In</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

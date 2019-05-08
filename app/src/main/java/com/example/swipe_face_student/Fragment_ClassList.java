@@ -218,6 +218,7 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
                                                             addPerformance.put("class_id", classKey);
                                                             addPerformance.put("performance_totalAttendance", performanceTotalAttendance);
                                                             addPerformance.put("performance_totalBonus", (0));
+                                                            addPerformance.put("performance_absenceTimes",(0));
                                                             addPerformance.put("student_id", "405401217");//user.get..... 不是這個測試的
                                                             db.collection("Performance")
                                                                     .add(addPerformance)

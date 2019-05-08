@@ -8,11 +8,9 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.swipe_face_student.Model.Rollcall;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,7 +24,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import org.json.JSONArray;
@@ -35,7 +32,6 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +59,7 @@ public class TrainAndTest extends AppCompatActivity {
     String responseData;
     String name,id,email,department,school;
     OkHttpClient client = new OkHttpClient();
-    String url = "http://192.168.1.10:8080/ProjectApi/api/FaceApi/RetrievePhoto";
+    String url = "http://"+ FlassSetting.getIp()+":8080/ProjectApi/api/FaceApi/RetrievePhoto";
     private static Context mContext;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();//抓現在登入user
     private FirebaseFirestore db;

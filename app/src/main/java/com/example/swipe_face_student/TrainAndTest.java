@@ -64,7 +64,7 @@ public class TrainAndTest extends AppCompatActivity {
     String responseData;
     String name,id,email,department,school;
     OkHttpClient client = new OkHttpClient();
-    String url = "http://192.168.1.10:8080/ProjectApi/api/FaceApi/RetrievePhoto";
+    String url = "http://192.168.11.11:8080/ProjectApi/api/FaceApi/RetrievePhoto";
     private static Context mContext;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();//抓現在登入user
     private FirebaseFirestore db;

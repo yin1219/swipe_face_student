@@ -56,6 +56,7 @@ public class LeaveListAdapter extends RecyclerView.Adapter<LeaveListAdapter.View
             public void onClick(View v) {
                 Intent intent = new Intent(context, LeaveRecord.class);
                 intent.putExtra("leaveId",leaveRecordId);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
                 Toast.makeText(context, "Id  :  " + leaveRecordId, Toast.LENGTH_SHORT).show();
             }

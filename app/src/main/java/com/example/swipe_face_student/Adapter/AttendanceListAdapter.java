@@ -51,10 +51,30 @@ public class AttendanceListAdapter extends RecyclerView.Adapter<AttendanceListAd
         SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         sdFormat.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
         Date attendanceDate = AttendanceList.get(position).getAttendance_time();
+        String attendanceCheck = AttendanceList.get(position).getAttendance_status();
 
-        holder.text_attendance_date.setText(sdFormat.format(attendanceDate));
-        holder.text_attendance_status.setText(AttendanceList.get(position).getAttendance_status());
-
+        holder.tvAttendDate.setText(sdFormat.format(attendanceDate));
+//        holder.tvAttendanceState.setText(AttendanceList.get(position).getAttendance_status());
+        if(attendanceCheck.equals("出席")){
+            holder.tvAttendanceState.setText(attendanceCheck);
+            holder.tvAttendanceState.setTextColor(context.getResources().getColor(R.color.attendance));
+            holder.tvAttendanceState.setBackground(context.getResources().getDrawable(R.drawable.attendance_state_attend_backgroud));
+        }
+        if(attendanceCheck.equals("缺席")){
+            holder.tvAttendanceState.setText(attendanceCheck);
+            holder.tvAttendanceState.setTextColor(context.getResources().getColor(R.color.absense));
+            holder.tvAttendanceState.setBackground(context.getResources().getDrawable(R.drawable.attendance_state_absense_backgroudsd));
+        }
+        if(attendanceCheck.equals("遲到")){
+            holder.tvAttendanceState.setText(attendanceCheck);
+            holder.tvAttendanceState.setTextColor(context.getResources().getColor(R.color.late));
+            holder.tvAttendanceState.setBackground(context.getResources().getDrawable(R.drawable.attendance_state_late_backgroud));
+        }
+        if(attendanceCheck.equals("請假")){
+            holder.tvAttendanceState.setText(attendanceCheck);
+            holder.tvAttendanceState.setTextColor(context.getResources().getColor(R.color.leave));
+            holder.tvAttendanceState.setBackground(context.getResources().getDrawable(R.drawable.attendance_state_leave_backgroud));
+        }
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,16 +96,16 @@ public class AttendanceListAdapter extends RecyclerView.Adapter<AttendanceListAd
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         View mView;
-        public TextView text_attendance_date;
-        public TextView text_attendance_status;
+        TextView tvAttendDate;
+        TextView tvAttendanceState;
 
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
 
-            text_attendance_date = (TextView) mView.findViewById(R.id.text_attendance_date);
-            text_attendance_status = (TextView) mView.findViewById(R.id.text_attendance_status);
+            tvAttendDate = mView.findViewById(R.id.tvAttendDate);
+            tvAttendanceState = mView.findViewById(R.id.tvAttendanceState);
 
         }
     }

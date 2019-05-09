@@ -16,21 +16,21 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_gravity="top"
-            android:background="@color/colorPrimary"
+            android:background="#FFFFFF"
             android:fitsSystemWindows="false"
             android:orientation="vertical"
             android:theme="@style/Base.ThemeOverlay.AppCompat.Dark"
             android:tooltipText="申請請假">
 
             <TextView
-                android:id="@+id/title_user"
+                android:id="@+id/title_class_performance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="課堂表現"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/common_google_signin_btn_text_dark_default"
-                android:textSize="24sp" />
+                android:textColor="#000000"
+                android:textSize="18dp" />
 
         </android.support.design.widget.NavigationView>
 
@@ -43,14 +43,14 @@
 
             <TextView
                 android:id="@+id/textView6"
-                android:layout_width="105dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_weight="0"
                 android:padding="1dp"
                 android:text="目前總加分"
-                android:textSize="18dp"
-                android:textColor="#000000"/>
+                android:textColor="#000000"
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/text_performance_totalBonus"

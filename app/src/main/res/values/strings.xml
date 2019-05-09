@@ -26,6 +26,7 @@
     <string name="test">辨識測試</string>
     <string name="retrieve_result"><b>辨識結果</b></string>
     <string name="train">圖片上傳</string>
+    <string name="takePhoto">拍攝相片</string>
     <string name="start"><b>START !</b></string>
     <string name="login">Log In</string>
 

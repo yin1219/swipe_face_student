@@ -8,4 +8,6 @@
     <color name="White">#ffffff</color>
     <color name="radiobuttonTrue">#597AC5</color>
     <color name="radiobuttonFalse">#FFFFFF</color>
+    <color name="blue">#0806b1</color>
+    <color name="blue2">#e4e9ff</color>
 </resources>

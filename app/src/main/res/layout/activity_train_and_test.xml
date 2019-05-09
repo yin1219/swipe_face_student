@@ -10,7 +10,7 @@
     
     <LinearLayout
         android:layout_width="270dp"
-        android:layout_height="84dp"
+        android:layout_height="90dp"
         android:layout_gravity="center"
         android:layout_marginTop="58dp">
 
@@ -30,46 +30,77 @@
     <LinearLayout
         android:layout_width="173dp"
         android:layout_height="173dp"
-        android:layout_marginTop="47dp"
+        android:layout_marginTop="20dp"
         android:layout_gravity="center">
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
 
-            android:src="@drawable/pic3">
+            android:src="@drawable/train_and_test">
 
         </ImageView>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btTakePhoto"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:background="@drawable/bg_round_button_yellow"
-        android:text="@string/takePhoto"
-        android:textSize="20sp" />
-    <Button
-        android:id="@+id/buttonTrain"
-        android:layout_below="@+id/btTakePhoto"
-        android:layout_marginTop="20dp"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:background="@drawable/bg_round_button_yellow"
-        android:text="@string/train"
-        android:textSize="20sp" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center">
 
-    <Button
-        android:id="@+id/buttonTest"
-        android:layout_below="@id/buttonTrain"
-        android:layout_width="150dp"
-        android:layout_marginTop="20dp"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:background="@drawable/bg_round_button_yellow"
-        android:text="@string/test"
-        android:textSize="20sp" />
+        <Button
+            android:id="@+id/btTakePhoto"
+            android:layout_width="300dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/takePhoto"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="#ffffff"
+            android:textSize="18dp"
+            android:textStyle="normal"
+            android:background="@drawable/login_button"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:layout_gravity="center">
+
+        <Button
+            android:id="@+id/buttonTrain"
+            android:layout_width="300dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/train"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="#FFFFFF"
+            android:textSize="18dp"
+            android:textStyle="normal"
+            android:background="@drawable/login_button"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center">
+
+        <Button
+            android:id="@+id/buttonTest"
+            android:layout_width="300dp"
+            android:gravity="center"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/test"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="#0806b1"
+            android:textSize="18dp"
+            android:textStyle="normal"
+            android:background="@drawable/rollcall_fin"/>
+
+    </LinearLayout>
+
 
 </LinearLayout>

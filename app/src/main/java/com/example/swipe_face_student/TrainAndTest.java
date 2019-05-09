@@ -37,6 +37,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -249,30 +250,13 @@ public class TrainAndTest extends AppCompatActivity {
                 Log.i("email", email);
                 Log.i("department", department);
                 Log.i("school", school);
-                if (id.equals(uriEmail)) {
 
-                    ToastUtils.show(getmContext(), "辨識成功 !");
-                    /*new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Intent i = new Intent();
-                            i.setClass(mContext,RetrieveResult.class);
-                            startActivity(i);
-
-                        }
-                    });*/
-
-
-                } else {
-                    ToastUtils.show(getmContext(), "辨識失敗 !");
-                }
 
                 //ToastUtils.show(getmContext(),"名字:"+name+"\n"+"學號: "+id+"\n"+"email:"+email+"\n"+"系所:"+department+"\n"+"學校:"+school);
 
                 //heroList.add(hero);
-
-
             }
+            getResultIntent(name,id);
 
             //adapter = new HeroAdapter(heroList, getmContext());
 
@@ -302,6 +286,20 @@ public class TrainAndTest extends AppCompatActivity {
             }
         }
         return path;
+    }
+
+    //抓JSON內容後Intent
+    private void getResultIntent(String name ,String id) {
+        if (id.equals(uriEmail)) {
+            ToastUtils.show(getmContext(), name + "歡迎使用 !");
+            Intent intentCreateClassGroupByHand = new Intent();
+            intentCreateClassGroupByHand.setClass(this, MainActivity.class);
+            startActivity(intentCreateClassGroupByHand);
+
+        } else {
+            ToastUtils.show(getmContext(), "辨識失敗 !" + "請再多試試 !");
+        }
+
     }
 
     @Override

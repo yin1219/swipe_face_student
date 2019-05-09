@@ -19,7 +19,17 @@
         app:fontFamily="@font/asap_medium"/>
 
     <Button
+        android:id="@+id/btTakePhoto"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/bg_round_button_yellow"
+        android:text="@string/takePhoto"
+        android:textSize="20sp" />
+    <Button
         android:id="@+id/buttonTrain"
+        android:layout_below="@+id/btTakePhoto"
+        android:layout_marginTop="20dp"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"

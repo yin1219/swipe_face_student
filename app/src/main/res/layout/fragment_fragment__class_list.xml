@@ -43,6 +43,14 @@
                 android:layout_height="match_parent">
 
             </android.support.v7.widget.RecyclerView>
+            <ImageView
+                android:id="@+id/imNoData"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="150dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/no_add_class"
+                android:visibility="invisible" />
 
         </LinearLayout>
 

@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.swipe_face_student.Adapter.ClassListAdapter;
@@ -49,7 +50,7 @@ import java.util.Objects;
 public class Fragment_ClassList extends Fragment implements FragmentBackHandler {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final String TAG = "Fragment_ClassList";
-
+    private ImageView imNoData;
     private RecyclerView mMainList;
     private ClassListAdapter classListAdapter;
     private List<Class> classList; // For Adapter
@@ -82,6 +83,9 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
         classList = new ArrayList<>();
         classListAdapter = new ClassListAdapter(getActivity().getApplicationContext(), classList);
 
+        //init xml
+        imNoData = view.findViewById(R.id.imNoData);
+
         //init FabXml
         FloatingActionButton fab = (FloatingActionButton) getView().findViewById(R.id.fab_leave);
 
@@ -103,7 +107,7 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
                             Log.d(TAG, "studentId : " + studentId);
                             if (studentId != null) {
                                 setAllClassList();
-
+                                Log.d(TAG,"測試一開始setAllClassList跑幾次");
                             }
                         }
                     } else {
@@ -111,25 +115,13 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
                     }
                 });
 
-
         classListAdapter.setOnTransPageClickListener(new ClassListAdapter.transPageListener() {
 
             @Override
             public void onTransPageClick(String classId2) {
                 Log.d(TAG, "onTransPageClick0" + classId2);
                 mCallback.onFragmentSelected(classId2, "toClassList");//fragment傳值
-//                Log.d(TAG," classId:"+classId);
-//
-//                fragmentManager = getChildFragmentManager();
-//                Log.d(TAG,"onTransPageClick1");
-//                transaction = fragmentManager.beginTransaction();
-//                Log.d(TAG,"onTransPageClick2");
-//                transaction.replace(R.id.fragment_class_list, new Fragment_ClassDetail());
-//                transaction.addToBackStack(new Fragment_ClassDetail().getClass().getName());
-//                transaction.commit();
-
             }
-
         });//Fragment換頁
 
         fab.setOnClickListener(v -> {
@@ -137,33 +129,8 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
         });
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-////        setAllClassList();
-//        // db query studentId
-//        db.collection("Student")
-//                .whereEqualTo("student_id", student_id)
-//                .get()
-//                .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful()) {
-//                        for (QueryDocumentSnapshot document : task.getResult()) {
-//                            Log.d(TAG, document.getId() + " => " + document.getData());
-//                            studentId = document.getId();
-//                            Log.d(TAG,"studentId : "+studentId);
-//                            if(studentId != null){
-//                                setAllClassList();
-//                            }
-//                        }
-//                    } else {
-//                        Log.d(TAG, "Error getting documents: ", task.getException());
-//                    }
-//                });
-//    }
-
-
     private void fabAddClass() {
-
+        ArrayList<String> class_idForCheck = new ArrayList<>();
         LayoutInflater lf = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         @SuppressLint("InflateParams")
         ViewGroup vg = (ViewGroup) lf.inflate(R.layout.dialog_add_class, null);
@@ -176,196 +143,165 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
                         Toast.makeText(getActivity(), "請輸入課程代碼", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "Dialog取消");
                     } else {
-                        ArrayList<String> class_idForCheck = new ArrayList<>();
                         Log.d(TAG, "Dialog確定");
-                        db.collection("Class").
-                                addSnapshotListener((documentSnapshots, e) -> {
-                                    if (e != null) {
-                                        Log.d(TAG, "Error :" + e.getMessage());
-                                    }
-                                    for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
-
-                                        if (doc.getType() == DocumentChange.Type.ADDED) {
-                                            Class aClass = doc.getDocument().toObject(Class.class).withId(classId);
-                                            class_idForCheck.add(aClass.getClass_id());
-                                            for (int i = 0; i < class_idForCheck.size(); i++) {
-                                                Log.d(TAG, "class_idForCheck : " + class_idForCheck.get(i));
-
-                                            }
+                        db.collection("Class")
+                                .get()
+                                .addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            Log.d(TAG, document.getId() + " => " + document.getData());
+                                            class_idForCheck.add(document.getString("class_id"));
+                                            Log.d(TAG, "class_idForCheck : " + class_idForCheck);
 
                                         }
-                                    }
-                                    if (!class_idForCheck.contains(classKey)) {
-                                        Toast.makeText(getActivity(), "查無此課程代碼", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Log.d(TAG, "check classKey : " + classKey);
-                                        Query drQueryTotalAttendance = db.collection("Class")
-                                                .whereEqualTo("class_id", classKey);
-                                        drQueryTotalAttendance.get().addOnCompleteListener(task -> {
-                                            if (task.isSuccessful()) {
-                                                String classId = null;
-                                                for (QueryDocumentSnapshot dsQueryTotalAttendance : task.getResult()) {
-                                                    classId = dsQueryTotalAttendance.getId();
+                                        //判斷input class_id 是否存在
+                                        if (!class_idForCheck.contains(classKey)) {
+                                            Toast.makeText(getActivity(), "查無此課程代碼", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Log.d(TAG, "check classKey: " + classKey);
+                                            Query drQueryTotalAttendance = db.collection("Class")
+                                                    .whereEqualTo("class_id", classKey);
+                                            drQueryTotalAttendance.get().addOnCompleteListener(taskForQueryClassKetDocId -> {
+                                                if (taskForQueryClassKetDocId.isSuccessful()) {
+                                                    String classId = null;
+                                                    for (QueryDocumentSnapshot dsQueryTotalAttendance : taskForQueryClassKetDocId.getResult()) {
+                                                        classId = dsQueryTotalAttendance.getId();
 
+                                                    }
+                                                    setClassStudent(classId,classKey);
+                                                    DocumentReference drQueryAttendancePoint = db.collection("Class").document(classId);
+                                                    drQueryAttendancePoint.get().addOnCompleteListener(task1 -> {
+                                                        if (task1.isSuccessful()) {
+                                                            DocumentSnapshot dsQueryAttendancePoint = task1.getResult();
+                                                            if (dsQueryAttendancePoint.exists()) {
+                                                                int performanceTotalAttendance = dsQueryAttendancePoint.toObject(Class.class).getClass_totalpoints();
+                                                                Map<String, Object> addPerformance = new HashMap<>();
+                                                                addPerformance.put("class_id", classKey);
+                                                                addPerformance.put("performance_totalAttendance", performanceTotalAttendance);
+                                                                addPerformance.put("performance_totalBonus", (0));
+                                                                addPerformance.put("performance_absenceTimes",(0));
+                                                                addPerformance.put("student_id", "405401217");//user.get..... 不是這個測試的
+                                                                db.collection("Performance")
+                                                                        .add(addPerformance)
+                                                                        .addOnSuccessListener(aVoid -> {
+                                                                            Log.d(TAG, "DocumentSnapshot successfully written!");
+                                                                        });
+                                                                Log.d(TAG,"測試Performance跑幾次");
+
+                                                            }
+                                                        }
+                                                    });
+
+                                                } else {
+                                                    Log.d(TAG, "get failed with ", task.getException());
                                                 }
-                                                DocumentReference drQueryAttendancePoint = db.collection("Class").document(classId);
-                                                drQueryAttendancePoint.get().addOnCompleteListener(task1 -> {
-                                                    if (task1.isSuccessful()) {
-                                                        DocumentSnapshot dsQueryAttendancePoint = task1.getResult();
-                                                        if (dsQueryAttendancePoint.exists()) {
-                                                            int performanceTotalAttendance = dsQueryAttendancePoint.toObject(Class.class).getClass_totalpoints();
-                                                            Map<String, Object> addPerformance = new HashMap<>();
-                                                            addPerformance.put("class_id", classKey);
-                                                            addPerformance.put("performance_totalAttendance", performanceTotalAttendance);
-                                                            addPerformance.put("performance_totalBonus", (0));
-                                                            addPerformance.put("student_id", "405401217");//user.get..... 不是這個測試的
-                                                            db.collection("Performance")
-                                                                    .add(addPerformance)
-                                                                    .addOnSuccessListener(aVoid -> {
-                                                                        Log.d(TAG, "DocumentSnapshot successfully written!");
-                                                                    });
-                                                        }
-                                                    }
-                                                });
-
-                                            } else {
-                                                Log.d(TAG, "get failed with ", task.getException());
-                                            }
-                                        });
-
-                                        //db upload Class
-                                        db.collection("Class")
-                                                .whereEqualTo("class_id", classKey)
-                                                .get()
-                                                .addOnCompleteListener(task -> {
-                                                    if (task.isSuccessful()) {
-                                                        for (QueryDocumentSnapshot document : task.getResult()) {
-                                                            Log.d(TAG, document.getId() + " => " + document.getData());
-                                                            String classIdForSearch = document.getId();
-                                                            Map<String, Object> addClass = new HashMap<>();
-                                                            addClass.put("student_id", FieldValue.arrayUnion(student_id));
-                                                            db.collection("Class")
-                                                                    .document(classIdForSearch)
-                                                                    .update(addClass)
-                                                                    .addOnSuccessListener(aVoid -> {
-                                                                        Log.d(TAG, "DocumentSnapshot successfully written!");
-                                                                    });
-                                                        }
-                                                    }
-                                                });
-
-                                        //db upload Student
-                                        Map<String, Object> addStudent = new HashMap<>();
-                                        addStudent.put("class_id", FieldValue.arrayUnion(classKey));
-                                        db.collection("Student")
-                                                .document(studentId)
-                                                .update(addStudent)
-                                                .addOnSuccessListener(aVoid -> {
-                                                    Log.d(TAG, "DocumentSnapshot successfully written!");
-                                                });
-                                        setAllClassList();
-                                        classListAdapter.notifyDataSetChanged();
+                                            });
+//                                            setAllClassList();
+//                                        classListAdapter.notifyDataSetChanged();
 
 
+                                        }
+                                    } else {
+                                        Log.d(TAG, "Error getting documents: ", task.getException());
                                     }
-
-
                                 });
 
-                    }
+
+
+
+                                }
+
+
                 })
                 .setNegativeButton("取消", null).show();
-    }
+}
 
+    private void setClassStudent(String classId,String classKey){
+        Map<String, Object> addClass = new HashMap<>();
+        addClass.put("student_id", FieldValue.arrayUnion(student_id));
+        db.collection("Class")
+                .document(classId)
+                .update(addClass)
+                .addOnSuccessListener(aVoid -> {
+                });
+        //db upload Student
+        Map<String, Object> addStudent = new HashMap<>();
+        addStudent.put("class_id", FieldValue.arrayUnion(classKey));
+        db.collection("Student")
+                .document(studentId)
+                .update(addStudent)
+                .addOnSuccessListener(aVoid -> {
+                });
+        }
     private void setAllClassList() {
-
-//        db.collection("Student").
-//
-//                whereEqualTo("student_id", student_id).
-//                addSnapshotListener((documentSnapshots, e) -> {
-//                    if (e != null) {
-//
-//                        Log.d(TAG, "Error :" + e.getMessage());
-//                    }
-//                    Student student = documentSnapshots.getDocuments().get(0).toObject(Student.class);
-//                    class_id = student.getClass_id();
-//                    Log.d(TAG, "in" + class_id.toString());
-//                    for (String class_id : class_id) {
-//                        db.collection("Class").
-//
-//                                whereEqualTo("class_id", class_id).
-//
-//                                addSnapshotListener((documentSnapshots1, e1) -> {
-//                                    if (e1 != null) {
-//
-//                                        Log.d(TAG, "Error :" + e1.getMessage());
-//                                    }
-//
-//
-//                                    for (DocumentChange doc : documentSnapshots1.getDocumentChanges()) {
-//
-//
-//                                        if (doc.getType() == DocumentChange.Type.ADDED) {
-//
-//                                            classId = new String();
-//                                            classId = doc.getDocument().getId();
-//                                            Log.d(TAG, "DB2 classId0:" + classId);
-//                                            Class aClass = doc.getDocument().toObject(Class.class).withId(classId);
-//                                            Log.d(TAG, "DB2 classId:" + classId);
-//                                            classList.add(aClass);
-//                                            classListAdapter.notifyDataSetChanged();
-//
-//                                        }
-//                                    }
-//
-//                                });
-//                    }
-//
-//
-//                });
 
         classList.clear();
         if (classList.isEmpty()) {
 
+            db.collection("Class").
+                    whereArrayContains("student_id", student_id).
+                    addSnapshotListener((documentSnapshots1, e1) -> {
+                        if (e1 != null) {
+                            Log.d(TAG, "Error :" + e1.getMessage());
+                        }
+                        for (DocumentChange doc : documentSnapshots1.getDocumentChanges()) {
+                            if (doc.getType() == DocumentChange.Type.ADDED) {
+                                String classId = doc.getDocument().getId();
+                                Log.d(TAG, "312 classId : " + classId);
+                                Class aClass = doc.getDocument().toObject(Class.class).withId(classId);
+                                classList.add(aClass);
+                                classListAdapter.notifyDataSetChanged();
+                            }
+                        }
+                        if (classList.isEmpty()) {
+                            mMainList.setVisibility(View.GONE);
+                            imNoData.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            mMainList.setVisibility(View.VISIBLE);
+                            imNoData.setVisibility(View.GONE);
+                        }
+                    });
 
-            DocumentReference docRef = db.collection("Student")
-                    .document(studentId);
-            docRef.get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    assert document != null;
-                    if (document.exists()) {
-                        Student student = document.toObject(Student.class);
-                        ArrayList<String> class_id = new ArrayList<>();
-                        class_id = student.getClass_id();
-                        for (int i = 0; i < class_id.size(); i++) {
-                            Log.d(TAG, "Student裡的class_id : " + class_id.get(i));
-                        }
-                        for (String class_idForCheck : class_id) {
-                            db.collection("Class").
-                                    whereEqualTo("class_id", class_idForCheck).
-                                    addSnapshotListener((documentSnapshots1, e1) -> {
-                                        if (e1 != null) {
-                                            Log.d(TAG, "Error :" + e1.getMessage());
-                                        }
-                                        for (DocumentChange doc : documentSnapshots1.getDocumentChanges()) {
-                                            if (doc.getType() == DocumentChange.Type.ADDED) {
-                                                String classId = doc.getDocument().getId();
-                                                Log.d(TAG, "312 classId : " + classId);
-                                                Class aClass = doc.getDocument().toObject(Class.class).withId(classId);
-                                                classList.add(aClass);
-                                                classListAdapter.notifyDataSetChanged();
-                                            }
-                                        }
-                                    });
-                        }
-                    } else {
-                        Log.d(TAG, "No such document");
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            });
+
+//            DocumentReference docRef = db.collection("Student")
+//                    .document(studentId);
+//            docRef.get().addOnCompleteListener(task -> {
+//                if (task.isSuccessful()) {
+//                    DocumentSnapshot document = task.getResult();
+//                    assert document != null;
+//                    if (document.exists()) {
+//                        Student student = document.toObject(Student.class);
+//                        ArrayList<String> class_id = new ArrayList<>();
+//                        class_id = student.getClass_id();
+//                        for (int i = 0; i < class_id.size(); i++) {
+//                            Log.d(TAG, "Student裡的class_id : " + class_id.get(i));
+//                        }
+//                        for (String class_idForCheck : class_id) {
+//                            db.collection("Class").
+//                                    whereEqualTo("class_id", class_idForCheck).
+//                                    addSnapshotListener((documentSnapshots1, e1) -> {
+//                                        if (e1 != null) {
+//                                            Log.d(TAG, "Error :" + e1.getMessage());
+//                                        }
+//                                        for (DocumentChange doc : documentSnapshots1.getDocumentChanges()) {
+//                                            if (doc.getType() == DocumentChange.Type.ADDED) {
+//                                                String classId = doc.getDocument().getId();
+//                                                Log.d(TAG, "312 classId : " + classId);
+//                                                Class aClass = doc.getDocument().toObject(Class.class).withId(classId);
+//                                                classList.add(aClass);
+//                                                classListAdapter.notifyDataSetChanged();
+//                                            }
+//                                        }
+//                                    });
+//                        }
+//                    } else {
+//                        Log.d(TAG, "No such document");
+//                    }
+//                } else {
+//                    Log.d(TAG, "get failed with ", task.getException());
+//                }
+//            });
         }
     }
 

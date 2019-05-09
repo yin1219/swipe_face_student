@@ -54,7 +54,7 @@ public class UploadPhoto {
     String [] uriEmailArray = email.split("@");
     String uriEmail = uriEmailArray[0];
     OkHttpClient client = new OkHttpClient();
-    String url = "http://192.168.11.11:8080/ProjectApi/api/FaceApi/TrainFace/"+uriEmail;
+    String url = "http://"+FlassSetting.getIp()+":8080/ProjectApi/api/FaceApi/TrainFace/"+uriEmail;
     public void uploadFile(List<String> img) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);//setType一定要Multipart
         for (int i = 0; i <img.size() ; i++) {//用迴圈去RUN多選照片

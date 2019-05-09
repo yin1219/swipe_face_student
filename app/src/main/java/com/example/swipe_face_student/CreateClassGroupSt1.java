@@ -71,7 +71,7 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
     ResponseBody responseBody;
     String responseData;
     final int REQUEST_CODE_CHOOSE = 123;
-    String url = "http://172.20.10.8:8080/ProjectApi/api/FaceApi/RetrievePhoto";
+    String url = "http://"+FlassSetting.getIp()+":8080/ProjectApi/api/FaceApi/RetrievePhoto";
     boolean isGroup = false;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
@@ -183,6 +183,7 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
             photoPathToUploadClass = Matisse.obtainPathResult(data);
         }
         if (!photoPathToUploadClass.isEmpty()) {
+            Log.d(TAG,photoPathToUploadClass.get(0));
             MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);//setType一定要Multipart
             for (int i = 0; i < photoPathToUploadClass.size(); i++) {//用迴圈去RUN多選照片
                 File file = new File(photoPathToUploadClass.get(i));

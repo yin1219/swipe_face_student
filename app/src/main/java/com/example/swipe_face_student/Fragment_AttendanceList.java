@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.swipe_face_student.Adapter.AttendanceListAdapter;
 import com.example.swipe_face_student.Model.Attendance;
 import com.example.swipe_face_student.Model.Class;
+import com.example.swipe_face_student.Model.Performance;
 import com.example.swipe_face_student.Model.Rollcall;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -32,7 +33,7 @@ public class Fragment_AttendanceList extends Fragment {
     private FirebaseFirestore db;
 
     private AttendanceListAdapter attendanceListAdapter;
-
+    private Performance performance;
     private String TAG = "Attendance";
     private Class aclass;
     private Rollcall rollcall;
@@ -106,9 +107,10 @@ public class Fragment_AttendanceList extends Fragment {
                                                 attendanceListAdapter.notifyDataSetChanged();
                                             }
                                         }
-                                        int totalPoints = aClass.getClass_totalpoints() - minus;
+                                        int totalPoints = aClass.getClass_totalpoints();
                                         Log.d(TAG,"point:" + totalPoints);
-                                        text_class_totalpoints.setText(String.valueOf(totalPoints));
+//                                        text_class_totalpoints.setText(String.valueOf(totalPoints));
+                                        setPerformanceAttendancePoint(totalPoints);
                                     }
                                 });
                     }
@@ -117,6 +119,24 @@ public class Fragment_AttendanceList extends Fragment {
                 });
 
 
+    }
+
+    private void setPerformanceAttendancePoint(int totalPoints) {
+        db.collection("Performance")
+                .whereEqualTo("class_id", class_id)
+                .whereEqualTo("student_id",student_id)
+                .addSnapshotListener((documentSnapshots, e) -> {
+                    if (e != null) {
+                        Log.d(TAG, "Error :" + e.getMessage());
+                    }
+                    for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
+                        if (doc.getType() == DocumentChange.Type.ADDED) {
+                            performance = doc.getDocument().toObject(Performance.class);
+                        }
+                    }
+                    int attendancePoint = performance.getPerformance_totalAttendance();
+                    text_class_totalpoints.setText(String.valueOf(attendancePoint)+"/"+String.valueOf(totalPoints));
+                });
     }
 
     @Override

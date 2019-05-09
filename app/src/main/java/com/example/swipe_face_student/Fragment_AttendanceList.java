@@ -147,6 +147,8 @@ public class Fragment_AttendanceList extends Fragment {
             attendance.setAttendance_status("公假");
         } else if (rollcall.getRollcall_sick().contains(student_id)) {
             attendance.setAttendance_status("病假");
+        } else if (rollcall.getRollcall_late().contains(student_id)) {
+            attendance.setAttendance_status("遲到");
         }
 
 

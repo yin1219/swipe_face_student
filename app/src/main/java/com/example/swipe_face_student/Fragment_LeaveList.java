@@ -135,6 +135,7 @@ public class Fragment_LeaveList extends Fragment implements FragmentBackHandler 
                         String leaveId = doc.getDocument().getId();
 
                         Leave leave = doc.getDocument().toObject(Leave.class).withId(leaveId);
+
                         leaveList.add(leave);
 
                         leaveListAdapter.notifyDataSetChanged();

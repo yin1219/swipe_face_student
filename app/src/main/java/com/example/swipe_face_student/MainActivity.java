@@ -65,12 +65,12 @@ public class MainActivity extends AppCompatActivity implements OnFragmentSelecte
                     transaction.addToBackStack(new Fragment_LeaveList().getClass().getName());
                     transaction.commit();
                     return true;
-                case R.id.navigation_notification:
-                    transaction.replace(R.id.content, new Fragment_Notifications());
-                    transaction.addToBackStack(new Fragment_Notifications().getClass().getName());
-
-                    transaction.commit();
-                    return true;
+//                case R.id.navigation_notification:
+//                    transaction.replace(R.id.content, new Fragment_Notifications());
+//                    transaction.addToBackStack(new Fragment_Notifications().getClass().getName());
+//
+//                    transaction.commit();
+//                    return true;
 
                 case R.id.navigation_user:
                     Fragment_User fragment_user = new Fragment_User();

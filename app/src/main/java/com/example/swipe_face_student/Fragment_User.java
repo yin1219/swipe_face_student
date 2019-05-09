@@ -1,6 +1,7 @@
 package com.example.swipe_face_student;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -30,7 +31,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 public class Fragment_User extends Fragment implements FragmentBackHandler {
 
     private final String TAG = "Fragment_User";
-    private CardView cvInfo;
+    private CardView cvInfo,logout;
 
     OnFragmentSelectedListener mCallback;//Fragment傳值
 
@@ -58,6 +59,15 @@ public class Fragment_User extends Fragment implements FragmentBackHandler {
 
         cvInfo.setOnClickListener(v -> {
             mCallback.onFragmentSelected(TAG, "toUserInfo");//fragment傳值
+        });
+
+        logout = (CardView) getView().findViewById(R.id.logout);
+        logout.setOnClickListener(view1 -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent i = new Intent();
+            i.setClass(getActivity(),WelcomePage.class);
+            startActivity(i);
+
         });
 
 

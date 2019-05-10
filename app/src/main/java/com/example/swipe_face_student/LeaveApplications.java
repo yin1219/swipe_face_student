@@ -28,6 +28,7 @@ import com.example.swipe_face_student.Model.Leave;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -59,7 +60,10 @@ public class LeaveApplications extends AppCompatActivity {
 
     private Leave leave = new Leave();
     private String TAG = "LeaveApplications_FLAG";
-    private String student_id = "405401217";
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();//抓現在登入user
+    String email1 = user.getEmail();//抓user.email
+    String [] uriEmailArray = email1.split("@");
+    private String student_id = uriEmailArray[0];
     private String student_name;
     private String class_id;
     private String class_name;

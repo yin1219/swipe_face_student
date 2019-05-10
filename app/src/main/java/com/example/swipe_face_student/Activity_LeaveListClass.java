@@ -9,16 +9,22 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class Activity_LeaveListClass extends AppCompatActivity {
 
     private static final String TAG = "LeaveClass";
     private FloatingActionButton fab_leave;
     private boolean isAllClass = true;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();//抓現在登入user
+    String email1 = user.getEmail();//抓user.email
+    String [] uriEmailArray = email1.split("@");
+    String student_id = uriEmailArray[0];
 
     private String class_id;
     private String checkWay; //確認假單批改完後導向
     private ImageButton backIBtn;
-    private String student_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

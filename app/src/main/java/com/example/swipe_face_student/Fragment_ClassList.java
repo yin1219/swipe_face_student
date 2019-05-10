@@ -29,6 +29,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -55,7 +57,11 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
     private ClassListAdapter classListAdapter;
     private List<Class> classList; // For Adapter
     private String teacher_email = "053792@mail.fju.edu.tw";
-    private String student_id = "405401217";
+    private
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();//抓現在登入user
+    String email1 = user.getEmail();//抓user.email
+    String [] uriEmailArray = email1.split("@");
+    private String student_id = uriEmailArray[0];
     private Teacher teacher;
     //    private ArrayList<String> class_id = new ArrayList<>();
     private FragmentTransaction transaction;

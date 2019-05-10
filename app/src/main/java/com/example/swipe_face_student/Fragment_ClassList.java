@@ -54,7 +54,6 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
     private RecyclerView mMainList;
     private ClassListAdapter classListAdapter;
     private List<Class> classList; // For Adapter
-    private String teacher_email = "053792@mail.fju.edu.tw";
     private String student_id = "405401217";
     private Teacher teacher;
     //    private ArrayList<String> class_id = new ArrayList<>();

@@ -12,29 +12,62 @@
     app:layout_gravity="clip_vertical"
     app:cardElevation="0dp">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        android:orientation="vertical">
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            android:layout_height="56dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="35dp">
+
 
             <TextView
-                android:id="@+id/text_bonus_date"
+                android:id="@+id/textViewBonusReason"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="30dp"
-                android:layout_weight="0"
-                android:text="課堂表現"
+                android:text="載入中 "
                 android:textColor="#000000"
-                android:textSize="18dp" />
+                android:textSize="16dp"
+                tools:text="隨堂問答" />
+
+            <TextView
+                android:id="@+id/textViewBonusTime"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="載入中"
+                android:textColor="#000000"
+                android:textSize="16dp"
+                tools:text="2018.01.03" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="70dp"
+                android:text="+"
+                android:textColor="#000000"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/plusBonus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 1"
+                android:textColor="#000000"
+                android:textSize="16dp" />
+
+
         </LinearLayout>
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#F5F5F5" />
     </LinearLayout>
 </android.support.v7.widget.CardView>

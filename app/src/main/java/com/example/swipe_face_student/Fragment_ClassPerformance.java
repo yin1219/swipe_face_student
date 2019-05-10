@@ -36,7 +36,7 @@ public class Fragment_ClassPerformance extends Fragment {
     private BonusListAdapter bonusListAdapter;
 
     private String TAG = "ClassPerferformance";
-    private Class aclass;
+    private Class aClass;
     private Performance performance;
     private Bonus bonus;
     private List<Bonus> bonusList;
@@ -46,8 +46,12 @@ public class Fragment_ClassPerformance extends Fragment {
     private int minus = 0;
     OnFragmentSelectedListener mCallback;//Fragment傳值
 
-    private TextView text_performance_totalBonus;
     private RecyclerView bonus_list;
+    private String answerBouns;
+    private String RDanswerBonus;
+    private TextView text_class_year;
+    private TextView text_class_name;
+    private TextView text_performance_totalBonus;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,70 +73,104 @@ public class Fragment_ClassPerformance extends Fragment {
 
         db = FirebaseFirestore.getInstance();
 
-        bonusList = new ArrayList<>();
-        bonusListAdapter = new BonusListAdapter(getActivity().getApplicationContext(), bonusList);
+        text_performance_totalBonus = (TextView) view.findViewById(R.id.text_performance_totalBonus);
+        text_class_year =(TextView) view.findViewById(R.id.text_class_year);
+        text_class_name = (TextView) view.findViewById(R.id.text_class_name);
 
-        bonus_list = (RecyclerView) getView().findViewById(R.id.bonus_list);
-        text_performance_totalBonus = (TextView) getView().findViewById(R.id.text_performance_totalBonus);
+        bonusList = new ArrayList<>();
+        bonusListAdapter = new BonusListAdapter(view.getContext(), bonusList);
+
+        bonus_list = (RecyclerView) view.findViewById(R.id.bonus_list);
         bonus_list.setHasFixedSize(true);
         bonus_list.setLayoutManager(new LinearLayoutManager(getActivity()));
         bonus_list.setAdapter(bonusListAdapter);
-        Log.d(TAG, "Flag1");
+
+        getPoints(class_id);
+        setInfor(student_id, class_id ,aClass);
+
+    }
+
+    private void setInfor(String student_id, String class_id , Class aclass) {
         db.collection("Performance")
-                .whereEqualTo("class_id", class_id)
                 .whereEqualTo("student_id", student_id)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.d(TAG, "Error :" + e.getMessage());
-                        }
-                        if(documentSnapshots.size()!=0){
-                            performance  = documentSnapshots.getDocuments().get(0).toObject(Performance.class);
-                            performanceId = documentSnapshots.getDocuments().get(0).getId();
-                            text_performance_totalBonus.setText(""+performance.getPerformance_totalBonus());
-                            Log.d(TAG, "in" + performance.getPerformance_totalBonus());
+                .whereEqualTo("class_id", class_id).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@javax.annotation.Nullable QuerySnapshot documentSnapshots, @javax.annotation.Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.d(TAG, "error" + e.getMessage());
+                }
 
-                            db.collection("/Performance/"+performanceId+"/Bonus")
-                                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onEvent(QuerySnapshot
-                                                                    documentSnapshots, FirebaseFirestoreException e) {
-                                            if (e != null) {
+                for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
 
-                                                Log.d(TAG, "Error :" + e.getMessage());
-                                            }
-                                            for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
-                                                if (doc.getType() == DocumentChange.Type.ADDED) {
-                                                    bonus = doc.getDocument().toObject(Bonus.class);
-                                                    bonusList.add(bonus);
+                    if (doc.getType() == DocumentChange.Type.ADDED) {
+                        Log.d(TAG, "here");
+                        performanceId = doc.getDocument().getId();
+                        Performance preformance = doc.getDocument().toObject(Performance.class);
+                        text_performance_totalBonus.setText(Integer.toString(preformance.getPerformance_totalBonus()));
 
-                                                    bonusListAdapter.notifyDataSetChanged();
+                        listBonus(student_id, class_id, performanceId);
 
-                                                }
-                                            }
+                    }
 
-                                        }
-                                    });
-                        }
+                }
+            }
+
+        });
+    }
+
+    private void listBonus(String student_id, String class_id, String perforDocId){
+        db.collection("Performance").document(perforDocId).collection("Bonus").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@javax.annotation.Nullable QuerySnapshot documentSnapshots, @javax.annotation.Nullable FirebaseFirestoreException e) {
+
+                if(e != null){
+                    Log.d(TAG,"error" + e.getMessage());
+                }
+
+                for(DocumentChange doc : documentSnapshots.getDocumentChanges()){
+
+                    if(doc.getType() == DocumentChange.Type.ADDED){
+                        Bonus bonus = doc.getDocument().toObject(Bonus.class);
+
+                        bonus.setAnswerBonus(answerBouns);
+                        bonus.setRDanswerBonus(RDanswerBonus);
+
+                        bonusList.add(bonus);
+
+                        bonusListAdapter.notifyDataSetChanged();
+                    }
+
+                }
+            }
+        });
+    }
+
+    private void getPoints( String class_id){
+        db.collection("Class")
+                .whereEqualTo("class_id", class_id).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@javax.annotation.Nullable QuerySnapshot documentSnapshots, @javax.annotation.Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.d(TAG, "error" + e.getMessage());
+                }
+                for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
+
+                    if (doc.getType() == DocumentChange.Type.ADDED) {
+                        Log.d(TAG, "here");
+                        Class aClass = doc.getDocument().toObject(Class.class);
+
+                        text_class_year.setText(aClass.getClass_year());
+                        text_class_name.setText(aClass.getClass_name());
+                        answerBouns = Integer.toString(aClass.getClass_answerbonus());
+                        RDanswerBonus = Integer.toString(aClass.getClass_rdanswerbonus());
 
 
                     }
 
+                }
+            }
 
-                });
-
-
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            mCallback = (OnFragmentSelectedListener) context;//fragment傳值
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + "Mush implement OnFragmentSelectedListener ");
-        }
+        });
     }
 
 

@@ -21,7 +21,7 @@ import android.widget.TextView;
 public class LeadingPage extends Activity {
     private ViewPager myViewPager; // 頁卡內容
     private List<View> list; // 存放頁卡
-    private TextView dot1, dot2, dot3; // 這些點都是文字
+    private TextView dot1, dot2; // 這些點都是文字
     private Button startButton; // 按鈕，開始體驗
 
     @Override
@@ -36,7 +36,6 @@ public class LeadingPage extends Activity {
     private void initDot() {
         dot1 = (TextView) this.findViewById(R.id.textView1); // 這些點都是文字
         dot2 = (TextView) this.findViewById(R.id.textView2);
-        dot3 = (TextView) this.findViewById(R.id.textView3);
     }
 
     private void initViewPager() {
@@ -45,10 +44,9 @@ public class LeadingPage extends Activity {
 
         LayoutInflater inflater = getLayoutInflater();
 
-        View view = inflater.inflate(R.layout.leading_page3, null); // 只是為了等下findviewbuid而獨立拿出來賦給view
+        View view = inflater.inflate(R.layout.leading_page2, null); // 只是為了等下findviewbuid而獨立拿出來賦給view
 
         list.add(inflater.inflate(R.layout.leading_page1, null));
-        list.add(inflater.inflate(R.layout.leading_page2, null));
         list.add(view);
         try {
             myViewPager.setAdapter(new MyPagerAdapter(list));
@@ -123,21 +121,13 @@ public class LeadingPage extends Activity {
             // TODO Auto-generated method stub
             switch (arg0) { // 設置點的顏色
                 case 0:
-                    dot1.setTextColor(Color.WHITE);
-                    dot2.setTextColor(Color.BLACK);
-                    dot3.setTextColor(Color.BLACK);
+                    dot1.setTextColor(LeadingPage.this.getResources().getColor(R.color.blue));
+                    dot2.setTextColor(LeadingPage.this.getResources().getColor(R.color.blue2));
                     break;
 
                 case 1:
-                    dot1.setTextColor(Color.BLACK);
-                    dot2.setTextColor(Color.WHITE);
-                    dot3.setTextColor(Color.BLACK);
-                    break;
-
-                case 2:
-                    dot1.setTextColor(Color.BLACK);
-                    dot2.setTextColor(Color.BLACK);
-                    dot3.setTextColor(Color.WHITE);
+                    dot1.setTextColor(LeadingPage.this.getResources().getColor(R.color.blue2));
+                    dot2.setTextColor(LeadingPage.this.getResources().getColor(R.color.blue));
                     break;
 
             }

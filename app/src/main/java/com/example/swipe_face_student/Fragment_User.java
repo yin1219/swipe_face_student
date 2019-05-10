@@ -1,6 +1,9 @@
 package com.example.swipe_face_student;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -30,7 +33,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 public class Fragment_User extends Fragment implements FragmentBackHandler {
 
     private final String TAG = "Fragment_User";
-    private CardView cvInfo;
+    private CardView cvInfo,logout;
 
     OnFragmentSelectedListener mCallback;//Fragment傳值
 
@@ -58,6 +61,34 @@ public class Fragment_User extends Fragment implements FragmentBackHandler {
 
         cvInfo.setOnClickListener(v -> {
             mCallback.onFragmentSelected(TAG, "toUserInfo");//fragment傳值
+        });
+
+        logout = (CardView) getView().findViewById(R.id.logout);
+        logout.setOnClickListener(view1 -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
+            builder.setTitle("確定要登出此帳號嗎 ?");
+            builder.setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    FirebaseAuth.getInstance().signOut();
+                    Intent i = new Intent();
+                    i.setClass(getActivity(), WelcomePage.class);
+                    startActivity(i);
+                    getActivity().finish();
+                }
+
+            });
+
+            //设置反面按钮
+            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
         });
 
 

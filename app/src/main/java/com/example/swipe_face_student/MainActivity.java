@@ -13,7 +13,11 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
+
+import java.util.ArrayList;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
@@ -24,11 +28,14 @@ import static com.google.android.gms.common.internal.safeparcel.SafeParcelable.N
 public class MainActivity extends AppCompatActivity implements OnFragmentSelectedListener {
     private static final String TAG = "BACKFLAG";
     private TextView mTextMessage;
-    private String student_id = "405401217";
     private ViewPager viewPager;
 
     private FragmentTransaction transaction;
     private FragmentManager fragmentManager;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();//抓現在登入user
+    String email1 = user.getEmail();//抓user.email
+    String [] uriEmailArray = email1.split("@");
+    String student_id = uriEmailArray[0];
 
     // 設置默認進來是tab 顯示的頁面
     private void setDefaultFragment() {
@@ -61,8 +68,8 @@ public class MainActivity extends AppCompatActivity implements OnFragmentSelecte
                     args.putString("student_id", student_id);
                     Log.d(TAG, "MAIN ARG:" + args);
                     fragment_leaveList.setArguments(args);
-                    transaction.replace(R.id.content, new Fragment_LeaveList());
-                    transaction.addToBackStack(new Fragment_LeaveList().getClass().getName());
+                    transaction.replace(R.id.content, fragment_leaveList);
+                    transaction.addToBackStack(fragment_leaveList.getClass().getName());
                     transaction.commit();
                     return true;
 //                case R.id.navigation_notification:
@@ -91,6 +98,8 @@ public class MainActivity extends AppCompatActivity implements OnFragmentSelecte
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+
 
         setDefaultFragment();
 

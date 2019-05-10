@@ -56,7 +56,6 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
     private RecyclerView mMainList;
     private ClassListAdapter classListAdapter;
     private List<Class> classList; // For Adapter
-    private String teacher_email = "053792@mail.fju.edu.tw";
     private
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();//抓現在登入user
     String email1 = user.getEmail();//抓user.email

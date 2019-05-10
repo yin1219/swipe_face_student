@@ -256,7 +256,12 @@ public class TrainAndTest extends AppCompatActivity {
 
                 //heroList.add(hero);
             }
-            getResultIntent(name,id);
+            if (id == null){
+                ToastUtils.show(getmContext(),"辨識失敗");
+            }else{
+                getResultIntent(name,id);
+            }
+
 
             //adapter = new HeroAdapter(heroList, getmContext());
 

@@ -44,7 +44,7 @@ public class LeaveRecord extends AppCompatActivity {
     private TextView leave_content;
     private ImageView leave_photo;
     private ImageButton backIBtn;
-    private ImageView imageViewStudent;
+    private CircleImageView imageViewStudent;
 
     private FirebaseFirestore mFirestore;
 
@@ -63,8 +63,7 @@ public class LeaveRecord extends AppCompatActivity {
         leave_content = (TextView) findViewById(R.id.textLeaveContent);
         leave_photo = (ImageView) findViewById(R.id.imageViewLeavePhotot);
         backIBtn = (ImageButton) findViewById(R.id.backIBtn);
-        imageViewStudent = (ImageView) findViewById(R.id.imageViewStudent);
-
+        imageViewStudent = findViewById(R.id.imageViewStudent);
 
         mFirestore = FirebaseFirestore.getInstance();
         StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Leave_photo");

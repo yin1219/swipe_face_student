@@ -63,7 +63,7 @@ public class Fragment_User extends Fragment implements FragmentBackHandler {
             mCallback.onFragmentSelected(TAG, "toUserInfo");//fragment傳值
         });
 
-        logout = (CardView) getView().findViewById(R.id.logout);
+        logout = getView().findViewById(R.id.logout);
         logout.setOnClickListener(view1 -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
             builder.setTitle("確定要登出此帳號嗎 ?");

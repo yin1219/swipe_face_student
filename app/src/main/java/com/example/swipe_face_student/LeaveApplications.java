@@ -28,6 +28,7 @@ import com.example.swipe_face_student.Model.Leave;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -59,7 +60,7 @@ public class LeaveApplications extends AppCompatActivity {
 
     private Leave leave = new Leave();
     private String TAG = "LeaveApplications_FLAG";
-    private String student_id = "405401217";
+    private String student_id ;
     private String student_name;
     private String class_id;
     private String class_name;
@@ -92,6 +93,13 @@ public class LeaveApplications extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leave_applications);
+
+        //init currentUser
+        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        currentFirebaseUser.getEmail();
+        String[] currentUserIdToStringList = currentFirebaseUser.getEmail().split("@");
+        student_id = currentUserIdToStringList[0];
+        Log.d(TAG,"currentUserId: "+student_id);
 
         Bundle formLeaveList = getIntent().getExtras();
         isAllClass =  formLeaveList.getBoolean("isAllClass");

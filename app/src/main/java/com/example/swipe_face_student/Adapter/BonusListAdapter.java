@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.swipe_face_student.Model.Attendance;
 import com.example.swipe_face_student.Model.Bonus;
 import com.example.swipe_face_student.R;
 

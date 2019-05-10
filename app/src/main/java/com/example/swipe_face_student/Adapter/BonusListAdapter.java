@@ -46,23 +46,19 @@ public class BonusListAdapter extends RecyclerView.Adapter<BonusListAdapter.View
     @Override
     public void onBindViewHolder(@NonNull BonusListAdapter.ViewHolder holder, int position) {
 
-        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-        sdFormat.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
-        Date attendanceDate = BonusList.get(position).getBonus_time();
+        SimpleDateFormat myFmt2 = new SimpleDateFormat("yyyy/MM/dd");
+        String bonusType = BonusList.get(position).getBonus_reason();
 
-        holder.text_bonus_date.setText(sdFormat.format(attendanceDate));
+        String bonusTime = myFmt2.format(BonusList.get(position).getBonus_time());
+        holder.bouns_reason.setText(BonusList.get(position).getBonus_reason());
+        holder.bonus_time.setText(bonusTime);
 
-
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("Flag:", "click");
-                notifyItemChanged(position);
-
-
-            }
-        });
-
+        if(bonusType.equals("點人答題")){
+            holder.plusBonus.setText(BonusList.get(position).getRDanswerBonus());
+        }
+        else if(bonusType.equals("回答問題")){
+            holder.plusBonus.setText(BonusList.get(position).getAnswerBonus());
+        }
 
     }
 
@@ -72,18 +68,22 @@ public class BonusListAdapter extends RecyclerView.Adapter<BonusListAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+
         View mView;
-        public TextView text_bonus_date;
+        public TextView bouns_reason;
+        public TextView bonus_time;
+        public TextView plusBonus;
 
+        public ViewHolder(@NonNull View itemView) {
 
-
-        public ViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
 
-            text_bonus_date = (TextView) mView.findViewById(R.id.text_bonus_date);
-
+            bouns_reason = (TextView) mView.findViewById(R.id.textViewBonusReason);
+            bonus_time = (TextView) mView.findViewById(R.id.textViewBonusTime);
+            plusBonus = (TextView) mView.findViewById(R.id.plusBonus);
         }
     }
+
 }
 

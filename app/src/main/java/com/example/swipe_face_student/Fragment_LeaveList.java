@@ -101,6 +101,7 @@ public class Fragment_LeaveList extends Fragment {
     }
 
 
+    }
 
     @Override
     public void onAttach(Context context) {

@@ -12,46 +12,47 @@
     app:layout_gravity="clip_vertical"
     app:cardElevation="0dp">
 
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="550dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/text_attendance_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="30dp"
-                android:layout_weight="0"
-                android:text="出席時間"
-                android:textColor="#000000"
-                android:textSize="18sp" />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_height="56dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="35dp">
+
 
             <TextView
-                android:id="@+id/text_attendance_status"
-                android:layout_width="wrap_content"
+                android:id="@+id/tvAttendDate"
+                android:layout_width="160dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="0"
-                android:text="出席狀態"
-                android:contentDescription="#000000"
-                android:textSize="18sp" />
+                android:text="載入中 "
+                android:textColor="#000000"
+                android:textSize="16dp"
+                tools:text="2018.01.03"/>
+
+
+
+            <TextView
+                android:id="@+id/tvAttendanceState"
+                android:layout_width="72dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="60dp"
+                android:gravity="center"
+                android:text="缺席"
+                android:textSize="16sp"
+                android:background="@drawable/attendance_backgroud"/>
+
+
         </LinearLayout>
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#F5F5F5" />
     </LinearLayout>
 </android.support.v7.widget.CardView>

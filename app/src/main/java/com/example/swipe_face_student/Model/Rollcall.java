@@ -13,6 +13,7 @@ public class Rollcall {
 	ArrayList<String> rollcall_funeral;//喪假
 	ArrayList<String> rollcall_offical;//公假
 	ArrayList<String> rollcall_sick;//病假
+    ArrayList<String> rollcall_late;//病假
 
     public String getClass_id() {
         return class_id;
@@ -76,5 +77,13 @@ public class Rollcall {
 
     public void setRollcall_sick(ArrayList<String> rollcall_sick) {
         this.rollcall_sick = rollcall_sick;
+    }
+
+    public ArrayList<String> getRollcall_late() {
+        return rollcall_late;
+    }
+
+    public void setRollcall_late(ArrayList<String> rollcall_late) {
+        this.rollcall_late = rollcall_late;
     }
 }

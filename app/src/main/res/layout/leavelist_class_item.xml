@@ -42,15 +42,14 @@
                     tools:text="事假" />
 
                 <TextView
-                    android:id="@+id/className"
+                    android:id="@+id/studentName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:text="TextView"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="#000000"
-                    tools:text="程式設計" />
+                    tools:text="蘇柏綸"
+                    android:textColor="#000000"/>
 
 
             </LinearLayout>
@@ -64,17 +63,17 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="學生 : "
+                    android:text="學號 : "
                     android:textSize="16sp"
                     android:textColor="#000000"/>
 
                 <TextView
-                    android:id="@+id/studentName"
+                    android:id="@+id/studentId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="TextView"
                     android:textSize="16sp"
-                    tools:text="蘇柏綸"
+                    tools:text="405401217"
                     android:textColor="#000000"/>
             </LinearLayout>
 

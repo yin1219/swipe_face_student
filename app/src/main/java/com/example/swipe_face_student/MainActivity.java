@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity implements OnFragmentSelecte
                     args.putString("student_id", student_id);
                     Log.d(TAG, "MAIN ARG:" + args);
                     fragment_leaveList.setArguments(args);
-                    transaction.replace(R.id.content, new Fragment_LeaveList());
-                    transaction.addToBackStack(new Fragment_LeaveList().getClass().getName());
+                    transaction.replace(R.id.content, fragment_leaveList);
+                    transaction.addToBackStack(fragment_leaveList.getClass().getName());
                     transaction.commit();
                     return true;
 //                case R.id.navigation_notification:

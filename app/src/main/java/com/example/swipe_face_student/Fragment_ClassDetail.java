@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.swipe_face_student.Model.Class;
 import com.example.swipe_face_student.Model.Question;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,6 +29,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -39,14 +42,16 @@ public class Fragment_ClassDetail extends Fragment implements FragmentBackHandle
 
 
     private String TAG = "ClassDetail";
-    private String classId;
+    private String classId, class_id;
     private Class aclass;
     private Class firestore_class;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private GridLayout gridLayout;
-    private TextView text_class_id;
     private TextView text_class_title;
-    String userId;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();//抓現在登入user
+    String email1 = user.getEmail();//抓user.email
+    String [] uriEmailArray = email1.split("@");
+    String student_id = uriEmailArray[0];
 
     OnFragmentSelectedListener mCallback;//Fragment傳值
 
@@ -63,10 +68,6 @@ public class Fragment_ClassDetail extends Fragment implements FragmentBackHandle
         classId = args.getString("info");
         Log.d(TAG, "classId:" + classId);//fragment傳值
         Toast.makeText(getContext(), "現在課程代碼是" + classId, Toast.LENGTH_LONG).show();
-//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();//抓現在登入user
-//        String email = user.getEmail();//抓user.email
-//        String [] uriEmailArray = email.split("@");
-//        userId = uriEmailArray[0];
 
         return inflater.inflate(R.layout.fragment_fragment_class_detail, container, false);
     }
@@ -85,6 +86,8 @@ public class Fragment_ClassDetail extends Fragment implements FragmentBackHandle
                 setSingleEvent(gridLayout, firestore_class);
             }
         });
+
+        getClass_id(classId);
 
 
     }
@@ -244,8 +247,14 @@ public class Fragment_ClassDetail extends Fragment implements FragmentBackHandle
                         mCallback.onFragmentSelected(firestore_class.getClass_id(), "toClassPerformance");//fragment傳值
                         break;
                     case 4:
-                        mCallback.onFragmentSelected(firestore_class.getClass_id(), "toLeaveManage");//fragment傳值
-
+                        Intent intentLeave = new Intent();
+                        Bundle bundleleave = new Bundle();
+                        bundleleave.putString("info",class_id);
+                        bundleleave.putString("student_id",student_id);
+                        Log.d(TAG,"LeaveListN set bundle" + bundleleave.toString());
+                        intentLeave.putExtras(bundleleave);
+                        intentLeave.setClass(getActivity(),Activity_LeaveListClass.class);
+                        startActivity(intentLeave);
                         break;
                     case 5:
                         Log.d(TAG, "case5" + firestore_class.getTeacher_email());
@@ -255,6 +264,22 @@ public class Fragment_ClassDetail extends Fragment implements FragmentBackHandle
                 }
             });
         }
+    }
+
+    public void getClass_id(String classId){
+        DocumentReference docRef = db.collection("Class").document(classId);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Class aClass = document.toObject(Class.class);
+                        class_id = aClass.getClass_id();
+                    }
+                }
+            }
+        });
     }
 
 

@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.example.swipe_face_student.Adapter.AttendanceListAdapter;
 import com.example.swipe_face_student.Adapter.BonusListAdapter;
-import com.example.swipe_face_student.Model.Attendance;
 import com.example.swipe_face_student.Model.Bonus;
 import com.example.swipe_face_student.Model.Class;
 import com.example.swipe_face_student.Model.Performance;
@@ -39,7 +38,6 @@ public class Fragment_ClassPerformance extends Fragment {
     private String TAG = "ClassPerferformance";
     private Class aClass;
     private Performance performance;
-    private Attendance attendance;
     private Bonus bonus;
     private List<Bonus> bonusList;
     private String class_id;

@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity implements OnFragmentSelecte
                     args.putString("student_id", student_id);
                     Log.d(TAG, "MAIN ARG:" + args);
                     fragment_leaveList.setArguments(args);
-                    transaction.replace(R.id.content, new Fragment_LeaveList());
-                    transaction.addToBackStack(new Fragment_LeaveList().getClass().getName());
+                    transaction.replace(R.id.content, fragment_leaveList);
+                    transaction.addToBackStack(fragment_leaveList.getClass().getName());
                     transaction.commit();
                     return true;
 //                case R.id.navigation_notification:
@@ -184,11 +184,15 @@ public class MainActivity extends AppCompatActivity implements OnFragmentSelecte
             args.putString("info", info);
             args.putString("student_id", student_id);
             fragment_classPerformance.setArguments(args);
-            Log.d(TAG, " ToTeacherInfo");
+            Log.d(TAG, " toClassPerformance");
             getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.content, fragment_classPerformance).commit();
         }else if (fragmentKey.equals("toUserInfo")) {
             Fragment_User_Infor fragment_user_infor = new Fragment_User_Infor();
-
+            Bundle args = new Bundle();
+            args.putString("info", null);
+            args.putString("student_id", student_id);
+            fragment_user_infor.setArguments(args);
+            Log.d(TAG, " toUserInfo");
             getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.content, fragment_user_infor).commit();
         }//判斷是哪個fragment傳來的請求
 

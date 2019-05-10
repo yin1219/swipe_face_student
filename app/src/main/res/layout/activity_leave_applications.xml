@@ -3,49 +3,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
->
+    android:orientation="vertical">
 
     <!-- Include other widget or layout tags here. These are considered
             "child views" or "children" of the linear layout -->
 
-    <android.support.design.widget.NavigationView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_gravity="center"
-        android:background="@color/colorPrimary"
-        android:fitsSystemWindows="false"
-        android:orientation="vertical"
-        android:theme="@style/Base.ThemeOverlay.AppCompat.Dark"
-        android:tooltipText="申請請假">
-
-        <TextView
-            android:id="@+id/title_leave_application"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="申請請假"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/common_google_signin_btn_text_dark_default"
-            android:textSize="20sp" />
-
-    </android.support.design.widget.NavigationView>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="56dp"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
+            android:gravity="center">
 
-            android:layout_height="wrap_content"
+            <ImageButton
+                android:id="@+id/backIBtn"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/ic_chevron_left_black_24dp" />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:gravity="center"
+            android:text="申請假單"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="10"></LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:divider="@android:drawable/divider_horizontal_textfield"
             android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/leave_class_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="56dp"
                 android:background="#F9F9F9"
                 android:orientation="horizontal">
 
@@ -53,7 +64,7 @@
                     android:id="@+id/text_leave_class"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="46dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginBottom="15dp"
@@ -70,7 +81,7 @@
 
                     <Spinner
                         android:id="@+id/spinner_leave_class"
-                        android:layout_width="match_parent"
+                        android:layout_width="180dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginRight="16dp"
@@ -91,7 +102,7 @@
             <LinearLayout
                 android:id="@+id/leave_date_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="56dp"
                 android:background="#F9F9F9"
                 android:orientation="horizontal">
 
@@ -99,7 +110,7 @@
                     android:id="@+id/leave_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="46dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginBottom="15dp"
@@ -134,7 +145,7 @@
             <LinearLayout
                 android:id="@+id/leave_category_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="56dp"
                 android:background="#F9F9F9"
                 android:orientation="horizontal">
 
@@ -142,7 +153,7 @@
                     android:id="@+id/text_leave_reason"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="46dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginBottom="15dp"
@@ -153,7 +164,7 @@
 
                 <Spinner
                     android:id="@+id/spinner_leave_reason"
-                    android:layout_width="match_parent"
+                    android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginRight="16dp"
@@ -165,12 +176,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#F9F9F9"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
 
                 <EditText
                     android:id="@+id/edittext_leave_content"
-                    android:layout_width="match_parent"
+                    android:layout_width="300dp"
                     android:layout_height="180dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginLeft="15dp"
@@ -197,20 +209,18 @@
             <LinearLayout
                 android:id="@+id/leave_photo_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="56dp"
                 android:background="#F9F9F9"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
                 <TextView
                     android:id="@+id/text_leave_pohoto"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="46dp"
                     android:layout_marginRight="5dp"
-                    android:layout_marginBottom="15dp"
                     android:layout_weight="0"
-
                     android:text="上傳證明"
                     android:textColor="#000"
                     android:textSize="18sp" />
@@ -232,44 +242,42 @@
 
                     <Button
                         android:id="@+id/btn_upload_leave_photo"
-                        android:layout_width="120dp"
-                        android:layout_height="40dp"
+                        android:layout_width="85dp"
+                        android:layout_height="30dp"
                         android:layout_marginLeft="20dp"
                         android:layout_weight="0"
-                        android:background="#CCCCCC"
-                        android:text="選擇照片" />
+                        android:background="@drawable/bg_round_button_blue"
+                        android:text="選擇照片"
+                        android:textColor="#FFFFFF" />
                 </LinearLayout>
 
             </LinearLayout>
+            <ListView
+                android:id="@+id/msg_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:divider="#0000"></ListView>
 
             <LinearLayout
-                android:id="@+id/leave_apply_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp">
-
-                <Button
-                    android:id="@+id/btn_leave_cancel"
-                    android:layout_width="120dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/bg_round_button_blue"
-                    android:text="取消"
-                    android:textColor="#FFF" />
+                android:layout_height="57dp"
+                android:background="#0806b1">
 
                 <Button
                     android:id="@+id/btn_leave_apply"
-                    android:layout_width="120dp"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="60dp"
-                    android:background="@drawable/bg_round_button_blue"
-                    android:text="申請"
-                    android:textColor="#FFF" />
+                    android:layout_width="match_parent"
+                    android:layout_height="57dp"
+                    android:text="提交"
+                    android:textSize="18sp"
+                    android:textColor="#5f5ecd"
+                    android:textStyle="bold"
+                    android:background="#0806b1"/>
+
             </LinearLayout>
 
+
         </LinearLayout>
-    </ScrollView>
+
 
 </LinearLayout>

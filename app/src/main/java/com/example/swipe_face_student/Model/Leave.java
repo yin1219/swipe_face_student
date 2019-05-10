@@ -15,6 +15,7 @@ public class Leave extends LeaveId {
     String teacher_email;
     String leave_photoUrl;
     String student_registrationToken;
+    String checkWay;//確認修改假單後導向
 
 
     Date leave_uploaddate;
@@ -22,7 +23,7 @@ public class Leave extends LeaveId {
     public Leave() {
     }
 
-    public Leave(String student_name, String leave_reason, String leave_check, String leave_date, String leave_content, String class_name, String class_id, String student_id, String teacher_email, String leave_photoUrl, String student_registrationToken, Date leave_uploaddate) {
+    public Leave(String student_name, String leave_reason, String leave_check, String leave_date, String leave_content, String class_name, String class_id, String student_id, String teacher_email, String leave_photoUrl, String student_registrationToken, Date leave_uploaddate, String checkWay) {
         this.student_name = student_name;
         this.leave_reason = leave_reason;
         this.leave_check = leave_check;
@@ -35,6 +36,7 @@ public class Leave extends LeaveId {
         this.leave_photoUrl = leave_photoUrl;
         this.student_registrationToken = student_registrationToken;
         this.leave_uploaddate = leave_uploaddate;
+        this.checkWay = checkWay;
     }
 
     public String getStudent_name() {
@@ -131,5 +133,13 @@ public class Leave extends LeaveId {
 
     public void setLeave_uploaddate(Date leave_uploaddate) {
         this.leave_uploaddate = leave_uploaddate;
+    }
+
+    public String getCheckWay() {
+        return checkWay;
+    }
+
+    public void setCheckWay(String checkWay) {
+        this.checkWay = checkWay;
     }
 }

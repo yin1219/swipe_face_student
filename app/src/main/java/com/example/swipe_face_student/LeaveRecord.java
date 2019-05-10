@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.swipe_face_student.Model.Leave;
@@ -17,14 +20,20 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class LeaveRecord extends AppCompatActivity {
 
-    private static final String TAG = "Ｆirelog";
+    private static final String TAG = "Leavelog";
 
     private TextView class_name;
     private TextView leave_reason;
@@ -34,11 +43,11 @@ public class LeaveRecord extends AppCompatActivity {
     private TextView leave_uploaddate;
     private TextView leave_content;
     private ImageView leave_photo;
-    private Button agreeBtn;
-    private Button disagreeBtn;
+    private ImageButton backIBtn;
+    private ImageView imageViewStudent;
 
     private FirebaseFirestore mFirestore;
-    private StorageReference mStorageRef;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,15 +62,19 @@ public class LeaveRecord extends AppCompatActivity {
         leave_uploaddate = (TextView) findViewById(R.id.textLeaveUploadDate);
         leave_content = (TextView) findViewById(R.id.textLeaveContent);
         leave_photo = (ImageView) findViewById(R.id.imageViewLeavePhotot);
-
+        backIBtn = (ImageButton) findViewById(R.id.backIBtn);
+        imageViewStudent = (ImageView) findViewById(R.id.imageViewStudent);
 
 
         mFirestore = FirebaseFirestore.getInstance();
         StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Leave_photo");
-        Leave leave = new Leave();
+        StorageReference storageReferenceS = FirebaseStorage.getInstance().getReference().child("student_photo");
 
         Bundle bundle = getIntent().getExtras();
-        String leaveId = bundle.getString("leaveId");
+        String leaveId = bundle.getString("id");
+        ;
+        Log.d(TAG, "Check leaveId : " + leaveId);
+
 
         DocumentReference docRef = mFirestore.collection("Leave").document(leaveId);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -73,40 +86,56 @@ public class LeaveRecord extends AppCompatActivity {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                         Leave leave = document.toObject(Leave.class);
 
-
                         SimpleDateFormat myFmt2 = new SimpleDateFormat("yyyy/MM/dd");
-                        String leaveUpdloadDate = myFmt2.format(leave.getLeave_uploaddate()).toString();
+
+
+                        String leaveUpdloadDate = myFmt2.format(leave.getLeave_uploaddate());
+
+                        String photoUrlS = leave.getStudent_id();
+                        StorageReference pathS = storageReferenceS.child(photoUrlS);
+                        Log.d("TEST", pathS.toString());
+                        Glide.with(LeaveRecord.this)
+                                .load(pathS)
+                                .into(imageViewStudent);
+
+                        String checkColor = leave.getLeave_check();
 
                         class_name.setText(leave.getClass_name());
                         leave_reason.setText(leave.getLeave_reason());
                         leave_check.setText(leave.getLeave_check());
+
                         student_name.setText(leave.getStudent_name());
                         leave_date.setText(leave.getLeave_date());
                         leave_uploaddate.setText(leaveUpdloadDate);
                         leave_content.setText(leave.getLeave_content());
                         String photoUrl = leave.getLeave_photoUrl();
 
+
                         StorageReference path = storageReference.child(photoUrl);
-                        Log.d("TEST",path.toString());
+                        Log.d("TEST", path.toString());
                         Glide.with(LeaveRecord.this)
                                 .load(path)
                                 .into(leave_photo);
 
 
-
-
-
                     } else {
                         Log.d(TAG, "No such document");
                     }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
                 }
             }
         });
 
+        backIBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "TEST BACK Item");
+                finish();
+            }
+        });
 
 
     }
+
+
 
 }

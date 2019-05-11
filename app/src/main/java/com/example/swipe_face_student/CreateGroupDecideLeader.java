@@ -16,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.swipe_face_student.Adapter.CreateGroupDecideLeaderAdapter;
@@ -45,6 +46,7 @@ public class CreateGroupDecideLeader extends AppCompatActivity {
     CreateGroupDecideLeaderAdapter createGroupDecideLeaderAdapter;
     RecyclerView studentListRecycleView;
     List<String> student_id = new ArrayList();
+    ImageButton backIBtn;
     OnFragmentSelectedListener mCallback;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +80,8 @@ public class CreateGroupDecideLeader extends AppCompatActivity {
         //init xml
         cvFinishStepButton = findViewById(R.id.finishButton);
         cvFinishStepButton.setOnClickListener(v -> finishStep());
+        backIBtn = findViewById(R.id.backIBtn);
+        backIBtn.setOnClickListener(v -> finish());
 
         //init Adapter
         createGroupDecideLeaderAdapter = new CreateGroupDecideLeaderAdapter(this, studentList);

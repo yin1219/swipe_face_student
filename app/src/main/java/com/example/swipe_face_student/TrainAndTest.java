@@ -89,6 +89,8 @@ public class TrainAndTest extends AppCompatActivity {
     private FirebaseFirestore db;
     private StorageReference mStorageRef;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -312,7 +314,7 @@ public class TrainAndTest extends AppCompatActivity {
             if (id == null){
                 ToastUtils.show(getmContext(),"辨識失敗");
             }else{
-                getResultIntent(name,id,this);
+                getResultIntent(name,id);
             }
 
 
@@ -347,7 +349,7 @@ public class TrainAndTest extends AppCompatActivity {
     }
 
     //抓JSON內容後Intent
-    private void getResultIntent(String name ,String id,Context context) {
+    private void getResultIntent(String name ,String id) {
         if (id.equals(uriEmail)) {
             ToastUtils.show(getmContext(), name + "~" + "歡迎使用 !");
             Intent intentCreateClassGroupByHand = new Intent();
@@ -369,4 +371,6 @@ public class TrainAndTest extends AppCompatActivity {
     @NeedsPermission({Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
     void StoragePermissions() {
     }
+
+
 }

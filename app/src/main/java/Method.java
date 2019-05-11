@@ -74,5 +74,15 @@ public class Method {
 //    String[] currentUserIdToStringList = currentFirebaseUser.getEmail().split("@");
 //    currentUserId = currentUserIdToStringList[0];
 
+//OKHTTP 等待動畫
+//    LayoutInflater lf = (LayoutInflater) TrainAndTest.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//    ViewGroup vg = (ViewGroup) lf.inflate(R.layout.dialog_train,null);
+//    img_pgbar = (ImageView)vg.findViewById(R.id.img_pgbar);
+//    ad = (AnimationDrawable)img_pgbar.getDrawable();
+//        ad.start();
+//    android.app.AlertDialog.Builder builder1 = new AlertDialog.Builder(TrainAndTest.this);
+//                builder1.setView(vg);
+//    AlertDialog dialog = builder1.create();
+//        dialog.show();
 
 }

@@ -42,6 +42,7 @@ public class Fragment_AttendanceList extends Fragment {
     private String class_id;
     private String student_id;
     private int minus = 0;
+    private TextView tvNoData;
     OnFragmentSelectedListener mCallback;//Fragment傳值
 
     private TextView text_class_totalpoints;
@@ -65,6 +66,8 @@ public class Fragment_AttendanceList extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
         db = FirebaseFirestore.getInstance();
+
+        tvNoData = view.findViewById(R.id.tvNoData);
 
         attendanceList = new ArrayList<>();
         attendanceListAdapter = new AttendanceListAdapter(getActivity().getApplicationContext(), attendanceList);
@@ -107,6 +110,18 @@ public class Fragment_AttendanceList extends Fragment {
                                                 attendanceListAdapter.notifyDataSetChanged();
                                             }
                                         }
+                                        if (attendanceList.isEmpty()) {
+                                            attendance_list.setVisibility(View.GONE);
+                                            tvNoData.setVisibility(View.VISIBLE);
+                                        } else {
+//                                            attendance_list = (RecyclerView) getView().findViewById(R.id.attendance_list);
+//                                            text_class_totalpoints = (TextView) getView().findViewById(R.id.text_class_totalpoints);
+//                                            attendance_list.setHasFixedSize(true);
+//                                            attendance_list.setLayoutManager(new LinearLayoutManager(getActivity()));
+//                                            attendance_list.setAdapter(attendanceListAdapter);
+//                                            attendance_list.setVisibility(View.VISIBLE);
+                                            tvNoData.setVisibility(View.GONE);
+                                        }
                                         int totalPoints = aClass.getClass_totalpoints();
                                         Log.d(TAG,"point:" + totalPoints);
 //                                        text_class_totalpoints.setText(String.valueOf(totalPoints));
@@ -117,6 +132,7 @@ public class Fragment_AttendanceList extends Fragment {
 
 
                 });
+
 
 
     }

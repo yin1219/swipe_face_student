@@ -12,12 +12,6 @@
         android:layout_height="wrap_content"
        />
 
-    <ImageView
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="20dp"
-        android:background="@drawable/ic_outline_account_circle_24px" />
 
     <TextView
         android:id="@+id/groupDetailName"

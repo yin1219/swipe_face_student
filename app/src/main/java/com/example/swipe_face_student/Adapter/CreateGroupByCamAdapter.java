@@ -51,7 +51,7 @@ public class CreateGroupByCamAdapter extends RecyclerView.Adapter<CreateGroupByC
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder");
-        holder.tvGroupStudentName.setText(studentList.get(position).getStudent_id()+studentList.get(position).getStudent_department()+studentList.get(position).getStudent_name());
+        holder.tvGroupStudentName.setText(studentList.get(position).getStudent_id()+"\t\t"+studentList.get(position).getStudent_department()+"\t\t"+studentList.get(position).getStudent_name());
         holder.ibDeleteStudent
                 .setOnClickListener(v -> {
             notifyItemChanged(position);

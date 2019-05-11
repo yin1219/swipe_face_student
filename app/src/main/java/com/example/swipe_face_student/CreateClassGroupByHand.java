@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -49,6 +50,7 @@ public class CreateClassGroupByHand extends AppCompatActivity {
     RecyclerView studentListRecycleView;
     List<Student> studentList;//For Adapter
     LinearLayout groupStudentSetAddLl;//Dialog For Add Student
+    ImageButton  backIBtn;
     private final String TAG = "CreateClassGroupByHand";
 
     @Override
@@ -86,6 +88,8 @@ public class CreateClassGroupByHand extends AppCompatActivity {
         cvNextStepButton.setOnClickListener(v -> nextStep());
         groupStudentSetAddLl = findViewById(R.id.groupStudentSetAdd);
         groupStudentSetAddLl.setOnClickListener(this::customClick);
+        backIBtn = findViewById(R.id.backIBtn);
+        backIBtn.setOnClickListener(v -> finish());
 
         //init Adapter
         studentList = new ArrayList<>();

@@ -83,7 +83,7 @@ public class TrainAndTest extends AppCompatActivity {
     String uriEmail = uriEmailArray[0];
     String url = "http://" + FlassSetting.getIp() + ":8080/ProjectApi/api/FaceApi/RetrievePhoto";
     String url_train = "http://"+FlassSetting.getIp()+":8080/ProjectApi/api/FaceApi/TrainFace/"+uriEmail;
-    private static Context mContext;
+//    private static Context mContext;
     private FirebaseFirestore db;
     private StorageReference mStorageRef;
 
@@ -97,7 +97,7 @@ public class TrainAndTest extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         TrainAndTestPermissionsDispatcher.StoragePermissionsWithPermissionCheck(this);
-        mContext = getApplicationContext();
+//        mContext = getApplicationContext();
         btTrainPhtot = findViewById(R.id.buttonTrain);
         btTestPhoto = findViewById(R.id.buttonTest);
         btTakePhoto = findViewById(R.id.btTakePhoto);
@@ -273,12 +273,9 @@ public class TrainAndTest extends AppCompatActivity {
 
     }
 
-    public static Context getmContext() {
-        return mContext;
-    }
-    public static Context getActivityContext(){
-        return TrainAndTest.getActivityContext();
-    }
+//    public static Context getmContext() {
+//        return mContext;
+//    }
 
     private void parseJsonWithJsonObject(Response response) throws IOException {
         responseBody = response.body();
@@ -313,7 +310,7 @@ public class TrainAndTest extends AppCompatActivity {
                 //heroList.add(hero);
             }
             if (id == null){
-                ToastUtils.show(getmContext(),"辨識失敗");
+//                ToastUtils.show(getmContext(),"辨識失敗");
             }else{
                 getResultIntent(name,id);
             }
@@ -355,12 +352,12 @@ public class TrainAndTest extends AppCompatActivity {
 //            ToastUtils.show(getmContext(), name + "歡迎使用 !");
             Log.d(TAG,"辨識測試成功");
             Intent intentMainActivity = new Intent();
-            intentMainActivity.setClass(getApplicationContext(), MainActivity.class);
+            intentMainActivity.setClass(this, MainActivity.class);
             startActivity(intentMainActivity);
             finish();
             Log.d(TAG,"測試Intent");
         } else {
-            ToastUtils.show(getmContext(), "辨識失敗 !" + "請再多試試 !");
+//            ToastUtils.show(getmContext(), "辨識失敗 !" + "請再多試試 !");
         }
 
     }

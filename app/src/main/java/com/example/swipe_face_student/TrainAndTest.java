@@ -75,6 +75,7 @@ public class TrainAndTest extends AppCompatActivity {
     private int REQUEST_CODE_CHOOSE = 69;
     private int REQUEST_CODE_TEST = 123;
     public List<String> result;
+    private static Context mContext;
     ResponseBody responseBody;
     String responseData;
     String name, id, email, department, school;
@@ -85,7 +86,6 @@ public class TrainAndTest extends AppCompatActivity {
     String uriEmail = uriEmailArray[0];
     String url = "http://" + FlassSetting.getIp() + ":8080/ProjectApi/api/FaceApi/RetrievePhoto";
     String url_train = "http://"+FlassSetting.getIp()+":8080/ProjectApi/api/FaceApi/TrainFace/"+uriEmail;
-    private static Context mContext;
     private FirebaseFirestore db;
     private StorageReference mStorageRef;
 
@@ -95,9 +95,9 @@ public class TrainAndTest extends AppCompatActivity {
         setContentView(R.layout.activity_train_and_test);
         mStorageRef = FirebaseStorage.getInstance().getReference();
         db = FirebaseFirestore.getInstance();
+        mContext = getApplicationContext();
 
         TrainAndTestPermissionsDispatcher.StoragePermissionsWithPermissionCheck(this);
-        mContext = getApplicationContext();
         btTrainPhtot = findViewById(R.id.buttonTrain);
         btTestPhoto = findViewById(R.id.buttonTest);
         btTakePhoto = findViewById(R.id.btTakePhoto);
@@ -272,9 +272,6 @@ public class TrainAndTest extends AppCompatActivity {
 
     }
 
-    public static Context getmContext() {
-        return mContext;
-    }
 
     private void parseJsonWithJsonObject(Response response) throws IOException {
         responseBody = response.body();
@@ -311,7 +308,7 @@ public class TrainAndTest extends AppCompatActivity {
             if (id == null){
                 ToastUtils.show(getmContext(),"辨識失敗");
             }else{
-                getResultIntent(name,id);
+                getResultIntent(name,id,this);
             }
 
 
@@ -346,11 +343,11 @@ public class TrainAndTest extends AppCompatActivity {
     }
 
     //抓JSON內容後Intent
-    private void getResultIntent(String name ,String id) {
+    private void getResultIntent(String name ,String id,Context context) {
         if (id.equals(uriEmail)) {
-            ToastUtils.show(getmContext(), name + "歡迎使用 !");
+            ToastUtils.show(getmContext(), name + "~" + "歡迎使用 !");
             Intent intentCreateClassGroupByHand = new Intent();
-            intentCreateClassGroupByHand.setClass(this, MainActivity.class);
+            intentCreateClassGroupByHand.setClass(context,MainActivity.class);
             startActivity(intentCreateClassGroupByHand);
 
         } else {
@@ -367,5 +364,9 @@ public class TrainAndTest extends AppCompatActivity {
 
     @NeedsPermission({Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
     void StoragePermissions() {
+    }
+
+    public static Context getmContext(){
+        return mContext;
     }
 }

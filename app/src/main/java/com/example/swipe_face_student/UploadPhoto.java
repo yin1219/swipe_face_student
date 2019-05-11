@@ -1,9 +1,11 @@
 package com.example.swipe_face_student;
 
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -63,6 +65,7 @@ public class UploadPhoto {
                 builder.addFormDataPart("photos", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
             }//前面是para  中間是抓圖片名字 後面是創一個要求
         }
+
 
         MultipartBody requestBody = builder.build();//建立要求
 

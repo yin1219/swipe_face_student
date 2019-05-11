@@ -351,10 +351,11 @@ public class TrainAndTest extends AppCompatActivity {
     //抓JSON內容後Intent
     private void getResultIntent(String name ,String id) {
         if (id.equals(uriEmail)) {
-            ToastUtils.show(getmContext(), name + "~" + "歡迎使用 !");
+
             Intent intentCreateClassGroupByHand = new Intent();
-            intentCreateClassGroupByHand.setClass(context,MainActivity.class);
-            startActivity(intentCreateClassGroupByHand);
+            intentCreateClassGroupByHand.setClass(getmContext(),MainActivity.class);
+            getmContext().startActivity(intentCreateClassGroupByHand);
+            ToastUtils.show(getmContext(), name + "~" + "歡迎使用 !");
 
         } else {
             ToastUtils.show(getmContext(), "辨識失敗 !" + "請再多試試 !");

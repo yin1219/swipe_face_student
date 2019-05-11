@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -37,7 +36,6 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,12 +51,11 @@ import okhttp3.ResponseBody;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
-import static android.app.Activity.RESULT_OK;
 import static com.zhihu.matisse.internal.utils.PathUtils.getPath;
 
 @RuntimePermissions
 public class TrainAndTest extends AppCompatActivity {
-
+    private final String TAG = "TrainAndTest";
     private Button btTestPhoto;
     private Button btTrainPhtot;
     private Button btTakePhoto;
@@ -77,6 +74,8 @@ public class TrainAndTest extends AppCompatActivity {
     String[] uriEmailArray = email1.split("@");
     String uriEmail = uriEmailArray[0];
     private StorageReference mStorageRef;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,8 +109,15 @@ public class TrainAndTest extends AppCompatActivity {
 
         });
         btTestPhoto.setOnClickListener(v -> {
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intent, REQUEST_CODE_TEST);
+            Matisse.from(TrainAndTest.this)
+                    .choose(MimeType.ofAll())//图片类型
+                    .countable(false)//true:选中后显示数字;false:选中后显示对号
+                    .maxSelectable(1)//可选的最大数
+                    .capture(true)//选择照片时，是否显示拍照
+                    .captureStrategy(new CaptureStrategy(true, "com.example.swipe_face_student.fileprovider"))//参数1 true表示拍照存储在共有目录，false表示存储在私有目录；参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
+                    .imageEngine(new MyGlideEngine())//图片加载引擎
+                    .theme(R.style.Matisse_Zhihu)
+                    .forResult(REQUEST_CODE_TEST);//REQUEST_CODE_CHOOSE自定義
             Log.i("Create Android", "Test選圖");
         });
     }
@@ -175,15 +181,9 @@ public class TrainAndTest extends AppCompatActivity {
         }
         //Test Face Retrieve
         if (requestCode == REQUEST_CODE_TEST && resultCode == RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
-            Uri tempUri = getImageUri(getApplicationContext(), photo);
-            Log.d("TEST", tempUri.getPath() + tempUri.toString());
-            // CALL THIS METHOD TO GET THE ACTUAL PATH
-            File finalFile = new File(getRealPathFromURI(tempUri));
+            result = Matisse.obtainPathResult(data);
             TrainAndTest example = new TrainAndTest();
-            example.retrieveFile(finalFile.getAbsolutePath());
-
+            example.retrieveFile(result.get(0));
         }
     }
 
@@ -222,6 +222,9 @@ public class TrainAndTest extends AppCompatActivity {
 
     public static Context getmContext() {
         return mContext;
+    }
+    public static Context getActivityContext(){
+        return TrainAndTest.getActivityContext();
     }
 
     private void parseJsonWithJsonObject(Response response) throws IOException {
@@ -296,11 +299,13 @@ public class TrainAndTest extends AppCompatActivity {
     //抓JSON內容後Intent
     private void getResultIntent(String name ,String id) {
         if (id.equals(uriEmail)) {
-            ToastUtils.show(getmContext(), name + "歡迎使用 !");
-            Intent intentCreateClassGroupByHand = new Intent();
-            intentCreateClassGroupByHand.setClass(this, MainActivity.class);
-            startActivity(intentCreateClassGroupByHand);
-
+//            ToastUtils.show(getmContext(), name + "歡迎使用 !");
+            Log.d(TAG,"辨識測試成功");
+            Intent intentMainActivity = new Intent();
+            intentMainActivity.setClass(getApplicationContext(), MainActivity.class);
+            startActivity(intentMainActivity);
+            finish();
+            Log.d(TAG,"測試Intent");
         } else {
             ToastUtils.show(getmContext(), "辨識失敗 !" + "請再多試試 !");
         }
@@ -316,4 +321,6 @@ public class TrainAndTest extends AppCompatActivity {
     @NeedsPermission({Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
     void StoragePermissions() {
     }
+
+
 }

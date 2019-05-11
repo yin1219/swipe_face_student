@@ -62,10 +62,7 @@ public class Fragment_User_Infor extends Fragment implements FragmentBackHandler
         //init db
         db = FirebaseFirestore.getInstance();
 
-        //抓現在使用者
-//        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
-//        currentFirebaseUser.getEmail(); String[] currentUserIdToStringList = currentFirebaseUser.getEmail().split("@");
-//        student_Id = currentUserIdToStringList[0];
+
         //inti xml
         tvStudent_Id = view.findViewById(R.id.tvStudent_Id);
         tvStudentDepartment = view.findViewById(R.id.tvStudentDepartment);

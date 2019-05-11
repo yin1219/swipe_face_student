@@ -23,6 +23,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -56,6 +58,7 @@ public class QuestionResponse extends AppCompatActivity {
     private Bonus bonus;
     private Date create_time;
     private ImageButton backIBtn;
+    private String student_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +67,13 @@ public class QuestionResponse extends AppCompatActivity {
 
         //init db
         db = FirebaseFirestore.getInstance();
+
+        //init currentUser
+        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        currentFirebaseUser.getEmail();
+        String[] currentUserIdToStringList = currentFirebaseUser.getEmail().split("@");
+        student_id = currentUserIdToStringList[0];
+        Log.d(TAG,"currentUserId: "+student_id);
 
         //init Intent Bundle
         Intent Intent = getIntent(); /* 取得傳入的 Intent 物件 */
@@ -78,7 +88,7 @@ public class QuestionResponse extends AppCompatActivity {
         tvCountDownTime = findViewById(R.id.tvCountDown);
         cvNextStep = findViewById(R.id.nextStepButton);
         tvSubmit = findViewById(R.id.tvSubmit);
-        backIBtn =findViewById(R.id.backIBtn);
+        backIBtn = findViewById(R.id.backIBtn);
         backIBtn.setOnClickListener(v -> finish());
 
 
@@ -87,7 +97,7 @@ public class QuestionResponse extends AppCompatActivity {
                 .document(classId);
         docRefClass.get().addOnSuccessListener(documentSnapshotClass -> {
             Class aClass = documentSnapshotClass.toObject(Class.class);
-            class_Id =aClass.getClass_id();
+            class_Id = aClass.getClass_id();
             class_answerbonus = aClass.getClass_answerbonus();
         });
 
@@ -105,20 +115,22 @@ public class QuestionResponse extends AppCompatActivity {
             B = question.getB();
             C = question.getC();
             D = question.getD();
-            if(A.contains("405401217")||B.contains("405401217")||C.contains("405401217")||D.contains("405401217")){
-                if(A.contains("405401217")){
-                    rbQuestionA.setChecked(true);
-                }if(B.contains("405401217")){
-                    rbQuestionB.setChecked(true);
-                }if(C.contains("405401217")){
-                    rbQuestionC.setChecked(true);
-                }if(D.contains("405401217")){
-                    rbQuestionD.setChecked(true);
-                }
-                Toast.makeText(this, "已提交", Toast.LENGTH_LONG).show();
-                cvNextStep.setEnabled(false);
-                tvSubmit.setTextColor(Color.parseColor("#5f5ecd"));
+            if (A.size()!=0) {
+                rbQuestionA.setChecked(true);
             }
+            if (B.size()!=0) {
+                rbQuestionB.setChecked(true);
+            }
+            if (C.size()!=0) {
+                rbQuestionC.setChecked(true);
+            }
+            if (D.size()!=0) {
+                rbQuestionD.setChecked(true);
+            }
+            Toast.makeText(this, "已提交", Toast.LENGTH_LONG).show();
+            cvNextStep.setEnabled(false);
+            tvSubmit.setTextColor(Color.parseColor("#5f5ecd"));
+
 
         });
 
@@ -146,9 +158,9 @@ public class QuestionResponse extends AppCompatActivity {
                         intentToAnalysis.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         Bundle bundleToAnalysis = new Bundle();
                         bundleToAnalysis.putString("classId", classId);
-                        bundleToAnalysis.putString("Answer",Answer);
-                        bundleToAnalysis.putString("class_Id",class_Id);
-                        bundleToAnalysis.putInt("class_answerbonus",class_answerbonus);
+                        bundleToAnalysis.putString("Answer", Answer);
+                        bundleToAnalysis.putString("class_Id", class_Id);
+                        bundleToAnalysis.putInt("class_answerbonus", class_answerbonus);
                         intentToAnalysis.putExtras(bundleToAnalysis);
                         startActivity(intentToAnalysis);
                         finish();
@@ -205,7 +217,7 @@ public class QuestionResponse extends AppCompatActivity {
 
 
                     Map<String, Object> classQuestionResponse = new HashMap<>();
-                    classQuestionResponse.put(Answer, FieldValue.arrayUnion("405401217"));//getuser
+                    classQuestionResponse.put(Answer, FieldValue.arrayUnion(student_id));//getuser
 
                     db.collection("Class")
                             .document(classId)
@@ -216,8 +228,8 @@ public class QuestionResponse extends AppCompatActivity {
                     Toast.makeText(this, "已提交", Toast.LENGTH_LONG).show();
                     cvNextStep.setEnabled(false);
                     tvSubmit.setTextColor(Color.parseColor("#5f5ecd"));
-                    if(Answer!=null){
-                        if (questionAnswer.equals(Answer)){
+                    if (Answer != null) {
+                        if (questionAnswer.equals(Answer)) {
                             setPoint();
 
                         }
@@ -238,10 +250,10 @@ public class QuestionResponse extends AppCompatActivity {
         bonus.setBonus_reason("回答問題");
         bonus.setBonus_time(create_time);
         bonus.setClass_id(class_Id);
-        bonus.setStudent_id("405401217");//currentUserId
+        bonus.setStudent_id(student_id);//currentUserId
         db.collection("Performance")
                 .whereEqualTo("class_id", class_Id)
-                .whereEqualTo("student_id", "405401217")
+                .whereEqualTo("student_id", student_id)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

@@ -14,6 +14,8 @@ import com.example.swipe_face_student.Adapter.GroupPageAdapter;
 import com.example.swipe_face_student.Model.Group;
 import com.example.swipe_face_student.Model.Student;
 import com.example.swipe_face_student.GroupNumberForCh;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -38,7 +40,7 @@ public class GroupPage extends AppCompatActivity {
     List<Student> studentList;//For Adapter
     List<String> studentListFromGroup = new ArrayList();
     ImageButton ibBackIBtn;
-
+    String student_id ;
 
 
     @Override
@@ -48,6 +50,13 @@ public class GroupPage extends AppCompatActivity {
 
         //init db
         db = FirebaseFirestore.getInstance();
+
+        //init currentUser
+        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        currentFirebaseUser.getEmail();
+        String[] currentUserIdToStringList = currentFirebaseUser.getEmail().split("@");
+        student_id = currentUserIdToStringList[0];
+        Log.d(TAG,"currentUserId: "+student_id);
 
         //init xml
         tvGroupBonus = findViewById(R.id.groupBonus);

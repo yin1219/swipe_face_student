@@ -66,7 +66,7 @@ import static com.zhihu.matisse.internal.utils.PathUtils.getPath;
 
 @RuntimePermissions
 public class TrainAndTest extends AppCompatActivity {
-
+    private final String TAG = "TrainAndTest";
     private Button btTestPhoto;
     private Button btTrainPhtot;
     private Button btTakePhoto;
@@ -75,7 +75,6 @@ public class TrainAndTest extends AppCompatActivity {
     private int REQUEST_CODE_CHOOSE = 69;
     private int REQUEST_CODE_TEST = 123;
     public List<String> result;
-    private static Context mContext;
     ResponseBody responseBody;
     String responseData;
     String name, id, email, department, school;
@@ -86,6 +85,7 @@ public class TrainAndTest extends AppCompatActivity {
     String uriEmail = uriEmailArray[0];
     String url = "http://" + FlassSetting.getIp() + ":8080/ProjectApi/api/FaceApi/RetrievePhoto";
     String url_train = "http://"+FlassSetting.getIp()+":8080/ProjectApi/api/FaceApi/TrainFace/"+uriEmail;
+    private static Context mContext;
     private FirebaseFirestore db;
     private StorageReference mStorageRef;
 
@@ -95,9 +95,9 @@ public class TrainAndTest extends AppCompatActivity {
         setContentView(R.layout.activity_train_and_test);
         mStorageRef = FirebaseStorage.getInstance().getReference();
         db = FirebaseFirestore.getInstance();
-        mContext = getApplicationContext();
 
         TrainAndTestPermissionsDispatcher.StoragePermissionsWithPermissionCheck(this);
+        mContext = getApplicationContext();
         btTrainPhtot = findViewById(R.id.buttonTrain);
         btTestPhoto = findViewById(R.id.buttonTest);
         btTakePhoto = findViewById(R.id.btTakePhoto);
@@ -121,8 +121,15 @@ public class TrainAndTest extends AppCompatActivity {
 
         });
         btTestPhoto.setOnClickListener(v -> {
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intent, REQUEST_CODE_TEST);
+            Matisse.from(TrainAndTest.this)
+                    .choose(MimeType.ofAll())//图片类型
+                    .countable(false)//true:选中后显示数字;false:选中后显示对号
+                    .maxSelectable(1)//可选的最大数
+                    .capture(true)//选择照片时，是否显示拍照
+                    .captureStrategy(new CaptureStrategy(true, "com.example.swipe_face_student.fileprovider"))//参数1 true表示拍照存储在共有目录，false表示存储在私有目录；参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
+                    .imageEngine(new MyGlideEngine())//图片加载引擎
+                    .theme(R.style.Matisse_Zhihu)
+                    .forResult(REQUEST_CODE_TEST);//REQUEST_CODE_CHOOSE自定義
             Log.i("Create Android", "Test選圖");
         });
     }
@@ -185,15 +192,9 @@ public class TrainAndTest extends AppCompatActivity {
         }
         //Test Face Retrieve
         if (requestCode == REQUEST_CODE_TEST && resultCode == RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
-            Uri tempUri = getImageUri(getApplicationContext(), photo);
-            Log.d("TEST", tempUri.getPath() + tempUri.toString());
-            // CALL THIS METHOD TO GET THE ACTUAL PATH
-            File finalFile = new File(getRealPathFromURI(tempUri));
+            result = Matisse.obtainPathResult(data);
             TrainAndTest example = new TrainAndTest();
-            example.retrieveFile(finalFile.getAbsolutePath());
-
+            example.retrieveFile(result.get(0));
         }
     }
 
@@ -272,6 +273,9 @@ public class TrainAndTest extends AppCompatActivity {
 
     }
 
+    public static Context getmContext() {
+        return mContext;
+    }
 
     private void parseJsonWithJsonObject(Response response) throws IOException {
         responseBody = response.body();
@@ -364,9 +368,5 @@ public class TrainAndTest extends AppCompatActivity {
 
     @NeedsPermission({Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
     void StoragePermissions() {
-    }
-
-    public static Context getmContext(){
-        return mContext;
     }
 }

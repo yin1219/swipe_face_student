@@ -28,7 +28,7 @@
             <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TrainAndTest"></activity>
+        <activity android:name=".TrainAndTest"/>
         <activity android:name=".RetrieveResult"></activity>
         <activity android:name=".QuestionAnalysis"></activity>
         <activity android:name=".QuestionResponse" />

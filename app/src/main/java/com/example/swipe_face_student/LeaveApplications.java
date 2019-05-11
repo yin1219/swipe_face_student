@@ -61,10 +61,7 @@ public class LeaveApplications extends AppCompatActivity {
 
     private Leave leave = new Leave();
     private String TAG = "LeaveApplications_FLAG";
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();//抓現在登入user
-    String email1 = user.getEmail();//抓user.email
-    String [] uriEmailArray = email1.split("@");
-    private String student_id = uriEmailArray[0];
+    private String student_id ;
     private String student_name;
     private String class_id;
     private String class_name;
@@ -97,6 +94,13 @@ public class LeaveApplications extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leave_applications);
+
+        //init currentUser
+        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        currentFirebaseUser.getEmail();
+        String[] currentUserIdToStringList = currentFirebaseUser.getEmail().split("@");
+        student_id = currentUserIdToStringList[0];
+        Log.d(TAG,"currentUserId: "+student_id);
 
         Bundle formLeaveList = getIntent().getExtras();
         isAllClass =  formLeaveList.getBoolean("isAllClass");

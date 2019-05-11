@@ -1,17 +1,25 @@
 package com.example.swipe_face_student;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -45,6 +53,7 @@ import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
@@ -59,6 +68,8 @@ public class TrainAndTest extends AppCompatActivity {
     private Button btTestPhoto;
     private Button btTrainPhtot;
     private Button btTakePhoto;
+    private ImageView img_pgbar;
+    private AnimationDrawable ad;
     private int REQUEST_CODE_CHOOSE = 69;
     private int REQUEST_CODE_TEST = 123;
     public List<String> result;
@@ -66,13 +77,14 @@ public class TrainAndTest extends AppCompatActivity {
     String responseData;
     String name, id, email, department, school;
     OkHttpClient client = new OkHttpClient();
-    String url = "http://" + FlassSetting.getIp() + ":8080/ProjectApi/api/FaceApi/RetrievePhoto";
-    private static Context mContext;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();//抓現在登入user
-    private FirebaseFirestore db;
     String email1 = user.getEmail();//抓user.email
     String[] uriEmailArray = email1.split("@");
     String uriEmail = uriEmailArray[0];
+    String url = "http://" + FlassSetting.getIp() + ":8080/ProjectApi/api/FaceApi/RetrievePhoto";
+    String url_train = "http://"+FlassSetting.getIp()+":8080/ProjectApi/api/FaceApi/TrainFace/"+uriEmail;
+    private static Context mContext;
+    private FirebaseFirestore db;
     private StorageReference mStorageRef;
 
 
@@ -139,9 +151,8 @@ public class TrainAndTest extends AppCompatActivity {
             Log.d("Matisse", "Uris: " + Matisse.obtainResult(data));
             Log.d("Matisse", "Paths: " + Matisse.obtainPathResult(data));
             Log.e("Matisse", "Use the selected photos with original: " + String.valueOf(Matisse.obtainOriginalState(data)));
-            UploadPhoto example = new UploadPhoto();
             result = Matisse.obtainPathResult(data);
-            example.uploadFile(result);
+            uploadFile(result);
             Log.i("Create Android", "Test5");
 
             //上傳圖片到storage
@@ -216,6 +227,48 @@ public class TrainAndTest extends AppCompatActivity {
 
             }
 
+        });
+
+    }
+
+    public void uploadFile(List<String> img) {
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);//setType一定要Multipart
+        for (int i = 0; i <img.size() ; i++) {//用迴圈去RUN多選照片
+            File file=new File(img.get(i));
+            if (file !=null) {
+                builder.addFormDataPart("photos", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
+            }//前面是para  中間是抓圖片名字 後面是創一個要求
+        }
+        LayoutInflater lf = (LayoutInflater) TrainAndTest.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ViewGroup vg = (ViewGroup) lf.inflate(R.layout.dialog_train,null);
+        img_pgbar = (ImageView)vg.findViewById(R.id.img_pgbar);
+        ad = (AnimationDrawable)img_pgbar.getDrawable();
+        ad.start();
+        android.app.AlertDialog.Builder builder1 = new AlertDialog.Builder(TrainAndTest.this);
+                builder1.setView(vg);
+        AlertDialog dialog = builder1.create();
+        dialog.show();
+        MultipartBody requestBody = builder.build();//建立要求
+
+        Request request = new Request.Builder()
+                .url(url_train)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i("Create Android", "Test失敗");
+                //Toast.makeText(context,"上傳失敗 !",Toast.LENGTH_SHORT).show();
+
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.i("Create Android", "Test成功");
+                //Toast.makeText(context,"上傳成功 !",Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+
+            }
         });
 
     }

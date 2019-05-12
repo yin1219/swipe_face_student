@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.swipe_face_student.Model.Student;
@@ -36,6 +37,7 @@ public class Fragment_User_Infor extends Fragment implements FragmentBackHandler
     private TextView tvStudentSchool;
     private String student_id;
     private String studentId;
+    private ImageButton back;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,12 +71,15 @@ public class Fragment_User_Infor extends Fragment implements FragmentBackHandler
         tvStudentEmail = view.findViewById(R.id.tvStudentEmail);
         tvStudentSchool = view.findViewById(R.id.tvStudentSchool);
         tvStudentName = view.findViewById(R.id.tvStudentName);
+        back = (ImageButton) view.findViewById(R.id.backIBtn);
+        back.setOnClickListener(view1 -> {
+            getActivity().finish();
+        });
 
         //db query
         if(student_id!=null){
             setInfo();
         }
-
 
     }
 

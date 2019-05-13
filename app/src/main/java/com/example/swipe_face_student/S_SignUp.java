@@ -333,11 +333,12 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
 
                         db.collection("Student").add(user).addOnCompleteListener(task -> {
                             Toast.makeText(S_SignUp.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent();
-                            i.setClass(S_SignUp.this,LeadingPage.class);
-                            startActivity(i);
-                            finish();
+
                         });
+                        Intent i = new Intent();
+                        i.setClass(S_SignUp.this,LeadingPage.class);
+                        startActivity(i);
+                        finish();
 
                         //user is successfully registered and logged in
                         //we will start the profile activity here

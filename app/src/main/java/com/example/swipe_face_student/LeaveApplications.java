@@ -84,12 +84,13 @@ public class LeaveApplications extends AppCompatActivity {
     private ImageView img_leave_photo;
     private Context context;
     private Boolean isAllClass = true;
+    private Boolean isHaveImg =true;
     private final int PICK_IMAGE_REQUEST = 71;
 
     private String classStr, contentStr;
 
 
-    private Uri filePath;
+    private Uri filePath ;
 
 
     @Override
@@ -195,13 +196,14 @@ public class LeaveApplications extends AppCompatActivity {
         btn_leave_apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if(classStr.length() > 0 && contentStr.length() > 0){
+                if(spinner_leave_class.getSelectedItem().toString().equals("--請選擇課程--")){
+                    Toast.makeText(LeaveApplications.this ,"請選擇課程", Toast.LENGTH_LONG).show();
+                }
+                else{
                     apply();
                     Log.d(TAG, "leave.getTeacher_email onClick:" + leave.getTeacher_email());
-//                }
-//                else{
-//                    Toast.makeText(LeaveApplications.this ,"資料填寫未完成", Toast.LENGTH_LONG).show();
-//                }
+
+                }
             }
         });
 
@@ -223,9 +225,15 @@ public class LeaveApplications extends AppCompatActivity {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 img_leave_photo.setImageBitmap(bitmap);
+                isHaveImg =true;
+                Log.d(TAG,"isHaveImg =true;");
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }else{
+            isHaveImg =false;
+            Log.d(TAG,"isHaveImg =false;");
+
         }
     }
 
@@ -382,6 +390,8 @@ public class LeaveApplications extends AppCompatActivity {
     }
 
 
+
+
     private void apply() {
 
         setStudent_name();
@@ -431,12 +441,13 @@ public class LeaveApplications extends AppCompatActivity {
         leave.setLeave_uploaddate(leave_uploaddate);
         leave.setStudent_id(student_id);
         leave.setStudent_registrationToken(student_registrationToken);
-        leave.setLeave_photoUrl(leave_photoUrl);
+        if (filePath!=null) {
+            leave.setLeave_photoUrl(leave_photoUrl);
 
         Log.d(TAG, "leave_photoUrl:" + leave_photoUrl);
         StorageReference ref = storageReference.child("Leave_photo/" + leave_photoUrl);
         ref.putFile(filePath);
-
+        }
         Log.d(TAG, "afterStudent_name" + student_name);
         Log.d(TAG, "afterTeacher_email:" + teacher_email);
 

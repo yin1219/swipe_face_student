@@ -86,6 +86,8 @@ public class LeaveApplications extends AppCompatActivity {
     private Boolean isAllClass = true;
     private final int PICK_IMAGE_REQUEST = 71;
 
+    private String classStr, contentStr;
+
 
     private Uri filePath;
 
@@ -134,6 +136,10 @@ public class LeaveApplications extends AppCompatActivity {
         classList = new ArrayList<>();
         class_idList.add("NULL");
 
+//        classStr = spinner_leave_class.getSelectedItem().toString();
+//        contentStr = edittext_leave_content.getText().toString();
+
+
 //
 //        getClassList();
 //        classList.add("--請選擇課程--");
@@ -179,7 +185,6 @@ public class LeaveApplications extends AppCompatActivity {
         btn_upload_leave_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 chooseImage();
             }
 
@@ -190,8 +195,13 @@ public class LeaveApplications extends AppCompatActivity {
         btn_leave_apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                apply();
-                Log.d(TAG, "leave.getTeacher_email onClick:" + leave.getTeacher_email());
+//                if(classStr.length() > 0 && contentStr.length() > 0){
+                    apply();
+                    Log.d(TAG, "leave.getTeacher_email onClick:" + leave.getTeacher_email());
+//                }
+//                else{
+//                    Toast.makeText(LeaveApplications.this ,"資料填寫未完成", Toast.LENGTH_LONG).show();
+//                }
             }
         });
 

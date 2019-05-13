@@ -13,16 +13,25 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.swipe_face_student.Model.Student;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.List;
 
 
 public class Fragment_LeaveList extends Fragment {
     private static final String TAG = "LeaveList001";
+
+    private FirebaseFirestore db;
     private FloatingActionButton fab_leave;
     private boolean isAllClass = true;
+    private List<String> classList;
 
 
-    private String class_id = "null", student_id = "123";
+    private String class_id = "null", student_id;
 
 
     OnFragmentSelectedListener mCallback;//Fragment傳值
@@ -34,6 +43,8 @@ public class Fragment_LeaveList extends Fragment {
         Bundle args = getArguments();//fragment傳值
         student_id = args.getString("student_id");
 
+        db = FirebaseFirestore.getInstance();
+
         Log.d(TAG, "TEST arg : " + args.toString());
         Log.d(TAG, "class_id:" + class_id);//fragment傳值
         Log.d(TAG, "student_id:" + student_id);//fragment傳值
@@ -44,6 +55,8 @@ public class Fragment_LeaveList extends Fragment {
     }
 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
+        getClassList(student_id);
 
         FragmentTabHost tabHost = (FragmentTabHost) view.findViewById(android.R.id.tabhost);
         fab_leave = (FloatingActionButton) view.findViewById(R.id.fab_leave);
@@ -85,22 +98,37 @@ public class Fragment_LeaveList extends Fragment {
         fab_leave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (classList.size() == 0) {
+                    Toast.makeText(getContext(), "尚未加入任何課程", Toast.LENGTH_LONG).show();
+                } else {
                     Intent i = new Intent();
                     Bundle formLeaveList = new Bundle();
-                    formLeaveList.putString("class_id",class_id);
-//                    if (isAllClass){
-                        formLeaveList.putBoolean("isAllClass",true);
-//                    }else{
-//                        formLeaveList.putBoolean("isAllClass",false);
-//                    }
+                    formLeaveList.putString("class_id", class_id);
+                    formLeaveList.putBoolean("isAllClass", true);
                     i.putExtras(formLeaveList);
                     i.setClass(getActivity().getApplicationContext(), LeaveApplications.class);
                     startActivity(i);
+                }
+
             }
         });
     }
 
-
+    public void getClassList(String student_id) {
+        db.collection("Student")
+                .whereEqualTo("student_id", student_id)
+                .addSnapshotListener((documentSnapshots, e) -> {
+                    if (e != null) {
+                        Log.d(TAG, "Error :" + e.getMessage());
+                    }
+                    for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
+                        if (doc.getType() == DocumentChange.Type.ADDED) {
+                            Student student = doc.getDocument().toObject(Student.class);
+                            classList = student.getClass_id();
+                        }
+                    }
+                });
+    }
 
 
     @Override

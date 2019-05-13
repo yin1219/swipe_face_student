@@ -1,7 +1,9 @@
 package com.example.swipe_face_student;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -9,7 +11,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,6 +74,9 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
     String studentIdFromUpload;//接收回傳JSON的studentId
     List<String> listStudentIdFromUpload = new ArrayList<>();
     List<String> photoPathToUploadClass;//接收Matisse的路徑
+    ImageButton backIBtn;
+    ImageView img_pgbar;
+    AnimationDrawable ad;
     OkHttpClient client = new OkHttpClient();
     ResponseBody responseBody;
     String responseData;
@@ -93,6 +103,8 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
         tvCreateTime = findViewById(R.id.tvCreateTime);
         cvGroupDividerByhand = findViewById(R.id.group_divider_byhand);
         cvGroupDividerByCam = findViewById(R.id.group_divider_byCam);
+        backIBtn = findViewById(R.id.backIBtn);
+        backIBtn.setOnClickListener(v -> finish());
 
         //init Intent
         Intent Intent = getIntent();
@@ -184,6 +196,15 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
         }
         if (!photoPathToUploadClass.isEmpty()) {
             Log.d(TAG,photoPathToUploadClass.get(0));
+            LayoutInflater lf = (LayoutInflater) CreateClassGroupSt1.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            ViewGroup vg = (ViewGroup) lf.inflate(R.layout.dialog_retreive,null);
+            img_pgbar = vg.findViewById(R.id.img_pgbar);
+            ad = (AnimationDrawable)img_pgbar.getDrawable();
+            ad.start();
+            android.app.AlertDialog.Builder builder1 = new AlertDialog.Builder(CreateClassGroupSt1.this);
+            builder1.setView(vg);
+            AlertDialog dialog = builder1.create();
+            dialog.show();
             MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);//setType一定要Multipart
             for (int i = 0; i < photoPathToUploadClass.size(); i++) {//用迴圈去RUN多選照片
                 File file = new File(photoPathToUploadClass.get(i));
@@ -207,6 +228,7 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     Log.i("Create Android", "Test成功");
+                    dialog.dismiss();
                     parseJsonWithJsonObject(response);
                 }
             });

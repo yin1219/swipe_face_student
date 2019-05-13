@@ -1,18 +1,25 @@
 package com.example.swipe_face_student;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -47,6 +54,7 @@ import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
@@ -58,10 +66,12 @@ import static com.zhihu.matisse.internal.utils.PathUtils.getPath;
 
 @RuntimePermissions
 public class TrainAndTest extends AppCompatActivity {
-
+    private final String TAG = "TrainAndTest";
     private Button btTestPhoto;
     private Button btTrainPhtot;
     private Button btTakePhoto;
+    private ImageView img_pgbar;
+    private AnimationDrawable ad;
     private int REQUEST_CODE_CHOOSE = 69;
     private int REQUEST_CODE_TEST = 123;
     public List<String> result;
@@ -69,14 +79,17 @@ public class TrainAndTest extends AppCompatActivity {
     String responseData;
     String name, id, email, department, school;
     OkHttpClient client = new OkHttpClient();
-    String url = "http://" + FlassSetting.getIp() + ":8080/ProjectApi/api/FaceApi/RetrievePhoto";
-    private static Context mContext;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();//抓現在登入user
-    private FirebaseFirestore db;
     String email1 = user.getEmail();//抓user.email
     String[] uriEmailArray = email1.split("@");
     String uriEmail = uriEmailArray[0];
+    String url = "http://" + FlassSetting.getIp() + ":8080/ProjectApi/api/FaceApi/RetrievePhoto";
+    String url_train = "http://"+FlassSetting.getIp()+":8080/ProjectApi/api/FaceApi/TrainFace/"+uriEmail;
+    private static Context mContext;
+    private FirebaseFirestore db;
     private StorageReference mStorageRef;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,8 +123,15 @@ public class TrainAndTest extends AppCompatActivity {
 
         });
         btTestPhoto.setOnClickListener(v -> {
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intent, REQUEST_CODE_TEST);
+            Matisse.from(TrainAndTest.this)
+                    .choose(MimeType.ofAll())//图片类型
+                    .countable(false)//true:选中后显示数字;false:选中后显示对号
+                    .maxSelectable(1)//可选的最大数
+                    .capture(true)//选择照片时，是否显示拍照
+                    .captureStrategy(new CaptureStrategy(true, "com.example.swipe_face_student.fileprovider"))//参数1 true表示拍照存储在共有目录，false表示存储在私有目录；参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
+                    .imageEngine(new MyGlideEngine())//图片加载引擎
+                    .theme(R.style.Matisse_Zhihu)
+                    .forResult(REQUEST_CODE_TEST);//REQUEST_CODE_CHOOSE自定義
             Log.i("Create Android", "Test選圖");
         });
     }
@@ -133,9 +153,8 @@ public class TrainAndTest extends AppCompatActivity {
             Log.d("Matisse", "Uris: " + Matisse.obtainResult(data));
             Log.d("Matisse", "Paths: " + Matisse.obtainPathResult(data));
             Log.e("Matisse", "Use the selected photos with original: " + String.valueOf(Matisse.obtainOriginalState(data)));
-            UploadPhoto example = new UploadPhoto();
             result = Matisse.obtainPathResult(data);
-            example.uploadFile(result);
+            uploadFile(result);
             Log.i("Create Android", "Test5");
 
             //上傳圖片到storage
@@ -175,15 +194,9 @@ public class TrainAndTest extends AppCompatActivity {
         }
         //Test Face Retrieve
         if (requestCode == REQUEST_CODE_TEST && resultCode == RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
-            Uri tempUri = getImageUri(getApplicationContext(), photo);
-            Log.d("TEST", tempUri.getPath() + tempUri.toString());
-            // CALL THIS METHOD TO GET THE ACTUAL PATH
-            File finalFile = new File(getRealPathFromURI(tempUri));
+            result = Matisse.obtainPathResult(data);
             TrainAndTest example = new TrainAndTest();
-            example.retrieveFile(finalFile.getAbsolutePath());
-
+            example.retrieveFile(result.get(0));
         }
     }
 
@@ -216,6 +229,48 @@ public class TrainAndTest extends AppCompatActivity {
 
             }
 
+        });
+
+    }
+
+    public void uploadFile(List<String> img) {
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);//setType一定要Multipart
+        for (int i = 0; i <img.size() ; i++) {//用迴圈去RUN多選照片
+            File file=new File(img.get(i));
+            if (file !=null) {
+                builder.addFormDataPart("photos", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
+            }//前面是para  中間是抓圖片名字 後面是創一個要求
+        }
+        LayoutInflater lf = (LayoutInflater) TrainAndTest.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ViewGroup vg = (ViewGroup) lf.inflate(R.layout.dialog_train,null);
+        img_pgbar = (ImageView)vg.findViewById(R.id.img_pgbar);
+        ad = (AnimationDrawable)img_pgbar.getDrawable();
+        ad.start();
+        android.app.AlertDialog.Builder builder1 = new AlertDialog.Builder(TrainAndTest.this);
+                builder1.setView(vg);
+        AlertDialog dialog = builder1.create();
+        dialog.show();
+        MultipartBody requestBody = builder.build();//建立要求
+
+        Request request = new Request.Builder()
+                .url(url_train)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i("Create Android", "Test失敗");
+                //Toast.makeText(context,"上傳失敗 !",Toast.LENGTH_SHORT).show();
+
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.i("Create Android", "Test成功");
+                //Toast.makeText(context,"上傳成功 !",Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+
+            }
         });
 
     }
@@ -256,7 +311,12 @@ public class TrainAndTest extends AppCompatActivity {
 
                 //heroList.add(hero);
             }
-            getResultIntent(name,id);
+            if (id == null){
+                ToastUtils.show(getmContext(),"辨識失敗");
+            }else{
+                getResultIntent(name,id);
+            }
+
 
             //adapter = new HeroAdapter(heroList, getmContext());
 
@@ -291,10 +351,11 @@ public class TrainAndTest extends AppCompatActivity {
     //抓JSON內容後Intent
     private void getResultIntent(String name ,String id) {
         if (id.equals(uriEmail)) {
-            ToastUtils.show(getmContext(), name + "歡迎使用 !");
+
             Intent intentCreateClassGroupByHand = new Intent();
-            intentCreateClassGroupByHand.setClass(this, MainActivity.class);
-            startActivity(intentCreateClassGroupByHand);
+            intentCreateClassGroupByHand.setClass(getmContext(),MainActivity.class);
+            getmContext().startActivity(intentCreateClassGroupByHand);
+            ToastUtils.show(getmContext(), name + "~" + "歡迎使用 !");
 
         } else {
             ToastUtils.show(getmContext(), "辨識失敗 !" + "請再多試試 !");
@@ -311,4 +372,6 @@ public class TrainAndTest extends AppCompatActivity {
     @NeedsPermission({Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
     void StoragePermissions() {
     }
+
+
 }

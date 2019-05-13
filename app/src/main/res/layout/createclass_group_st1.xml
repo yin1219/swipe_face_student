@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#FFF"
     tools:context="com.example.swipe_face_student.CreateClassGroupSt1">
 
 
@@ -56,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:gravity="center_vertical"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:text="課程名稱"
             android:textColor="#000000"
             android:textSize="16sp"
@@ -66,7 +67,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/divider" />
 
     <LinearLayout
@@ -77,9 +78,9 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="40dp"
             android:gravity="center_vertical"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:text="分組規則"
             android:textColor="#000000"
             android:textSize="14sp" />
@@ -88,7 +89,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/divider" />
 
     <LinearLayout
@@ -100,8 +101,8 @@
         <TextView
             android:id="@+id/tvGroupNum"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="15dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
             android:gravity="center_vertical"
             android:text="每組人數"
             android:textColor="#000000"
@@ -111,7 +112,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/divider" />
 
     <LinearLayout
@@ -123,8 +124,8 @@
         <TextView
             android:id="@+id/tvCreateTime"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="15dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
             android:gravity="center_vertical"
             android:text="結束時間"
             android:textColor="#000000"
@@ -134,7 +135,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/divider" />
 
     <LinearLayout
@@ -145,9 +146,9 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="40dp"
             android:gravity="center_vertical"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:text="一組統一人上傳即可"
             android:textColor="#000000"
             android:textSize="14sp" />
@@ -156,7 +157,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/divider" />
 
     <LinearLayout

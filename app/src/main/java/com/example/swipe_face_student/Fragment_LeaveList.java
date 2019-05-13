@@ -22,7 +22,7 @@ public class Fragment_LeaveList extends Fragment {
     private boolean isAllClass = true;
 
 
-    private String class_id, student_id = "123";
+    private String class_id = "null", student_id = "123";
 
 
     OnFragmentSelectedListener mCallback;//Fragment傳值
@@ -88,17 +88,19 @@ public class Fragment_LeaveList extends Fragment {
                     Intent i = new Intent();
                     Bundle formLeaveList = new Bundle();
                     formLeaveList.putString("class_id",class_id);
-                    if (isAllClass){
+//                    if (isAllClass){
                         formLeaveList.putBoolean("isAllClass",true);
-                    }else{
-                        formLeaveList.putBoolean("isAllClass",false);
-                    }
+//                    }else{
+//                        formLeaveList.putBoolean("isAllClass",false);
+//                    }
                     i.putExtras(formLeaveList);
                     i.setClass(getActivity().getApplicationContext(), LeaveApplications.class);
                     startActivity(i);
             }
         });
     }
+
+
 
 
     @Override

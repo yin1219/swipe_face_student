@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -50,6 +51,7 @@ public class CreateClassGroupByCam extends AppCompatActivity {
     CreateGroupByCamAdapter createGroupByCamAdapter;
     LinearLayout groupStudentSetAddLl;//Dialog For Add Student
     CardView cvNextStepButton;//下一步->確認組長
+    ImageButton backIBtn;
 
 
     @Override
@@ -88,6 +90,8 @@ public class CreateClassGroupByCam extends AppCompatActivity {
         cvNextStepButton.setOnClickListener(v -> nextStep());
         groupStudentSetAddLl = findViewById(R.id.groupStudentSetAdd);
         groupStudentSetAddLl.setOnClickListener(v -> customClick(v));
+        backIBtn = findViewById(R.id.backIBtn);
+        backIBtn.setOnClickListener(v -> finish());
 
         //init Adapter
         studentList = new ArrayList<>();

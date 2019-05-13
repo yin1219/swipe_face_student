@@ -28,6 +28,7 @@ import com.example.swipe_face_student.Model.Leave;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -43,6 +44,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -59,7 +61,7 @@ public class LeaveApplications extends AppCompatActivity {
 
     private Leave leave = new Leave();
     private String TAG = "LeaveApplications_FLAG";
-    private String student_id = "405401217";
+    private String student_id ;
     private String student_name;
     private String class_id;
     private String class_name;
@@ -81,7 +83,7 @@ public class LeaveApplications extends AppCompatActivity {
     private ArrayList<String> classList;
     private ImageView img_leave_photo;
     private Context context;
-    private Boolean isAllClass;
+    private Boolean isAllClass = true;
     private final int PICK_IMAGE_REQUEST = 71;
 
 
@@ -93,9 +95,18 @@ public class LeaveApplications extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leave_applications);
 
+        //init currentUser
+        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        currentFirebaseUser.getEmail();
+        String[] currentUserIdToStringList = currentFirebaseUser.getEmail().split("@");
+        student_id = currentUserIdToStringList[0];
+        Log.d(TAG,"currentUserId: "+student_id);
+
         Bundle formLeaveList = getIntent().getExtras();
         isAllClass =  formLeaveList.getBoolean("isAllClass");
         class_id =formLeaveList.getString("class_id");
+        Log.d(TAG,"isAllClass:"+isAllClass.toString());
+        Log.d(TAG,"class_id:"+class_id.toString());
         context = this;
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
@@ -124,10 +135,12 @@ public class LeaveApplications extends AppCompatActivity {
         class_idList.add("NULL");
 
 //
-        getClassList();
-        classList.add("--請選擇課程--");
+//        getClassList();
+//        classList.add("--請選擇課程--");
 
         if (isAllClass) {
+            getClassList();
+            classList.add("--請選擇課程--");
             ((ViewManager)text_name.getParent()).removeView(text_name);
             ArrayAdapter<String> leave_classList = new ArrayAdapter<>(this,
                     android.R.layout.simple_spinner_dropdown_item, classList);
@@ -211,7 +224,13 @@ public class LeaveApplications extends AppCompatActivity {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
-        String dateTime = String.valueOf(year) + "/" + String.valueOf(month + 1) + "/" + String.valueOf(day);
+
+        DecimalFormat df=new DecimalFormat("00");
+        String str_month=df.format(month+1);
+
+//        String dateTime = String.valueOf(year) + "/" + String.valueOf(month + 1) + "/" + String.valueOf(day);
+        String dateTime = String.valueOf(year) + "/" + str_month + "/" + String.valueOf(day);
+
         text_leave_date.setText(dateTime);
 
     }
@@ -356,18 +375,30 @@ public class LeaveApplications extends AppCompatActivity {
     private void apply() {
 
         setStudent_name();
-        setTeacher_email(class_idList.get(spinner_leave_class.getSelectedItemPosition()));
-
+        if(isAllClass) {
+            setTeacher_email(class_idList.get(spinner_leave_class.getSelectedItemPosition()));
+        }else{
+            Log.d(TAG,"class_id in apply() :"+class_id);
+            setTeacher_email(class_id);
+        }
         final String leave_content = edittext_leave_content.getText().toString();
         final String leave_date = text_leave_date.getText().toString();
         final String leave_reason = spinner_leave_reason.getSelectedItem().toString();
-        final String leave_class = spinner_leave_class.getSelectedItem().toString();
+        final String leave_class ;
+        if(isAllClass) {
+            leave_class = spinner_leave_class.getSelectedItem().toString();
+        }else{
+            Log.d(TAG,"class_id in apply() :"+class_id);
+            leave_class = class_name;
+        }
+
         final String student_name = leave.getStudent_name();
         final String leave_check = "未審核";
-        String apply_class_id;
+        final String apply_class_id;
         if(isAllClass) {
         apply_class_id = class_idList.get(spinner_leave_class.getSelectedItemPosition());
         }else{
+            Log.d(TAG,"class_id in apply() :"+class_id);
         apply_class_id = class_id;
         }
         final String student_id = this.student_id;
@@ -381,7 +412,6 @@ public class LeaveApplications extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
 
-        leave.setClass_id(student_id);
         leave.setLeave_check(leave_check);
         leave.setLeave_content(leave_content);
         leave.setLeave_date(leave_date);

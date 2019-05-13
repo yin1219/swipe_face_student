@@ -34,12 +34,17 @@ public class Fragment_User_Infor extends Fragment implements FragmentBackHandler
     private TextView tvStudentDepartment;
     private TextView tvStudentEmail;
     private TextView tvStudentSchool;
-    private String student_Id;
+    private String student_id;
     private String studentId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        Bundle args = new Bundle();//fragment傳值
+        args = getArguments();//fragment傳值
+        student_id = args.getString("student_id");
+        Log.d(TAG, "student_id:" + student_id);//fragment傳值
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_fragment__user__infor, container, false);
 
@@ -57,11 +62,7 @@ public class Fragment_User_Infor extends Fragment implements FragmentBackHandler
         //init db
         db = FirebaseFirestore.getInstance();
 
-        //抓現在使用者
-//        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
-//        currentFirebaseUser.getEmail(); String[] currentUserIdToStringList = currentFirebaseUser.getEmail().split("@");
-//        student_Id = currentUserIdToStringList[0];
-        student_Id = "405401217";
+
         //inti xml
         tvStudent_Id = view.findViewById(R.id.tvStudent_Id);
         tvStudentDepartment = view.findViewById(R.id.tvStudentDepartment);
@@ -70,7 +71,7 @@ public class Fragment_User_Infor extends Fragment implements FragmentBackHandler
         tvStudentName = view.findViewById(R.id.tvStudentName);
 
         //db query
-        if(student_Id!=null){
+        if(student_id!=null){
             setInfo();
         }
 
@@ -78,7 +79,7 @@ public class Fragment_User_Infor extends Fragment implements FragmentBackHandler
     }
 
     private void setInfo() {
-        db.collection("Student").whereEqualTo("student_id", student_Id).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        db.collection("Student").whereEqualTo("student_id", student_id).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
                 if (e != null) {

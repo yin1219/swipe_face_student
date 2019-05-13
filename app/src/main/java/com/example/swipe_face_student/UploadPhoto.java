@@ -1,9 +1,11 @@
 package com.example.swipe_face_student;
 
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -48,24 +50,27 @@ if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
 * */
 
 public class UploadPhoto {
+    final String TAG = "UploadPhoto";
     Context context;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();//抓現在登入user
     String email = user.getEmail();//抓user.email
-    String [] uriEmailArray = email.split("@");
+    String[] uriEmailArray = email.split("@");
     String uriEmail = uriEmailArray[0];
     OkHttpClient client = new OkHttpClient();
-    String url = "http://"+FlassSetting.getIp()+":8080/ProjectApi/api/FaceApi/TrainFace/"+uriEmail;
+    String url = "http://" + FlassSetting.getIp() + ":8080/ProjectApi/api/FaceApi/TrainFace/" + uriEmail;
+
     public void uploadFile(List<String> img) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);//setType一定要Multipart
-        for (int i = 0; i <img.size() ; i++) {//用迴圈去RUN多選照片
-            File file=new File(img.get(i));
-            if (file !=null) {
+        for (int i = 0; i < img.size(); i++) {//用迴圈去RUN多選照片
+            File file = new File(img.get(i));
+            if (file != null) {
                 builder.addFormDataPart("photos", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
             }//前面是para  中間是抓圖片名字 後面是創一個要求
         }
 
-        MultipartBody requestBody = builder.build();//建立要求
 
+        MultipartBody requestBody = builder.build();//建立要求
+        Log.d(TAG, "TrainUrl: " + url);
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
@@ -78,10 +83,11 @@ public class UploadPhoto {
                 //Toast.makeText(context,"上傳失敗 !",Toast.LENGTH_SHORT).show();
 
             }
+
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 Log.i("Create Android", "Test成功");
-                //Toast.makeText(context,"上傳成功 !",Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context,"上傳成功 !",Toast.LENGTH_SHORT).show();
 
 
             }

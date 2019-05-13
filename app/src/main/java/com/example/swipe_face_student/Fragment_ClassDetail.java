@@ -67,7 +67,7 @@ public class Fragment_ClassDetail extends Fragment implements FragmentBackHandle
         assert args != null;
         classId = args.getString("info");
         Log.d(TAG, "classId:" + classId);//fragment傳值
-        Toast.makeText(getContext(), "現在課程代碼是" + classId, Toast.LENGTH_LONG).show();
+//        Toast.makeText(getContext(), "現在課程代碼是" + classId, Toast.LENGTH_LONG).show();
 
         return inflater.inflate(R.layout.fragment_fragment_class_detail, container, false);
     }
@@ -149,8 +149,7 @@ public class Fragment_ClassDetail extends Fragment implements FragmentBackHandle
             CardView cardView = (CardView) gridLayout.getChildAt(i);
             final int finalI = i;
             cardView.setOnClickListener(view -> {
-                Toast.makeText(getContext(), "Clicked at index " + finalI,
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "Clicked at index " + finalI,Toast.LENGTH_SHORT).show();
                 switch (finalI) {
                     case 0:
                         DocumentReference docRefClass = db.collection("Class").document(classId);

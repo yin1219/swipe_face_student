@@ -29,6 +29,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -54,10 +56,8 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
     private RecyclerView mMainList;
     private ClassListAdapter classListAdapter;
     private List<Class> classList; // For Adapter
-    private String teacher_email = "053792@mail.fju.edu.tw";
-    private String student_id = "405401217";
-    private Teacher teacher;
-    //    private ArrayList<String> class_id = new ArrayList<>();
+    private String student_id;
+     //    private ArrayList<String> class_id = new ArrayList<>();
     private FragmentTransaction transaction;
     private FragmentManager fragmentManager;
     private String classId; //classDocId
@@ -78,6 +78,12 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
 
         //init db
         db = FirebaseFirestore.getInstance();
+
+        //get CurrentUser
+        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        currentFirebaseUser.getEmail();
+        String[] currentUserIdToStringList = currentFirebaseUser.getEmail().split("@");
+        student_id = currentUserIdToStringList[0];
 
         //init Adapter
         classList = new ArrayList<>();
@@ -107,7 +113,7 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
                             Log.d(TAG, "studentId : " + studentId);
                             if (studentId != null) {
                                 setAllClassList();
-                                Log.d(TAG,"測試一開始setAllClassList跑幾次");
+                                Log.d(TAG, "測試一開始setAllClassList跑幾次");
                             }
                         }
                     } else {
@@ -168,7 +174,7 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
                                                         classId = dsQueryTotalAttendance.getId();
 
                                                     }
-                                                    setClassStudent(classId,classKey);
+                                                    setClassStudent(classId, classKey);
                                                     DocumentReference drQueryAttendancePoint = db.collection("Class").document(classId);
                                                     drQueryAttendancePoint.get().addOnCompleteListener(task1 -> {
                                                         if (task1.isSuccessful()) {
@@ -179,14 +185,14 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
                                                                 addPerformance.put("class_id", classKey);
                                                                 addPerformance.put("performance_totalAttendance", performanceTotalAttendance);
                                                                 addPerformance.put("performance_totalBonus", (0));
-                                                                addPerformance.put("performance_absenceTimes",(0));
-                                                                addPerformance.put("student_id", "405401217");//user.get..... 不是這個測試的
+                                                                addPerformance.put("performance_absenceTimes", (0));
+                                                                addPerformance.put("student_id", student_id);//user.get..... 不是這個測試的
                                                                 db.collection("Performance")
                                                                         .add(addPerformance)
                                                                         .addOnSuccessListener(aVoid -> {
                                                                             Log.d(TAG, "DocumentSnapshot successfully written!");
                                                                         });
-                                                                Log.d(TAG,"測試Performance跑幾次");
+                                                                Log.d(TAG, "測試Performance跑幾次");
 
                                                             }
                                                         }
@@ -207,16 +213,14 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
                                 });
 
 
-
-
-                                }
+                    }
 
 
                 })
                 .setNegativeButton("取消", null).show();
-}
+    }
 
-    private void setClassStudent(String classId,String classKey){
+    private void setClassStudent(String classId, String classKey) {
         Map<String, Object> addClass = new HashMap<>();
         addClass.put("student_id", FieldValue.arrayUnion(student_id));
         db.collection("Class")
@@ -232,7 +236,8 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
                 .update(addStudent)
                 .addOnSuccessListener(aVoid -> {
                 });
-        }
+    }
+
     private void setAllClassList() {
 
         classList.clear();
@@ -249,15 +254,16 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
                                 String classId = doc.getDocument().getId();
                                 Log.d(TAG, "312 classId : " + classId);
                                 Class aClass = doc.getDocument().toObject(Class.class).withId(classId);
-                                classList.add(aClass);
+                                if(!classList.contains(aClass)){
+                                    classList.add(aClass);
+                                }
                                 classListAdapter.notifyDataSetChanged();
                             }
                         }
                         if (classList.isEmpty()) {
                             mMainList.setVisibility(View.GONE);
                             imNoData.setVisibility(View.VISIBLE);
-                        }
-                        else {
+                        } else {
                             mMainList.setVisibility(View.VISIBLE);
                             imNoData.setVisibility(View.GONE);
                         }

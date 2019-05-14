@@ -98,7 +98,7 @@ public class GroupPage extends AppCompatActivity {
         db.collection("Class")
                 .document(classId)
                 .collection("Group")
-                .whereArrayContains("student_id", "405401217")
+                .whereArrayContains("student_id", student_id)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

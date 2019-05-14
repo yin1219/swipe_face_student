@@ -79,6 +79,7 @@ public class LeaveApplications extends AppCompatActivity {
     private ImageButton backIBtn;
     private Button btn_leave_apply;
     private SimpleDateFormat myFmt2 = new SimpleDateFormat("yyyy-MM-dd");
+    private DecimalFormat df=new DecimalFormat("00");
     private StringBuffer date;
     private ArrayList<String> classList;
     private ImageView img_leave_photo;
@@ -243,11 +244,12 @@ public class LeaveApplications extends AppCompatActivity {
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        DecimalFormat df=new DecimalFormat("00");
+
         String str_month=df.format(month+1);
+        String str_day=df.format(day);
 
 //        String dateTime = String.valueOf(year) + "/" + String.valueOf(month + 1) + "/" + String.valueOf(day);
-        String dateTime = String.valueOf(year) + "/" + str_month + "/" + String.valueOf(day);
+        String dateTime = String.valueOf(year) + "/" + str_month + "/" + str_day;
 
         text_leave_date.setText(dateTime);
 
@@ -261,7 +263,11 @@ public class LeaveApplications extends AppCompatActivity {
         new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
-                String dateTime = String.valueOf(year) + "/" + String.valueOf(month + 1) + "/" + String.valueOf(day);
+                String str_month=df.format(month+1);
+                String str_day=df.format(day);
+
+
+                String dateTime = String.valueOf(year) + "/" + str_month + "/" + str_day;
                 text_leave_date.setText(dateTime);
                 Log.d(TAG, "Date inin:" + text_leave_date.getText().toString());
             }

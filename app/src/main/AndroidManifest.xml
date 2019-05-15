@@ -2,20 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.swipe_face_student">
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
-
     <application
         android:allowBackup="true"
         android:icon="@drawable/ricardo"
         android:label="@string/app_name"
-        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@drawable/ricardo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:networkSecurityConfig="@xml/network_security_config"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".TeacherInfo"></activity>
         <activity android:name=".ClassPerformance" />
@@ -41,10 +39,10 @@
         <activity android:name=".CreateClassGroupByHand" />
         <activity android:name=".GroupPage" />
         <activity android:name=".CreateClassGroupSt1" />
-        <activity android:name=".Activity_LeaveListClass" />
-        <activity android:name=".SignIn" />
-        <activity android:name=".MainActivity" />
-
+        <activity android:name=".Activity_LeaveListClass"/>
+        <activity android:name=".SignIn"/>
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".Activity_Enhance_Face"/>
         <service android:name=".MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

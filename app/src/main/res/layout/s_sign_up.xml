@@ -50,14 +50,15 @@
                 android:layout_marginTop="15dp"
                 android:layout_gravity="center">
 
-                <EditText
-                    android:id="@+id/input_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="姓名"
-                    android:textColor="#000000"
-                    android:textColorHint="#0806b1" />
+        <EditText
+            android:id="@+id/input_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="姓名"
+            android:textColor="#000000"
+            android:textColorHint="#0806b1"
+            android:singleLine="true"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -67,14 +68,15 @@
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center">
 
-                <EditText
-                    android:id="@+id/editTextId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="學號"
-                    android:textColor="#000000"
-                    android:textColorHint="#0806b1" />
+        <EditText
+            android:id="@+id/editTextId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="學號"
+            android:textColor="#000000"
+            android:textColorHint="#0806b1"
+            android:singleLine="true"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -112,15 +114,16 @@
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center">
 
-                <EditText
-                    android:id="@+id/editTextEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="學校電子信箱"
-                    android:inputType="textEmailAddress"
-                    android:textColor="#000000"
-                    android:textColorHint="#0806b1" />
+        <EditText
+            android:id="@+id/editTextEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="學校電子信箱"
+            android:inputType="textEmailAddress"
+            android:textColor="#000000"
+            android:textColorHint="#0806b1"
+            android:singleLine="true"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -130,15 +133,16 @@
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center">
 
-                <EditText
-                    android:id="@+id/editTextPassword1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/signup_password1"
-                    android:inputType="textPassword"
-                    android:textColor="#000000"
-                    android:textColorHint="#0806b1" />
+        <EditText
+            android:id="@+id/editTextPassword1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/signup_password1"
+            android:inputType="textPassword"
+            android:textColor="#000000"
+            android:textColorHint="#0806b1"
+            android:singleLine="true"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -148,15 +152,16 @@
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center">
 
-                <EditText
-                    android:id="@+id/editTextPassword2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/signup_password2"
-                    android:inputType="textPassword"
-                    android:textColor="#000000"
-                    android:textColorHint="#0806b1" />
+        <EditText
+            android:id="@+id/editTextPassword2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/signup_password2"
+            android:inputType="textPassword"
+            android:textColor="#000000"
+            android:textColorHint="#0806b1"
+            android:singleLine="true"/>
 
             </android.support.design.widget.TextInputLayout>
 

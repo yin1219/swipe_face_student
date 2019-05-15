@@ -1,16 +1,22 @@
 package com.example.swipe_face_student;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,6 +65,8 @@ public class QuestionResponse extends AppCompatActivity {
     private Date create_time;
     private ImageButton backIBtn;
     private String student_id;
+    private ImageView img_pgbar;
+    private AnimationDrawable ad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -231,14 +239,26 @@ public class QuestionResponse extends AppCompatActivity {
 
                     Map<String, Object> classQuestionResponse = new HashMap<>();
                     classQuestionResponse.put(Answer, FieldValue.arrayUnion(student_id));//getuser
+                    LayoutInflater lf = (LayoutInflater) QuestionResponse.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    ViewGroup vg = (ViewGroup) lf.inflate(R.layout.dialog_question_response,null);
+                    img_pgbar = (ImageView)vg.findViewById(R.id.img_pgbar);
+                    ad = (AnimationDrawable)img_pgbar.getDrawable();
+                    ad.start();
+                    android.app.AlertDialog.Builder builder1 = new AlertDialog.Builder(QuestionResponse.this);
+                    builder1.setView(vg);
+                    AlertDialog dialog = builder1.create();
+                    dialog.show();
 
                     db.collection("Class")
                             .document(classId)
                             .collection("Question")
                             .document("question")
-                            .update(classQuestionResponse);
+                            .update(classQuestionResponse).addOnCompleteListener(task -> {
+                                dialog.dismiss();
+                        Toast.makeText(this, "已提交", Toast.LENGTH_LONG).show();
+                    });
 
-                    Toast.makeText(this, "已提交", Toast.LENGTH_LONG).show();
+
                     cvNextStep.setEnabled(false);
                     tvSubmit.setTextColor(Color.parseColor("#5f5ecd"));
                     if (Answer != null) {

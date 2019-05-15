@@ -36,137 +36,148 @@
             android:text="Sign up"
             />
     </LinearLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="280dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center">
-
-        <EditText
-            android:id="@+id/input_name"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="姓名"
-            android:textColor="#000000"
-            android:textColorHint="#0806b1" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="280dp"
+                android:layout_height="55dp"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center">
 
-    </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/input_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="姓名"
+                    android:textColor="#000000"
+                    android:textColorHint="#0806b1" />
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="280dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center">
+            </android.support.design.widget.TextInputLayout>
 
-        <EditText
-            android:id="@+id/editTextId"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="學號"
-            android:textColor="#000000"
-            android:textColorHint="#0806b1" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="280dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center">
 
-    </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/editTextId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="學號"
+                    android:textColor="#000000"
+                    android:textColorHint="#0806b1" />
 
-    <LinearLayout
-        android:layout_width="280dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center">
+            </android.support.design.widget.TextInputLayout>
 
-        <Spinner
-            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
-            android:id="@+id/spinner_school"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_width="280dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center">
 
-    </LinearLayout>
+                <Spinner
+                    style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+                    android:id="@+id/spinner_school"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-    <LinearLayout
-        android:layout_width="280dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center">
+            </LinearLayout>
 
-        <Spinner
-            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
-            android:id="@+id/spinner_department"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_width="280dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center">
 
-    </LinearLayout>
+                <Spinner
+                    style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+                    android:id="@+id/spinner_department"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="280dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center">
+            </LinearLayout>
 
-        <EditText
-            android:id="@+id/editTextEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="學校電子信箱"
-            android:inputType="textEmailAddress"
-            android:textColor="#000000"
-            android:textColorHint="#0806b1" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="280dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center">
 
-    </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/editTextEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="學校電子信箱"
+                    android:inputType="textEmailAddress"
+                    android:textColor="#000000"
+                    android:textColorHint="#0806b1" />
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="280dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center">
+            </android.support.design.widget.TextInputLayout>
 
-        <EditText
-            android:id="@+id/editTextPassword1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/signup_password1"
-            android:inputType="textPassword"
-            android:textColor="#000000"
-            android:textColorHint="#0806b1" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="280dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center">
 
-    </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/editTextPassword1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/signup_password1"
+                    android:inputType="textPassword"
+                    android:textColor="#000000"
+                    android:textColorHint="#0806b1" />
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="280dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center">
+            </android.support.design.widget.TextInputLayout>
 
-        <EditText
-            android:id="@+id/editTextPassword2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/signup_password2"
-            android:inputType="textPassword"
-            android:textColor="#000000"
-            android:textColorHint="#0806b1" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="280dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center">
 
-    </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/editTextPassword2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/signup_password2"
+                    android:inputType="textPassword"
+                    android:textColor="#000000"
+                    android:textColorHint="#0806b1" />
 
-    <LinearLayout
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp">
+            </android.support.design.widget.TextInputLayout>
 
-        <Button
-            android:id="@+id/buttonRegister"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/login_button"
-            android:text="Sign Up"
-            android:textColor="#ffffff"
-            android:textSize="18sp"
-            android:fontFamily="sans-serif-medium"/>
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="120dp">
+
+                <Button
+                    android:id="@+id/buttonRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/login_button"
+                    android:text="Sign Up"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif-medium"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+
 </LinearLayout>

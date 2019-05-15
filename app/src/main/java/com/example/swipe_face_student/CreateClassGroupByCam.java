@@ -116,6 +116,7 @@ public class CreateClassGroupByCam extends AppCompatActivity {
                 Student item = studentList.get(i);
                 if(student_id.equals(item.getStudent_id())){
                     studentList.remove(item);
+                    studentIdList.remove(item.getStudent_id());
                 }
             }
             createGroupByCamAdapter.notifyDataSetChanged();
@@ -206,7 +207,12 @@ public class CreateClassGroupByCam extends AppCompatActivity {
                                     if (!studentListStr.contains(updateName)) {
                                         Toast.makeText(CreateClassGroupByCam.this, "該學號不存在於課程裡",
                                                 Toast.LENGTH_SHORT).show();
-                                    } else {
+                                    }
+                                    //判斷學生是否已經在清單內
+                                    else if(studentIdList.contains(updateName)){
+                                        Toast.makeText(CreateClassGroupByCam.this, "已在清單內",
+                                                Toast.LENGTH_SHORT).show();
+                                    }else {
                                         db.collection("Student").whereEqualTo("student_id", updateName)
                                                 .addSnapshotListener((documentSnapshots, e) -> {
                                                     if (e != null) {

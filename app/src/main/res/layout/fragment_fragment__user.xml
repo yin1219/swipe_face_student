@@ -234,6 +234,7 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
+            android:id="@+id/cvEnhance"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:clickable="true"
@@ -261,7 +262,7 @@
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:text="意見回饋"
+                        android:text="加強訓練"
                         android:textColor="#000000"
                         android:textSize="18sp" />
 

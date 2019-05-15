@@ -109,13 +109,14 @@ public class LeaveRecord extends AppCompatActivity {
                         leave_content.setText(leave.getLeave_content());
                         String photoUrl = leave.getLeave_photoUrl();
 
+                        if(photoUrl!=null) {
+                            StorageReference path = storageReference.child(photoUrl);
 
-                        StorageReference path = storageReference.child(photoUrl);
                         Log.d("TEST", path.toString());
                         Glide.with(LeaveRecord.this)
                                 .load(path)
                                 .into(leave_photo);
-
+                        }
 
                     } else {
                         Log.d(TAG, "No such document");

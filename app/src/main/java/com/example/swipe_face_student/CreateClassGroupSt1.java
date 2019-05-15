@@ -23,6 +23,8 @@ import android.widget.Toast;
 import com.example.swipe_face_student.Model.Class;
 import com.example.swipe_face_student.Model.Group;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -72,6 +74,7 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
     CardView cvGroupDividerByhand;//手動分組按鈕
     CardView cvGroupDividerByCam;//拍照分組按鈕
     String studentIdFromUpload;//接收回傳JSON的studentId
+    String student_id;
     List<String> listStudentIdFromUpload = new ArrayList<>();
     List<String> photoPathToUploadClass;//接收Matisse的路徑
     ImageButton backIBtn;
@@ -96,6 +99,13 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
 
         //init db
         db = FirebaseFirestore.getInstance();
+
+        //init currentUser
+        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        currentFirebaseUser.getEmail();
+        String[] currentUserIdToStringList = currentFirebaseUser.getEmail().split("@");
+        student_id = currentUserIdToStringList[0];
+        Log.d(TAG,"currentUserId: "+student_id);
 
         //init xml
         tvClassName = findViewById(R.id.textViewClassName);
@@ -138,13 +148,13 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
         db.collection("Class")
                 .document(classId)
                 .collection("Group")
-                .whereArrayContains("student_id", "405401217")
+                .whereArrayContains("student_id", student_id)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Group group = document.toObject(Group.class);
-                            if(group.getStudent_id().contains("405401217")){
+                            if(group.getStudent_id().contains(student_id)){
                                 isGroup = true;
                             }
                         }

@@ -79,17 +79,19 @@ public class LeaveApplications extends AppCompatActivity {
     private ImageButton backIBtn;
     private Button btn_leave_apply;
     private SimpleDateFormat myFmt2 = new SimpleDateFormat("yyyy-MM-dd");
+    private DecimalFormat df=new DecimalFormat("00");
     private StringBuffer date;
     private ArrayList<String> classList;
     private ImageView img_leave_photo;
     private Context context;
     private Boolean isAllClass = true;
+    private Boolean isHaveImg =true;
     private final int PICK_IMAGE_REQUEST = 71;
 
     private String classStr, contentStr;
 
 
-    private Uri filePath;
+    private Uri filePath ;
 
 
     @Override
@@ -195,13 +197,14 @@ public class LeaveApplications extends AppCompatActivity {
         btn_leave_apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if(classStr.length() > 0 && contentStr.length() > 0){
+                if(spinner_leave_class.getSelectedItem().toString().equals("--請選擇課程--")){
+                    Toast.makeText(LeaveApplications.this ,"請選擇課程", Toast.LENGTH_LONG).show();
+                }
+                else{
                     apply();
                     Log.d(TAG, "leave.getTeacher_email onClick:" + leave.getTeacher_email());
-//                }
-//                else{
-//                    Toast.makeText(LeaveApplications.this ,"資料填寫未完成", Toast.LENGTH_LONG).show();
-//                }
+
+                }
             }
         });
 
@@ -223,9 +226,15 @@ public class LeaveApplications extends AppCompatActivity {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 img_leave_photo.setImageBitmap(bitmap);
+                isHaveImg =true;
+                Log.d(TAG,"isHaveImg =true;");
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }else{
+            isHaveImg =false;
+            Log.d(TAG,"isHaveImg =false;");
+
         }
     }
 
@@ -235,11 +244,12 @@ public class LeaveApplications extends AppCompatActivity {
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        DecimalFormat df=new DecimalFormat("00");
+
         String str_month=df.format(month+1);
+        String str_day=df.format(day);
 
 //        String dateTime = String.valueOf(year) + "/" + String.valueOf(month + 1) + "/" + String.valueOf(day);
-        String dateTime = String.valueOf(year) + "/" + str_month + "/" + String.valueOf(day);
+        String dateTime = String.valueOf(year) + "/" + str_month + "/" + str_day;
 
         text_leave_date.setText(dateTime);
 
@@ -252,8 +262,12 @@ public class LeaveApplications extends AppCompatActivity {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onDateSet(DatePicker view, int year, int month, int day) {
-                String dateTime = String.valueOf(year) + "/" + String.valueOf(month + 1) + "/" + String.valueOf(day);
+            public void onDateSet(DatePicker view, int year, int month, int day ) {
+                String str_month=df.format(month+1);
+                String str_day=df.format(day);
+
+
+                String dateTime = String.valueOf(year) + "/" + str_month + "/" + str_day;
                 text_leave_date.setText(dateTime);
                 Log.d(TAG, "Date inin:" + text_leave_date.getText().toString());
             }
@@ -382,6 +396,8 @@ public class LeaveApplications extends AppCompatActivity {
     }
 
 
+
+
     private void apply() {
 
         setStudent_name();
@@ -431,12 +447,13 @@ public class LeaveApplications extends AppCompatActivity {
         leave.setLeave_uploaddate(leave_uploaddate);
         leave.setStudent_id(student_id);
         leave.setStudent_registrationToken(student_registrationToken);
-        leave.setLeave_photoUrl(leave_photoUrl);
+        if (filePath!=null) {
+            leave.setLeave_photoUrl(leave_photoUrl);
 
         Log.d(TAG, "leave_photoUrl:" + leave_photoUrl);
         StorageReference ref = storageReference.child("Leave_photo/" + leave_photoUrl);
         ref.putFile(filePath);
-
+        }
         Log.d(TAG, "afterStudent_name" + student_name);
         Log.d(TAG, "afterTeacher_email:" + teacher_email);
 

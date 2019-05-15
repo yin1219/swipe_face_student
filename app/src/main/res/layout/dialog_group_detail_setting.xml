@@ -23,7 +23,8 @@ android:orientation="vertical">
     android:layout_marginLeft="50dp"
     android:inputType="number"
     android:gravity="center_vertical"
-    android:textSize="18sp" />
+    android:textSize="18sp"
+    android:singleLine="true"/>
 
 
 

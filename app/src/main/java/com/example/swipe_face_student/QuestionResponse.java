@@ -115,21 +115,34 @@ public class QuestionResponse extends AppCompatActivity {
             B = question.getB();
             C = question.getC();
             D = question.getD();
-            if (A.size()!=0) {
+            if (A.contains(student_id)) {
                 rbQuestionA.setChecked(true);
+                Toast.makeText(this, "已提交", Toast.LENGTH_LONG).show();
+                cvNextStep.setEnabled(false);
+                tvSubmit.setTextColor(Color.parseColor("#5f5ecd"));
             }
-            if (B.size()!=0) {
+            if (B.contains(student_id)) {
                 rbQuestionB.setChecked(true);
+                Toast.makeText(this, "已提交", Toast.LENGTH_LONG).show();
+                cvNextStep.setEnabled(false);
+                tvSubmit.setTextColor(Color.parseColor("#5f5ecd"));
             }
-            if (C.size()!=0) {
+            if (C.contains(student_id)) {
                 rbQuestionC.setChecked(true);
+                Toast.makeText(this, "已提交", Toast.LENGTH_LONG).show();
+                cvNextStep.setEnabled(false);
+                tvSubmit.setTextColor(Color.parseColor("#5f5ecd"));
             }
-            if (D.size()!=0) {
+            if (D.contains(student_id)) {
                 rbQuestionD.setChecked(true);
+                Toast.makeText(this, "已提交", Toast.LENGTH_LONG).show();
+                cvNextStep.setEnabled(false);
+                tvSubmit.setTextColor(Color.parseColor("#5f5ecd"));
             }
-            Toast.makeText(this, "已提交", Toast.LENGTH_LONG).show();
-            cvNextStep.setEnabled(false);
-            tvSubmit.setTextColor(Color.parseColor("#5f5ecd"));
+
+//            Toast.makeText(this, "已提交", Toast.LENGTH_LONG).show();
+//            cvNextStep.setEnabled(false);
+//            tvSubmit.setTextColor(Color.parseColor("#5f5ecd"));
 
 
         });

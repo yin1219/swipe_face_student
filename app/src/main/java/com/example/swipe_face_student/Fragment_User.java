@@ -33,7 +33,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 public class Fragment_User extends Fragment implements FragmentBackHandler {
 
     private final String TAG = "Fragment_User";
-    private CardView cvInfo,logout;
+    private CardView cvInfo,logout,cvEnhance;
 
     OnFragmentSelectedListener mCallback;//Fragment傳值
 
@@ -61,6 +61,16 @@ public class Fragment_User extends Fragment implements FragmentBackHandler {
 
         cvInfo.setOnClickListener(v -> {
             mCallback.onFragmentSelected(TAG, "toUserInfo");//fragment傳值
+        });
+
+        cvEnhance = view.findViewById(R.id.cvEnhance);
+        cvEnhance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent();
+                i.setClass(getActivity(), Activity_Enhance_Face.class);
+                startActivity(i);
+            }
         });
 
         logout = getView().findViewById(R.id.logout);

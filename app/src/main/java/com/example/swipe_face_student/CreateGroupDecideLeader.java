@@ -1,9 +1,11 @@
 package com.example.swipe_face_student;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
@@ -14,9 +16,12 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.swipe_face_student.Adapter.CreateGroupDecideLeaderAdapter;
@@ -40,6 +45,8 @@ public class CreateGroupDecideLeader extends AppCompatActivity {
     Integer groupNum;//課程小組數
     Integer group_bonus=0;//小組得分初始化
     List<Student> studentList = null;
+    private ImageView img_pgbar;
+    private AnimationDrawable ad;
     private final String TAG = "CreateGroupDecideLeader";
     FirebaseFirestore db;
     CardView cvFinishStepButton;
@@ -104,6 +111,15 @@ public class CreateGroupDecideLeader extends AppCompatActivity {
     }
 
     private void finishStep() {
+        LayoutInflater lf = (LayoutInflater) CreateGroupDecideLeader.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ViewGroup vg = (ViewGroup) lf.inflate(R.layout.dialog_decide_leader,null);
+        img_pgbar = (ImageView)vg.findViewById(R.id.img_pgbar);
+        ad = (AnimationDrawable)img_pgbar.getDrawable();
+        ad.start();
+        android.app.AlertDialog.Builder builder1 = new AlertDialog.Builder(CreateGroupDecideLeader.this);
+        builder1.setView(vg);
+        AlertDialog dialog = builder1.create();
+        dialog.show();
 
         //更新小組數目(+1)
         DocumentReference washingtonRef = db.collection("Class").document(classId);
@@ -134,6 +150,7 @@ public class CreateGroupDecideLeader extends AppCompatActivity {
                 .document(classId).collection("Group")
                 .add(group)
                 .addOnSuccessListener(aVoid -> {
+                    dialog.dismiss();
                     Log.d(TAG, "DocumentSnapshot successfully written!");
                 })
                 .addOnFailureListener(e -> Log.w(TAG, "Error writing document", e));

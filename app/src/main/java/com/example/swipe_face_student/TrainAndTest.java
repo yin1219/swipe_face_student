@@ -314,7 +314,7 @@ public class TrainAndTest extends AppCompatActivity {
             if (id == null){
                 ToastUtils.show(getmContext(),"辨識失敗");
             }else{
-                getResultIntent(name,id);
+                getResultIntent(name,id,responseData);
             }
 
 
@@ -349,7 +349,7 @@ public class TrainAndTest extends AppCompatActivity {
     }
 
     //抓JSON內容後Intent
-    private void getResultIntent(String name ,String id) {
+    private void getResultIntent(String name ,String id,String responseData) {
         if (id.equals(uriEmail)) {
 
             Intent intentCreateClassGroupByHand = new Intent();
@@ -357,7 +357,8 @@ public class TrainAndTest extends AppCompatActivity {
             getmContext().startActivity(intentCreateClassGroupByHand);
             ToastUtils.show(getmContext(), name + "~" + "歡迎使用 !");
 
-        } else {
+        }
+        if (responseData == null){
             ToastUtils.show(getmContext(), "辨識失敗 !" + "請再多試試 !");
         }
 

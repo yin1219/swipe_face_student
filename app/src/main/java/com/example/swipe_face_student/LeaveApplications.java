@@ -1,17 +1,21 @@
 package com.example.swipe_face_student;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -87,6 +91,8 @@ public class LeaveApplications extends AppCompatActivity {
     private Boolean isAllClass = true;
     private Boolean isHaveImg =true;
     private final int PICK_IMAGE_REQUEST = 71;
+    private ImageView img_pgbar;
+    private AnimationDrawable ad;
 
     private String classStr, contentStr;
 
@@ -447,6 +453,15 @@ public class LeaveApplications extends AppCompatActivity {
         leave.setLeave_uploaddate(leave_uploaddate);
         leave.setStudent_id(student_id);
         leave.setStudent_registrationToken(student_registrationToken);
+        LayoutInflater lf = (LayoutInflater) LeaveApplications.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ViewGroup vg = (ViewGroup) lf.inflate(R.layout.dialog_leave_applications,null);
+        img_pgbar = (ImageView)vg.findViewById(R.id.img_pgbar);
+        ad = (AnimationDrawable)img_pgbar.getDrawable();
+        ad.start();
+        android.app.AlertDialog.Builder builder1 = new AlertDialog.Builder(LeaveApplications.this);
+        builder1.setView(vg);
+        AlertDialog dialog = builder1.create();
+        dialog.show();
         if (filePath!=null) {
             leave.setLeave_photoUrl(leave_photoUrl);
 
@@ -457,10 +472,13 @@ public class LeaveApplications extends AppCompatActivity {
         Log.d(TAG, "afterStudent_name" + student_name);
         Log.d(TAG, "afterTeacher_email:" + teacher_email);
 
-        db.collection("Leave").add(leave);
+        db.collection("Leave").add(leave).addOnCompleteListener(task -> {
+            dialog.dismiss();
+            Toast.makeText(this, "已送出請假申請", Toast.LENGTH_SHORT).show();
+            finish();
+        });
 
-        Toast.makeText(this, "已送出請假申請", Toast.LENGTH_SHORT).show();
-        finish();
+
 
     }
 

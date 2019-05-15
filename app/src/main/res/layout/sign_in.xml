@@ -49,8 +49,9 @@
             android:ems="10"
             android:hint="電子信箱"
             android:inputType="textEmailAddress"
-            android:textColor="#0806b1"
-            android:textColorHint="#0806b1" />
+            android:textColor="#000000"
+            android:textColorHint="#0806b1"
+            android:singleLine="true"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -67,8 +68,9 @@
             android:ems="10"
             android:hint="密碼"
             android:inputType="textPassword"
-            android:textColor="#0806b1"
-            android:textColorHint="#0806b1" />
+            android:textColor="#000000"
+            android:textColorHint="#0806b1"
+            android:singleLine="true"/>
 
     </android.support.design.widget.TextInputLayout>
 

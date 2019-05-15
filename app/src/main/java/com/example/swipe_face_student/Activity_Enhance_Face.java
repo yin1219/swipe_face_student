@@ -64,10 +64,8 @@ import permissions.dispatcher.RuntimePermissions;
 import static android.app.Activity.RESULT_OK;
 import static com.zhihu.matisse.internal.utils.PathUtils.getPath;
 
-@RuntimePermissions
-public class TrainAndTest extends AppCompatActivity {
+public class Activity_Enhance_Face extends AppCompatActivity {
     private final String TAG = "TrainAndTest";
-    private Button btTestPhoto;
     private Button btTrainPhtot;
     private Button btTakePhoto;
     private ImageView img_pgbar;
@@ -94,14 +92,12 @@ public class TrainAndTest extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_train_and_test);
+        setContentView(R.layout.activity_enhance_face);
         mStorageRef = FirebaseStorage.getInstance().getReference();
         db = FirebaseFirestore.getInstance();
 
-        TrainAndTestPermissionsDispatcher.StoragePermissionsWithPermissionCheck(this);
         mContext = getApplicationContext();
         btTrainPhtot = findViewById(R.id.buttonTrain);
-        btTestPhoto = findViewById(R.id.buttonTest);
         btTakePhoto = findViewById(R.id.btTakePhoto);
         btTakePhoto.setOnClickListener(v -> {
             Intent intent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
@@ -109,7 +105,7 @@ public class TrainAndTest extends AppCompatActivity {
         });
         btTrainPhtot.setOnClickListener(v -> {
 
-            Matisse.from(TrainAndTest.this)
+            Matisse.from(Activity_Enhance_Face.this)
                     .choose(MimeType.ofAll())//图片类型
                     .countable(false)//true:选中后显示数字;false:选中后显示对号
                     .maxSelectable(9)//可选的最大数
@@ -122,18 +118,6 @@ public class TrainAndTest extends AppCompatActivity {
 
 
         });
-        btTestPhoto.setOnClickListener(v -> {
-            Matisse.from(TrainAndTest.this)
-                    .choose(MimeType.ofAll())//图片类型
-                    .countable(false)//true:选中后显示数字;false:选中后显示对号
-                    .maxSelectable(1)//可选的最大数
-                    .capture(true)//选择照片时，是否显示拍照
-                    .captureStrategy(new CaptureStrategy(true, "com.example.swipe_face_student.fileprovider"))//参数1 true表示拍照存储在共有目录，false表示存储在私有目录；参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
-                    .imageEngine(new MyGlideEngine())//图片加载引擎
-                    .theme(R.style.Matisse_Zhihu)
-                    .forResult(REQUEST_CODE_TEST);//REQUEST_CODE_CHOOSE自定義
-            Log.i("Create Android", "Test選圖");
-        });
     }
 
     @Override
@@ -144,10 +128,9 @@ public class TrainAndTest extends AppCompatActivity {
             List<Uri> a;
             a = Matisse.obtainResult(data);
 
-
             Uri uri = a.get(0);
             Log.i("uri:", uri.toString());
-            String path = getPath(TrainAndTest.this, uri);
+            String path = getPath(Activity_Enhance_Face.this, uri);
             Uri file = Uri.fromFile(new File(path));
             Log.i("Create Android", "Test4");
             Log.d("Matisse", "Uris: " + Matisse.obtainResult(data));
@@ -163,7 +146,7 @@ public class TrainAndTest extends AppCompatActivity {
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-                    Toast.makeText(TrainAndTest.this, "上傳圖片失敗 !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Activity_Enhance_Face.this, "上傳圖片失敗 !", Toast.LENGTH_SHORT).show();
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -186,7 +169,7 @@ public class TrainAndTest extends AppCompatActivity {
                         }
                     });
 
-                    Toast.makeText(TrainAndTest.this, "上傳圖片成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Activity_Enhance_Face.this, "訓練成功", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -225,7 +208,7 @@ public class TrainAndTest extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 Log.i("Create Android", "Test成功");
-                parseJsonWithJsonObject(response);
+
 
             }
 
@@ -241,13 +224,13 @@ public class TrainAndTest extends AppCompatActivity {
                 builder.addFormDataPart("photos", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
             }//前面是para  中間是抓圖片名字 後面是創一個要求
         }
-        LayoutInflater lf = (LayoutInflater) TrainAndTest.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater lf = (LayoutInflater) Activity_Enhance_Face.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup vg = (ViewGroup) lf.inflate(R.layout.dialog_train,null);
         img_pgbar = (ImageView)vg.findViewById(R.id.img_pgbar);
         ad = (AnimationDrawable)img_pgbar.getDrawable();
         ad.start();
-        android.app.AlertDialog.Builder builder1 = new AlertDialog.Builder(TrainAndTest.this);
-                builder1.setView(vg);
+        android.app.AlertDialog.Builder builder1 = new AlertDialog.Builder(Activity_Enhance_Face.this);
+        builder1.setView(vg);
         AlertDialog dialog = builder1.create();
         dialog.show();
         MultipartBody requestBody = builder.build();//建立要求
@@ -269,6 +252,7 @@ public class TrainAndTest extends AppCompatActivity {
                 Log.i("Create Android", "Test成功");
                 //Toast.makeText(context,"上傳成功 !",Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
+                finish();
 
             }
         });
@@ -279,53 +263,7 @@ public class TrainAndTest extends AppCompatActivity {
         return mContext;
     }
 
-    private void parseJsonWithJsonObject(Response response) throws IOException {
-        responseBody = response.body();
-        responseData = responseBody.string();
-        try {
-            JSONArray jsonArray = new JSONArray(responseData);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject obj = jsonArray.getJSONObject(i);
-                /*Hero hero = new Hero(
-                        obj.getString("student_name"),
-                        obj.getString("student_id"),
-                        obj.getString("student_email"),
-                        obj.getString("student_department"),
-                        obj.getString("student_school")
 
-                );*/
-                name = obj.getString("student_name");
-                id = obj.getString("student_id");
-                email = obj.getString("student_email");
-                department = obj.getString("student_department");
-                school = obj.getString("student_school");
-
-                Log.i("name", name);
-                Log.i("id", id);
-                Log.i("email", email);
-                Log.i("department", department);
-                Log.i("school", school);
-
-
-                //ToastUtils.show(getmContext(),"名字:"+name+"\n"+"學號: "+id+"\n"+"email:"+email+"\n"+"系所:"+department+"\n"+"學校:"+school);
-
-                //heroList.add(hero);
-            }
-            if (id == null){
-                ToastUtils.show(getmContext(),"辨識失敗");
-            }else{
-                getResultIntent(name,id,responseData);
-            }
-
-
-            //adapter = new HeroAdapter(heroList, getmContext());
-
-            //get_recyclerview().setAdapter(adapter);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -348,31 +286,8 @@ public class TrainAndTest extends AppCompatActivity {
         return path;
     }
 
-    //抓JSON內容後Intent
-    private void getResultIntent(String name ,String id,String responseData) {
-        if (id.equals(uriEmail)) {
 
-            Intent intentCreateClassGroupByHand = new Intent();
-            intentCreateClassGroupByHand.setClass(getmContext(),MainActivity.class);
-            getmContext().startActivity(intentCreateClassGroupByHand);
-            ToastUtils.show(getmContext(), name + "~" + "歡迎使用 !");
 
-        }
-        if (responseData == null){
-            ToastUtils.show(getmContext(), "辨識失敗 !" + "請再多試試 !");
-        }
-
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        TrainAndTestPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
-    }
-
-    @NeedsPermission({Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
-    void StoragePermissions() {
-    }
 
 
 }

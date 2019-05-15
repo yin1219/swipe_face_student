@@ -1,18 +1,24 @@
 package com.example.swipe_face_student;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -36,6 +42,8 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
     private EditText editTextEmail;
     private EditText editTextPassword1;
     private EditText editTextPassword2;
+    private ImageView img_pgbar;
+    private AnimationDrawable ad;
 
     private ProgressDialog progressDialog;
 
@@ -310,6 +318,15 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
         //if validations are ok
         //we will first show a progressbar
         if(t == 0) {
+            LayoutInflater lf = (LayoutInflater) S_SignUp.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            ViewGroup vg = (ViewGroup) lf.inflate(R.layout.dialog_sign_up,null);
+            img_pgbar = (ImageView)vg.findViewById(R.id.img_pgbar);
+            ad = (AnimationDrawable)img_pgbar.getDrawable();
+            ad.start();
+            android.app.AlertDialog.Builder builder1 = new AlertDialog.Builder(S_SignUp.this);
+            builder1.setView(vg);
+            AlertDialog dialog = builder1.create();
+            dialog.show();
             Log.e("work","go");
 
             //progressDialog.setMessage("Registering User...");
@@ -333,6 +350,7 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
 
                         db.collection("Student").add(user).addOnCompleteListener(task -> {
                             Toast.makeText(S_SignUp.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
 
                         });
                         Intent i = new Intent();

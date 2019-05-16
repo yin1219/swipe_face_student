@@ -93,13 +93,9 @@ public class ClassPerformance extends AppCompatActivity {
                         performanceId = doc.getDocument().getId();
                         Performance preformance = doc.getDocument().toObject(Performance.class);
                         text_performance_totalBonus.setText(Integer.toString(preformance.getPerformance_totalBonus()));
-
-                        listBonus(student_id, class_id, performanceId);
-
                     }
-
-
                 }
+                listBonus(student_id, class_id, performanceId);
 
             }
 
@@ -122,7 +118,9 @@ public class ClassPerformance extends AppCompatActivity {
 
                         bonus.setAnswerBonus(answerBouns);
                         bonus.setRDanswerBonus(RDanswerBonus);
-
+//                        if(!bonusList.contains(bonus)){
+//
+//                        }
                         bonusList.add(bonus);
 
                         bonusListAdapter.notifyDataSetChanged();

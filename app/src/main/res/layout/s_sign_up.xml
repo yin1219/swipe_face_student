@@ -36,19 +36,12 @@
             android:text="Sign up"
             />
     </LinearLayout>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="280dp"
-                android:layout_height="55dp"
-                android:layout_marginTop="15dp"
-                android:layout_gravity="center">
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="280dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center">
 
         <EditText
             android:id="@+id/input_name"
@@ -60,13 +53,13 @@
             android:textColorHint="#0806b1"
             android:singleLine="true"/>
 
-            </android.support.design.widget.TextInputLayout>
+    </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="280dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center">
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center">
 
         <EditText
             android:id="@+id/editTextId"
@@ -78,41 +71,41 @@
             android:textColorHint="#0806b1"
             android:singleLine="true"/>
 
-            </android.support.design.widget.TextInputLayout>
+    </android.support.design.widget.TextInputLayout>
 
-            <LinearLayout
-                android:layout_width="280dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center">
+    <LinearLayout
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center">
 
-                <Spinner
-                    style="@style/Base.Widget.AppCompat.Spinner.Underlined"
-                    android:id="@+id/spinner_school"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+        <Spinner
+            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+            android:id="@+id/spinner_school"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-            </LinearLayout>
+    </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="280dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center">
+    <LinearLayout
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center">
 
-                <Spinner
-                    style="@style/Base.Widget.AppCompat.Spinner.Underlined"
-                    android:id="@+id/spinner_department"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+        <Spinner
+            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+            android:id="@+id/spinner_department"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-            </LinearLayout>
+    </LinearLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="280dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center">
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center">
 
         <EditText
             android:id="@+id/editTextEmail"
@@ -125,13 +118,13 @@
             android:textColorHint="#0806b1"
             android:singleLine="true"/>
 
-            </android.support.design.widget.TextInputLayout>
+    </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="280dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center">
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center">
 
         <EditText
             android:id="@+id/editTextPassword1"
@@ -144,13 +137,13 @@
             android:textColorHint="#0806b1"
             android:singleLine="true"/>
 
-            </android.support.design.widget.TextInputLayout>
+    </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="280dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center">
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center">
 
         <EditText
             android:id="@+id/editTextPassword2"
@@ -163,26 +156,22 @@
             android:textColorHint="#0806b1"
             android:singleLine="true"/>
 
-            </android.support.design.widget.TextInputLayout>
+    </android.support.design.widget.TextInputLayout>
 
-            <LinearLayout
-                android:layout_width="300dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="120dp">
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp">
 
-                <Button
-                    android:id="@+id/buttonRegister"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/login_button"
-                    android:text="Sign Up"
-                    android:textColor="#ffffff"
-                    android:textSize="18sp"
-                    android:fontFamily="sans-serif-medium"/>
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
-
-
+        <Button
+            android:id="@+id/buttonRegister"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/login_button"
+            android:text="Sign Up"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif-medium"/>
+    </LinearLayout>
 </LinearLayout>

@@ -91,18 +91,21 @@ public class Fragment_LeaveList_View extends Fragment {
                 if(e != null){
                     Log.d(TAG,"error00" + e.getMessage());
                 }
-
+                Log.d(TAG,"測試94" );
                 for(DocumentChange doc : documentSnapshots.getDocumentChanges()){
 
                     if(doc.getType() == DocumentChange.Type.ADDED){
-                        Log.d(TAG,"here" );
+                        Log.d(TAG,"測試98" );
 
                         String leaveRecordId = doc.getDocument().getId();
 
                         Leave leave = doc.getDocument().toObject(Leave.class).withId(leaveRecordId);
                         leave.setCheckWay("底部欄");
                         Log.d(TAG,"Check Teamil : " + leave.getTeacher_email());
-                        leaveList.add(leave);
+                        if(!leaveList.contains(leave)){
+                            leaveList.add(leave);
+                        }
+
 
                         leaveListAdapter.notifyDataSetChanged();
                     }

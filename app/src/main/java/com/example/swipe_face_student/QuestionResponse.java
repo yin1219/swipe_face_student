@@ -124,24 +124,40 @@ public class QuestionResponse extends AppCompatActivity {
             C = question.getC();
             D = question.getD();
             if (A.contains(student_id)) {
+                rbQuestionA.setEnabled(false);
+                rbQuestionB.setEnabled(false);
+                rbQuestionC.setEnabled(false);
+                rbQuestionD.setEnabled(false);
                 rbQuestionA.setChecked(true);
                 Toast.makeText(this, "已提交", Toast.LENGTH_LONG).show();
                 cvNextStep.setEnabled(false);
                 tvSubmit.setTextColor(Color.parseColor("#5f5ecd"));
             }
             if (B.contains(student_id)) {
+                rbQuestionA.setEnabled(false);
+                rbQuestionB.setEnabled(false);
+                rbQuestionC.setEnabled(false);
+                rbQuestionD.setEnabled(false);
                 rbQuestionB.setChecked(true);
                 Toast.makeText(this, "已提交", Toast.LENGTH_LONG).show();
                 cvNextStep.setEnabled(false);
                 tvSubmit.setTextColor(Color.parseColor("#5f5ecd"));
             }
             if (C.contains(student_id)) {
+                rbQuestionA.setEnabled(false);
+                rbQuestionB.setEnabled(false);
+                rbQuestionC.setEnabled(false);
+                rbQuestionD.setEnabled(false);
                 rbQuestionC.setChecked(true);
                 Toast.makeText(this, "已提交", Toast.LENGTH_LONG).show();
                 cvNextStep.setEnabled(false);
                 tvSubmit.setTextColor(Color.parseColor("#5f5ecd"));
             }
             if (D.contains(student_id)) {
+                rbQuestionA.setEnabled(false);
+                rbQuestionB.setEnabled(false);
+                rbQuestionC.setEnabled(false);
+                rbQuestionD.setEnabled(false);
                 rbQuestionD.setChecked(true);
                 Toast.makeText(this, "已提交", Toast.LENGTH_LONG).show();
                 cvNextStep.setEnabled(false);
@@ -235,7 +251,10 @@ public class QuestionResponse extends AppCompatActivity {
                             Answer = "D";
                             break;
                     }
-
+                    rbQuestionA.setEnabled(false);
+                    rbQuestionB.setEnabled(false);
+                    rbQuestionC.setEnabled(false);
+                    rbQuestionD.setEnabled(false);
 
                     Map<String, Object> classQuestionResponse = new HashMap<>();
                     classQuestionResponse.put(Answer, FieldValue.arrayUnion(student_id));//getuser

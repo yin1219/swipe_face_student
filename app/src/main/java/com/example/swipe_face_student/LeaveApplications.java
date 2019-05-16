@@ -46,6 +46,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -234,6 +237,7 @@ public class LeaveApplications extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && data != null && data.getData() != null) {
+            String result = Matisse.obtainPathResult(data).get(0);
             filePath = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
@@ -400,12 +404,15 @@ public class LeaveApplications extends AppCompatActivity {
     }
 
     private void chooseImage() {
-
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "SelectPicture"), PICK_IMAGE_REQUEST);
-
+        Matisse.from(LeaveApplications.this)
+                .choose(MimeType.ofAll())//图片类型
+                .countable(false)//true:选中后显示数字;false:选中后显示对号
+                .maxSelectable(1)//可选的最大数
+                .capture(true)//选择照片时，是否显示拍照
+                .captureStrategy(new CaptureStrategy(true, "com.example.swipe_face_student.fileprovider"))//参数1 true表示拍照存储在共有目录，false表示存储在私有目录；参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
+                .imageEngine(new MyGlideEngine())//图片加载引擎
+                .theme(R.style.Matisse_Zhihu)
+                .forResult(PICK_IMAGE_REQUEST);//REQUEST_CODE_CHOOSE自定義
     }
 
 

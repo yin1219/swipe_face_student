@@ -10,8 +10,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentSelecte
     private static final String TAG = "BACKFLAG";
     private TextView mTextMessage;
     private ViewPager viewPager;
-
     private FragmentTransaction transaction;
     private FragmentManager fragmentManager;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();//抓現在登入user
@@ -199,7 +200,13 @@ public class MainActivity extends AppCompatActivity implements OnFragmentSelecte
 
     }//fragment傳值並換頁
 
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
 
 }

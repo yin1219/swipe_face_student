@@ -63,6 +63,7 @@ public class LeadingPage extends Activity {
                 Intent intent = new Intent(LeadingPage.this, TrainAndTest.class); //按下按鈕後跳轉至MainActivity.java
 
                 startActivity(intent);
+                finish();
 
             }
         });

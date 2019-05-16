@@ -111,7 +111,7 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
                             Log.d(TAG, document.getId() + " => " + document.getData());
                             studentId = document.getId();
                             Log.d(TAG, "studentId : " + studentId);
-                            if (studentId != null) {
+                            if (document.get("student_id").equals(student_id)) {
                                 setAllClassList();
                                 Log.d(TAG, "測試一開始setAllClassList跑幾次");
                             }
@@ -119,7 +119,9 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
                     } else {
                         Log.d(TAG, "Error getting documents: ", task.getException());
                     }
+
                 });
+        Log.d(TAG, "測試ViewCreate DB Query RunTIMES");
 
         classListAdapter.setOnTransPageClickListener(new ClassListAdapter.transPageListener() {
 
@@ -239,7 +241,7 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
     }
 
     private void setAllClassList() {
-
+        Log.d(TAG,"setAllClassListRunTimes");
         classList.clear();
         if (classList.isEmpty()) {
 
@@ -250,7 +252,7 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
                             Log.d(TAG, "Error :" + e1.getMessage());
                         }
                         for (DocumentChange doc : documentSnapshots1.getDocumentChanges()) {
-                            if (doc.getType() == DocumentChange.Type.ADDED) {
+                                if (doc.getType() == DocumentChange.Type.ADDED) {
                                 String classId = doc.getDocument().getId();
                                 Log.d(TAG, "312 classId : " + classId);
                                 Class aClass = doc.getDocument().toObject(Class.class).withId(classId);

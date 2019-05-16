@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.swipe_face_student.Model.Class;
+import com.example.swipe_face_student.Model.Performance;
 import com.example.swipe_face_student.Model.Question;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -237,13 +238,25 @@ public class Fragment_ClassDetail extends Fragment implements FragmentBackHandle
 
                         break;
                     case 2:
-
-                        mCallback.onFragmentSelected(firestore_class.getClass_id(), "toAttendanceList");//fragment傳值
+                        Intent intentAttendance = new Intent();
+                        Bundle bundleAttendance = new Bundle();
+                        bundleAttendance.putString("class_id",class_id);
+                        bundleAttendance.putString("student_id",student_id);
+                        intentAttendance.putExtras(bundleAttendance);
+                        intentAttendance.setClass(getActivity(),AttendaceList.class);
+                        startActivity(intentAttendance);
+//                        mCallback.onFragmentSelected(firestore_class.getClass_id(), "toAttendanceList");//fragment傳值
 
                         break;
                     case 3:
-
-                        mCallback.onFragmentSelected(firestore_class.getClass_id(), "toClassPerformance");//fragment傳值
+                        Intent intentPerformance = new Intent();
+                        Bundle bundlePerformance = new Bundle();
+                        bundlePerformance.putString("class_id",class_id);
+                        bundlePerformance.putString("student_id",student_id);
+                        intentPerformance.putExtras(bundlePerformance);
+                        intentPerformance.setClass(getActivity(), ClassPerformance.class);
+                        startActivity(intentPerformance);
+//                        mCallback.onFragmentSelected(firestore_class.getClass_id(), "toClassPerformance");//fragment傳值
                         break;
                     case 4:
                         Intent intentLeave = new Intent();
@@ -256,8 +269,13 @@ public class Fragment_ClassDetail extends Fragment implements FragmentBackHandle
                         startActivity(intentLeave);
                         break;
                     case 5:
-                        Log.d(TAG, "case5" + firestore_class.getTeacher_email());
-                        mCallback.onFragmentSelected(firestore_class.getTeacher_email(), "toTeacherInfo");//fragment傳值
+                        Intent intentTeacherInfo = new Intent();
+                        Bundle bundleTeacherInfo = new Bundle();
+                        bundleTeacherInfo.putString("teacherEmail",firestore_class.getTeacher_email());
+                        intentTeacherInfo.putExtras(bundleTeacherInfo);
+                        intentTeacherInfo.setClass(getActivity(),TeacherInfo.class);
+                        startActivity(intentTeacherInfo);
+//                        mCallback.onFragmentSelected(firestore_class.getTeacher_email(), "toTeacherInfo");//fragment傳值
 
                         break;
                 }

@@ -3,7 +3,6 @@ package com.example.swipe_face_student;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -14,11 +13,10 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -44,7 +42,6 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +58,6 @@ import okhttp3.ResponseBody;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
-import static android.app.Activity.RESULT_OK;
 import static com.zhihu.matisse.internal.utils.PathUtils.getPath;
 
 @RuntimePermissions
@@ -118,7 +114,7 @@ public class TrainAndTest extends AppCompatActivity {
                     .imageEngine(new MyGlideEngine())//图片加载引擎
                     .theme(R.style.Matisse_Zhihu)
                     .forResult(REQUEST_CODE_CHOOSE);//REQUEST_CODE_CHOOSE自定義
-            Log.i("Create Android", "Test選圖");
+            Log.d(TAG, "Test選圖");
 
 
         });
@@ -195,8 +191,9 @@ public class TrainAndTest extends AppCompatActivity {
         //Test Face Retrieve
         if (requestCode == REQUEST_CODE_TEST && resultCode == RESULT_OK) {
             result = Matisse.obtainPathResult(data);
-            TrainAndTest example = new TrainAndTest();
-            example.retrieveFile(result.get(0));
+//            TrainAndTest example = new TrainAndTest();
+            retrieveFile(result.get(0));
+//            example.retrieveFile(result.get(0));
         }
     }
 
@@ -354,7 +351,9 @@ public class TrainAndTest extends AppCompatActivity {
 
             Intent intentCreateClassGroupByHand = new Intent();
             intentCreateClassGroupByHand.setClass(getmContext(),MainActivity.class);
+            intentCreateClassGroupByHand.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getmContext().startActivity(intentCreateClassGroupByHand);
+            finish();
             ToastUtils.show(getmContext(), name + "~" + "歡迎使用 !");
 
         }
@@ -363,6 +362,16 @@ public class TrainAndTest extends AppCompatActivity {
         }
 
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Toast.makeText(this, "不准退", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

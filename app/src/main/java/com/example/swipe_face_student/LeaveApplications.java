@@ -203,13 +203,17 @@ public class LeaveApplications extends AppCompatActivity {
         btn_leave_apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(spinner_leave_class.getSelectedItem().toString().equals("--請選擇課程--")){
-                    Toast.makeText(LeaveApplications.this ,"請選擇課程", Toast.LENGTH_LONG).show();
-                }
-                else{
+                if (isAllClass) {
+                    if (spinner_leave_class.getSelectedItem().toString().equals("--請選擇課程--")) {
+                        Toast.makeText(LeaveApplications.this, "請選擇課程", Toast.LENGTH_LONG).show();
+                    } else {
+                        apply();
+                        Log.d(TAG, "leave.getTeacher_email onClick:" + leave.getTeacher_email());
+
+                    }
+                }else{
                     apply();
                     Log.d(TAG, "leave.getTeacher_email onClick:" + leave.getTeacher_email());
-
                 }
             }
         });

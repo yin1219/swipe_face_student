@@ -337,6 +337,7 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
             firebaseAuth.createUserWithEmailAndPassword(email, password1)
 
                     .addOnCompleteListener(v -> {
+
                         student_registrationToken = FirebaseInstanceId.getInstance().getToken();
 
                         Map<String, Object> user = new HashMap<>();
@@ -351,12 +352,15 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
                         db.collection("Student").add(user).addOnCompleteListener(task -> {
                             Toast.makeText(S_SignUp.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
+                            finish();
+
 
                         });
                         Intent i = new Intent();
                         i.setClass(S_SignUp.this,LeadingPage.class);
                         startActivity(i);
-                        finish();
+
+
 
                         //user is successfully registered and logged in
                         //we will start the profile activity here

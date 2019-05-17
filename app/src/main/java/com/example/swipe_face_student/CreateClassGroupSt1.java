@@ -268,6 +268,9 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
                 JSONObject obj = jsonArray.getJSONObject(i);
                 studentIdFromUpload = obj.getString("student_id");
                 Log.d(TAG,"studentIdFromUpload"+studentIdFromUpload);
+                if(studentIdFromUpload == null){
+                    continue;
+                }
                 listStudentIdFromUpload.add(studentIdFromUpload);
             }
             getResultIntent(listStudentIdFromUpload);

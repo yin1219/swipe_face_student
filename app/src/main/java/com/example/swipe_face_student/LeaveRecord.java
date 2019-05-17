@@ -74,56 +74,58 @@ public class LeaveRecord extends AppCompatActivity {
         ;
         Log.d(TAG, "Check leaveId : " + leaveId);
 
+        if (leaveId != null) {
+            DocumentReference docRef = mFirestore.collection("Leave").document(leaveId);
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                            Leave leave = document.toObject(Leave.class);
 
-        DocumentReference docRef = mFirestore.collection("Leave").document(leaveId);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        Leave leave = document.toObject(Leave.class);
-
-                        SimpleDateFormat myFmt2 = new SimpleDateFormat("yyyy/MM/dd");
+                            SimpleDateFormat myFmt2 = new SimpleDateFormat("yyyy/MM/dd");
 
 
-                        String leaveUpdloadDate = myFmt2.format(leave.getLeave_uploaddate());
+                            String leaveUpdloadDate = myFmt2.format(leave.getLeave_uploaddate());
 
-                        String photoUrlS = leave.getStudent_id();
-                        StorageReference pathS = storageReferenceS.child(photoUrlS);
-                        Log.d("TEST", pathS.toString());
-                        Glide.with(LeaveRecord.this)
-                                .load(pathS)
-                                .into(imageViewStudent);
+                            String photoUrlS = leave.getStudent_id();
+                            StorageReference pathS = storageReferenceS.child(photoUrlS);
+                            Log.d("TEST", pathS.toString());
+                            Glide.with(LeaveRecord.this)
+                                    .load(pathS)
+                                    .into(imageViewStudent);
 
-                        String checkColor = leave.getLeave_check();
+                            String checkColor = leave.getLeave_check();
 
-                        class_name.setText(leave.getClass_name());
-                        leave_reason.setText(leave.getLeave_reason());
-                        leave_check.setText(leave.getLeave_check());
+                            class_name.setText(leave.getClass_name());
+                            leave_reason.setText(leave.getLeave_reason());
+                            leave_check.setText(leave.getLeave_check());
 
-                        student_name.setText(leave.getStudent_name());
-                        leave_date.setText(leave.getLeave_date());
-                        leave_uploaddate.setText(leaveUpdloadDate);
-                        leave_content.setText(leave.getLeave_content());
-                        String photoUrl = leave.getLeave_photoUrl();
+                            student_name.setText(leave.getStudent_name());
+                            leave_date.setText(leave.getLeave_date());
+                            leave_uploaddate.setText(leaveUpdloadDate);
+                            leave_content.setText(leave.getLeave_content());
+                            String photoUrl = leave.getLeave_photoUrl();
 
-                        if(photoUrl!=null) {
-                            StorageReference path = storageReference.child(photoUrl);
+                            if (photoUrl != null) {
+                                StorageReference path = storageReference.child(photoUrl);
 
-                        Log.d("TEST", path.toString());
-                        Glide.with(LeaveRecord.this)
-                                .load(path)
-                                .into(leave_photo);
+                                Log.d("TEST", path.toString());
+                                Glide.with(LeaveRecord.this)
+                                        .load(path)
+                                        .into(leave_photo);
+                            }
+
+                        } else {
+                            Log.d(TAG, "No such document");
                         }
-
-                    } else {
-                        Log.d(TAG, "No such document");
                     }
                 }
-            }
-        });
+            });
+        }
+
 
         backIBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,7 +137,6 @@ public class LeaveRecord extends AppCompatActivity {
 
 
     }
-
 
 
 }

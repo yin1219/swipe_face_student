@@ -49,6 +49,7 @@ public class CreateClassGroupByHand extends AppCompatActivity {
     CreateGroupByHandAdapter createGroupByHandAdapter;
     RecyclerView studentListRecycleView;
     List<Student> studentList;//For Adapter
+    ArrayList<String> updateNameList = new ArrayList<>();//加入名字的陣列
     LinearLayout groupStudentSetAddLl;//Dialog For Add Student
     ImageButton  backIBtn;
     private final String TAG = "CreateClassGroupByHand";
@@ -111,6 +112,8 @@ public class CreateClassGroupByHand extends AppCompatActivity {
                 Student item = studentList.get(i);
                 if(student_id.equals(item.getStudent_id())){
                     studentList.remove(item);
+                    updateNameList.remove(item.getStudent_id());
+                    Log.d(TAG,"remove: "+updateNameList.toString());
                 }
             }
             createGroupByHandAdapter.notifyDataSetChanged();
@@ -161,7 +164,14 @@ public class CreateClassGroupByHand extends AppCompatActivity {
                                     if (!studentListStr.contains(updateName)) {
                                         Toast.makeText(CreateClassGroupByHand.this, "該學號不存在於課程裡",
                                                 Toast.LENGTH_SHORT).show();
-                                    } else {
+                                    }
+                                    //判斷學生是否已經在清單內
+                                    else if(updateNameList.contains(updateName)){
+                                        Toast.makeText(CreateClassGroupByHand.this, "已在清單內",
+                                                Toast.LENGTH_SHORT).show();
+                                    } else{
+                                        updateNameList.add(updateName);
+                                        Log.d(TAG,"add: "+updateNameList.toString());
                                         db.collection("Student").whereEqualTo("student_id", updateName)
                                                 .addSnapshotListener((documentSnapshots, e) -> {
                                             if (e != null) {

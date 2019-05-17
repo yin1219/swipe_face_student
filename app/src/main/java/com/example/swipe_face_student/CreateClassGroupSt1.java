@@ -202,27 +202,28 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
-            photoPathToUploadClass = Matisse.obtainPathResult(data);
-        }
-        if (!photoPathToUploadClass.isEmpty()) {
-            Log.d(TAG,photoPathToUploadClass.get(0));
-            LayoutInflater lf = (LayoutInflater) CreateClassGroupSt1.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            ViewGroup vg = (ViewGroup) lf.inflate(R.layout.dialog_retreive,null);
-            img_pgbar = vg.findViewById(R.id.img_pgbar);
-            ad = (AnimationDrawable)img_pgbar.getDrawable();
-            ad.start();
-            android.app.AlertDialog.Builder builder1 = new AlertDialog.Builder(CreateClassGroupSt1.this);
-            builder1.setView(vg);
-            AlertDialog dialog = builder1.create();
-            dialog.show();
-            MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);//setType一定要Multipart
-            for (int i = 0; i < photoPathToUploadClass.size(); i++) {//用迴圈去RUN多選照片
-                File file = new File(photoPathToUploadClass.get(i));
-                if (file != null) {
-                    builder.addFormDataPart("photos", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
-                }//前面是para  中間是抓圖片名字 後面是創一個要求
-            }
-            MultipartBody requestBody = builder.build();//建立要求
+            if (null != data) {
+                photoPathToUploadClass = Matisse.obtainPathResult(data);
+                //LoadingDialog
+                LayoutInflater lf = (LayoutInflater) CreateClassGroupSt1.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                ViewGroup vg = (ViewGroup) lf.inflate(R.layout.dialog_retreive, null);
+                img_pgbar = vg.findViewById(R.id.img_pgbar);
+                ad = (AnimationDrawable) img_pgbar.getDrawable();
+                ad.start();
+                android.app.AlertDialog.Builder builder1 = new AlertDialog.Builder(CreateClassGroupSt1.this);
+                builder1.setView(vg);
+                AlertDialog dialog = builder1.create();
+                dialog.show();
+                MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);//setType一定要Multipart
+                for (int i = 0; i < photoPathToUploadClass.size(); i++) {//用迴圈去RUN多選照片
+                    File file = new File(photoPathToUploadClass.get(i));
+                    if (file != null) {
+                        builder.addFormDataPart("photos", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
+                    }//前面是para  中間是抓圖片名字 後面是創一個要求
+                }
+
+
+                MultipartBody requestBody = builder.build();//建立要求
 
             Request request = new Request.Builder()
                     .url(url)
@@ -247,15 +248,6 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
 
     }
 
-    //抓JSON內容後Intent
-    private void getResultIntent(List<String> listStudentIdFromUpload) {
-        Intent intentCreateClassGroupByHand = new Intent();
-        intentCreateClassGroupByHand.setClass(this, CreateClassGroupByCam.class);
-        Bundle bundleGroup = new Bundle();
-        bundleGroup.putString("classId", classId);
-        bundleGroup.putStringArrayList("listStudentIdFromUpload", (ArrayList<String>) listStudentIdFromUpload);
-        intentCreateClassGroupByHand.putExtras(bundleGroup);
-        startActivity(intentCreateClassGroupByHand);
     }
 
     //解析回傳JSON檔
@@ -278,5 +270,23 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    //抓JSON內容後Intent
+    private void getResultIntent(List<String> listStudentIdFromUpload) {
+        if (listStudentIdFromUpload.isEmpty()) {
+            ToastUtils.show(this, "辨識失敗 !" + "請再多試試 !");
+        } else {
+            Intent intentCreateClassGroupByHand = new Intent();
+            intentCreateClassGroupByHand.setClass(this, CreateClassGroupByCam.class);
+            Bundle bundleGroup = new Bundle();
+            bundleGroup.putString("classId", classId);
+            bundleGroup.putStringArrayList("listStudentIdFromUpload", (ArrayList<String>) listStudentIdFromUpload);
+            intentCreateClassGroupByHand.putExtras(bundleGroup);
+            startActivity(intentCreateClassGroupByHand);
+        }
+
+    }
+
+
 }
 

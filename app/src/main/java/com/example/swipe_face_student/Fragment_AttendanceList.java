@@ -57,7 +57,7 @@ public class Fragment_AttendanceList extends Fragment {
         class_id = args.getString("info");
         student_id = args.getString("student_id");
         Log.d(TAG, "class_id:" + class_id);//fragment傳值
-        Toast.makeText(getContext(), "現在課程:" + class_id, Toast.LENGTH_LONG).show();
+//        Toast.makeText(getContext(), "現在課程:" + class_id, Toast.LENGTH_LONG).show();
         // Inflate the layout for this fragment
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_attendance_list, container, false);

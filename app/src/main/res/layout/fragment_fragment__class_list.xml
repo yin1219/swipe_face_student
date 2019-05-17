@@ -38,11 +38,7 @@
             android:layout_weight="10"
             android:gravity="center">
 
-            <ImageButton
 
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:background="@drawable/ic_filter_list_black_24dp" />
         </LinearLayout>
 
 

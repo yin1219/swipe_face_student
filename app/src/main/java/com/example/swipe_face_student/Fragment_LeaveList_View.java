@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.swipe_face_student.Adapter.LeaveListAdapter;
 import com.example.swipe_face_student.Model.Leave;
@@ -32,6 +33,7 @@ public class Fragment_LeaveList_View extends Fragment {
     private LeaveListAdapter leaveListAdapter;
     private List<Leave> leaveList;
     private Bundle arg;
+    private TextView tvNoData;
 
     OnFragmentSelectedListener mCallback;//Fragment傳值
 
@@ -67,6 +69,10 @@ public class Fragment_LeaveList_View extends Fragment {
 
         mMainList.setAdapter(leaveListAdapter);
         setTeacherLeave(list_way);
+
+        tvNoData = (TextView) view.findViewById(R.id.tvNoData);
+
+
 
 
     }
@@ -114,6 +120,11 @@ public class Fragment_LeaveList_View extends Fragment {
                 if(leaveList.isEmpty()){
                     Log.d(TAG,"here0" );
                     leaveListAdapter.notifyDataSetChanged();
+                    mMainList.setVisibility(View.GONE);
+                    tvNoData.setVisibility(View.VISIBLE);
+                }
+                else {
+                    tvNoData.setVisibility(View.GONE);
                 }
             }
         });

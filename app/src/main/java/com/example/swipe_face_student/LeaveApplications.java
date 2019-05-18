@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
@@ -24,10 +25,12 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.swipe_face_student.Model.Leave;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -92,10 +95,11 @@ public class LeaveApplications extends AppCompatActivity {
     private ImageView img_leave_photo;
     private Context context;
     private Boolean isAllClass = true;
-    private Boolean isHaveImg =true;
+    private Boolean isHaveImg = true;
     private final int PICK_IMAGE_REQUEST = 71;
     private ImageView img_pgbar;
     private AnimationDrawable ad;
+    private LinearLayout linearLayoutSubmit;
 
     private String classStr, contentStr;
 
@@ -136,6 +140,8 @@ public class LeaveApplications extends AppCompatActivity {
         btn_leave_apply = (Button) findViewById(R.id.btn_leave_apply);
         backIBtn = (ImageButton) findViewById(R.id.backIBtn) ;
         img_leave_photo = (ImageView) findViewById(R.id.img_leave_photo);
+        img_leave_photo.setVisibility(View.GONE);
+        linearLayoutSubmit = findViewById(R.id.leaveSubmit);
 
 
         ArrayAdapter<CharSequence> leave_reasonList = ArrayAdapter.createFromResource(this,
@@ -158,7 +164,7 @@ public class LeaveApplications extends AppCompatActivity {
         if (isAllClass) {
             getClassList();
             classList.add("--請選擇課程--");
-            ((ViewManager)text_name.getParent()).removeView(text_name);
+            ((ViewManager) text_name.getParent()).removeView(text_name);
             ArrayAdapter<String> leave_classList = new ArrayAdapter<>(this,
                     android.R.layout.simple_spinner_dropdown_item, classList);
             spinner_leave_class.setAdapter(leave_classList);
@@ -168,13 +174,15 @@ public class LeaveApplications extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     setTeacher_email(class_idList.get(spinner_leave_class.getSelectedItemPosition()));
                 }
+
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
                 }
             });
-        }else{
-            ((ViewManager)spinner_leave_class.getParent()).removeView(spinner_leave_class);
-        setClassName(class_id);
+        } else {
+            ((ViewManager) spinner_leave_class.getParent()).removeView(spinner_leave_class);
+            setClassName(class_id);
+            setTeacher_email(class_id);
         }
 
 
@@ -214,7 +222,7 @@ public class LeaveApplications extends AppCompatActivity {
                         Log.d(TAG, "leave.getTeacher_email onClick:" + leave.getTeacher_email());
 
                     }
-                }else{
+                } else {
                     apply();
                     Log.d(TAG, "leave.getTeacher_email onClick:" + leave.getTeacher_email());
                 }
@@ -233,18 +241,14 @@ public class LeaveApplications extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null) {
-            String result = Matisse.obtainPathResult(data).get(0);
-            filePath = data.getData();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                img_leave_photo.setImageBitmap(bitmap);
-                isHaveImg =true;
-                Log.d(TAG,"isHaveImg =true;");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
+            img_leave_photo.setVisibility(View.VISIBLE);
+
+//            filePath = data.getData();
+            filePath = Matisse.obtainResult(data).get(0);
+            Glide.with(LeaveApplications.this)
+                    .load(filePath)
+                    .into(img_leave_photo);
         }else{
             isHaveImg =false;
             Log.d(TAG,"isHaveImg =false;");
@@ -259,8 +263,8 @@ public class LeaveApplications extends AppCompatActivity {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
 
-        String str_month=df.format(month+1);
-        String str_day=df.format(day);
+        String str_month = df.format(month + 1);
+        String str_day = df.format(day);
 
 //        String dateTime = String.valueOf(year) + "/" + String.valueOf(month + 1) + "/" + String.valueOf(day);
         String dateTime = String.valueOf(year) + "/" + str_month + "/" + str_day;
@@ -276,9 +280,9 @@ public class LeaveApplications extends AppCompatActivity {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onDateSet(DatePicker view, int year, int month, int day ) {
-                String str_month=df.format(month+1);
-                String str_day=df.format(day);
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                String str_month = df.format(month + 1);
+                String str_day = df.format(day);
 
 
                 String dateTime = String.valueOf(year) + "/" + str_month + "/" + str_day;
@@ -336,7 +340,8 @@ public class LeaveApplications extends AppCompatActivity {
         });
 
     }
-    private void setClassName(String class_id){
+
+    private void setClassName(String class_id) {
         db = FirebaseFirestore.getInstance();
         db.collection("Class").whereEqualTo("class_id", class_id)
                 .get()
@@ -418,31 +423,31 @@ public class LeaveApplications extends AppCompatActivity {
     private void apply() {
 
         setStudent_name();
-        if(isAllClass) {
+        if (isAllClass) {
             setTeacher_email(class_idList.get(spinner_leave_class.getSelectedItemPosition()));
-        }else{
-            Log.d(TAG,"class_id in apply() :"+class_id);
+        } else {
+            Log.d(TAG, "class_id in apply() :" + class_id);
             setTeacher_email(class_id);
         }
         final String leave_content = edittext_leave_content.getText().toString();
         final String leave_date = text_leave_date.getText().toString();
         final String leave_reason = spinner_leave_reason.getSelectedItem().toString();
-        final String leave_class ;
-        if(isAllClass) {
+        final String leave_class;
+        if (isAllClass) {
             leave_class = spinner_leave_class.getSelectedItem().toString();
-        }else{
-            Log.d(TAG,"class_id in apply() :"+class_id);
+        } else {
+            Log.d(TAG, "class_id in apply() :" + class_id);
             leave_class = class_name;
         }
 
         final String student_name = leave.getStudent_name();
         final String leave_check = "未審核";
         final String apply_class_id;
-        if(isAllClass) {
-        apply_class_id = class_idList.get(spinner_leave_class.getSelectedItemPosition());
-        }else{
-            Log.d(TAG,"class_id in apply() :"+class_id);
-        apply_class_id = class_id;
+        if (isAllClass) {
+            apply_class_id = class_idList.get(spinner_leave_class.getSelectedItemPosition());
+        } else {
+            Log.d(TAG, "class_id in apply() :" + class_id);
+            apply_class_id = class_id;
         }
         final String student_id = this.student_id;
         final String teacher_email = leave.getTeacher_email();
@@ -450,7 +455,7 @@ public class LeaveApplications extends AppCompatActivity {
         final String student_registrationToken = FirebaseInstanceId.getInstance().getToken();
         final String leave_photoUrl = UUID.randomUUID().toString();
 
-        Log.d("FCMToken LeaveApp", "token "+ FirebaseInstanceId.getInstance().getToken());
+        Log.d("FCMToken LeaveApp", "token " + FirebaseInstanceId.getInstance().getToken());
 
         db = FirebaseFirestore.getInstance();
 
@@ -465,20 +470,20 @@ public class LeaveApplications extends AppCompatActivity {
         leave.setStudent_id(student_id);
         leave.setStudent_registrationToken(student_registrationToken);
         LayoutInflater lf = (LayoutInflater) LeaveApplications.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        ViewGroup vg = (ViewGroup) lf.inflate(R.layout.dialog_leave_applications,null);
-        img_pgbar = (ImageView)vg.findViewById(R.id.img_pgbar);
-        ad = (AnimationDrawable)img_pgbar.getDrawable();
+        ViewGroup vg = (ViewGroup) lf.inflate(R.layout.dialog_leave_applications, null);
+        img_pgbar = (ImageView) vg.findViewById(R.id.img_pgbar);
+        ad = (AnimationDrawable) img_pgbar.getDrawable();
         ad.start();
         android.app.AlertDialog.Builder builder1 = new AlertDialog.Builder(LeaveApplications.this);
         builder1.setView(vg);
         AlertDialog dialog = builder1.create();
         dialog.show();
-        if (filePath!=null) {
+        if (filePath != null) {
             leave.setLeave_photoUrl(leave_photoUrl);
 
-        Log.d(TAG, "leave_photoUrl:" + leave_photoUrl);
-        StorageReference ref = storageReference.child("Leave_photo/" + leave_photoUrl);
-        ref.putFile(filePath);
+            Log.d(TAG, "leave_photoUrl:" + leave_photoUrl);
+            StorageReference ref = storageReference.child("Leave_photo/" + leave_photoUrl);
+            ref.putFile(filePath);
         }
         Log.d(TAG, "afterStudent_name" + student_name);
         Log.d(TAG, "afterTeacher_email:" + teacher_email);
@@ -488,7 +493,6 @@ public class LeaveApplications extends AppCompatActivity {
             Toast.makeText(this, "已送出請假申請", Toast.LENGTH_SHORT).show();
             finish();
         });
-
 
 
     }

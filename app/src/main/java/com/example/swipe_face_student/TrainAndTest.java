@@ -291,24 +291,20 @@ public class TrainAndTest extends AppCompatActivity {
                         obj.getString("student_school")
 
                 );*/
-                name = obj.getString("student_name");
-                id = obj.getString("student_id");
-                email = obj.getString("student_email");
-                department = obj.getString("student_department");
-                school = obj.getString("student_school");
 
-                Log.i("name", name);
+                id = obj.getString("student_id");
+                name = obj.getString("student_name");
+
+
                 Log.i("id", id);
-                Log.i("email", email);
-                Log.i("department", department);
-                Log.i("school", school);
+                Log.i("name", name);
 
 
                 //ToastUtils.show(getmContext(),"名字:"+name+"\n"+"學號: "+id+"\n"+"email:"+email+"\n"+"系所:"+department+"\n"+"學校:"+school);
 
                 //heroList.add(hero);
             }
-            if (id == null){
+            if (id.equals("null")){
                 ToastUtils.show(getmContext(),"辨識失敗 !" + "請再多試試 !");
             }else{
                 getResultIntent(name,id,responseData);

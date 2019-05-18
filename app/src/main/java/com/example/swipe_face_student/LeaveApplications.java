@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
@@ -24,10 +25,12 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.swipe_face_student.Model.Leave;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -96,6 +99,7 @@ public class LeaveApplications extends AppCompatActivity {
     private final int PICK_IMAGE_REQUEST = 71;
     private ImageView img_pgbar;
     private AnimationDrawable ad;
+    private LinearLayout linearLayoutSubmit;
 
     private String classStr, contentStr;
 
@@ -136,6 +140,8 @@ public class LeaveApplications extends AppCompatActivity {
         btn_leave_apply = (Button) findViewById(R.id.btn_leave_apply);
         backIBtn = (ImageButton) findViewById(R.id.backIBtn) ;
         img_leave_photo = (ImageView) findViewById(R.id.img_leave_photo);
+        img_leave_photo.setVisibility(View.GONE);
+        linearLayoutSubmit = findViewById(R.id.leaveSubmit);
 
 
         ArrayAdapter<CharSequence> leave_reasonList = ArrayAdapter.createFromResource(this,
@@ -233,18 +239,14 @@ public class LeaveApplications extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null) {
-            String result = Matisse.obtainPathResult(data).get(0);
-            filePath = data.getData();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                img_leave_photo.setImageBitmap(bitmap);
-                isHaveImg =true;
-                Log.d(TAG,"isHaveImg =true;");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
+            img_leave_photo.setVisibility(View.VISIBLE);
+
+//            filePath = data.getData();
+            filePath = Matisse.obtainResult(data).get(0);
+            Glide.with(LeaveApplications.this)
+                    .load(filePath)
+                    .into(img_leave_photo);
         }else{
             isHaveImg =false;
             Log.d(TAG,"isHaveImg =false;");

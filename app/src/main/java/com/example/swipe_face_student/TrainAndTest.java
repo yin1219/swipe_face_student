@@ -309,7 +309,7 @@ public class TrainAndTest extends AppCompatActivity {
                 //heroList.add(hero);
             }
             if (id == null){
-                ToastUtils.show(getmContext(),"辨識失敗");
+                ToastUtils.show(getmContext(),"辨識失敗 !" + "請再多試試 !");
             }else{
                 getResultIntent(name,id,responseData);
             }
@@ -357,7 +357,7 @@ public class TrainAndTest extends AppCompatActivity {
             ToastUtils.show(getmContext(), name + "~" + "歡迎使用 !");
 
         }
-        if (responseData == null){
+        else{
             ToastUtils.show(getmContext(), "辨識失敗 !" + "請再多試試 !");
         }
 

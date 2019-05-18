@@ -84,9 +84,11 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
     ResponseBody responseBody;
     String responseData;
     final int REQUEST_CODE_CHOOSE = 123;
-    String url = "http://" + FlassSetting.getIp() + ":8080/ProjectApi/api/FaceApi/RetrievePhoto";
+    String url = "http://"+FlassSetting.getIp()+":8080/ProjectApi/api/FaceApi/RetrievePhoto";
     boolean isGroup = false;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
+
 
 
     @Override
@@ -103,7 +105,7 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
         currentFirebaseUser.getEmail();
         String[] currentUserIdToStringList = currentFirebaseUser.getEmail().split("@");
         student_id = currentUserIdToStringList[0];
-        Log.d(TAG, "currentUserId: " + student_id);
+        Log.d(TAG,"currentUserId: "+student_id);
 
         //init xml
         tvClassName = findViewById(R.id.textViewClassName);
@@ -120,7 +122,7 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
         classId = bundle.getString("classId");
 
         //query DB
-        if (!classId.isEmpty()) {
+        if(!classId.isEmpty()){
             DocumentReference docRef = db.collection("Class").document(classId);
             docRef.get().addOnSuccessListener(documentSnapshot -> {
                 Class aClass = documentSnapshot.toObject(Class.class);
@@ -132,12 +134,12 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
                 groupNumHigh = aClass.getGroup_numHigh();
                 groupNumLow = aClass.getGroup_numLow();
                 groupCreateTime = aClass.getCreate_time();
-                Log.d(TAG, aClass.toString());
+                Log.d(TAG,aClass.toString());
 
                 //set TextView
                 tvClassName.setText(String.format("%s\t%s", classYear, className));
                 tvGroupNum.setText("人數限制\t" + groupNumLow.toString() + "\t~\t" + groupNumHigh.toString());
-                tvCreateTime.setText("結束時間 : " + sdf.format(groupCreateTime));
+                tvCreateTime.setText("結束時間 : "+sdf.format(groupCreateTime));
             });
         }
 
@@ -152,7 +154,7 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Group group = document.toObject(Group.class);
-                            if (group.getStudent_id().contains(student_id)) {
+                            if(group.getStudent_id().contains(student_id)){
                                 isGroup = true;
                             }
                         }
@@ -163,20 +165,21 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
 
         //Button
         cvGroupDividerByhand.setOnClickListener(v -> {
-            if (!isGroup) {
+            if(!isGroup){
                 Intent intentCreateClassGroupByHand = new Intent();
                 intentCreateClassGroupByHand.setClass(this, CreateClassGroupByHand.class);
                 Bundle bundleGroup = new Bundle();
                 bundleGroup.putString("classId", classId);
                 intentCreateClassGroupByHand.putExtras(bundleGroup);
                 startActivity(intentCreateClassGroupByHand);
-            } else {
+            }
+            else{
                 Toast.makeText(CreateClassGroupSt1.this, "已分組", Toast.LENGTH_SHORT).show();
             }
 
         });
         cvGroupDividerByCam.setOnClickListener(v -> {
-            if (!isGroup) {
+            if(!isGroup){
                 Matisse.from(CreateClassGroupSt1.this)
                         .choose(MimeType.ofAll())//图片类型
                         .countable(false)//true:选中后显示数字;false:选中后显示对号
@@ -186,10 +189,11 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
                         .imageEngine(new GlideModule())//图片加载引擎
                         .theme(R.style.Matisse_Zhihu)
                         .forResult(REQUEST_CODE_CHOOSE);//REQUEST_CODE_CHOOSE自定義
-            } else {
+            }else{
                 Toast.makeText(CreateClassGroupSt1.this, "已分組", Toast.LENGTH_SHORT).show();
             }
         });
+
 
 
     }
@@ -221,37 +225,28 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
 
                 MultipartBody requestBody = builder.build();//建立要求
 
-                Request request = new Request.Builder()
-                        .url(url)
-                        .post(requestBody)
-                        .build();
-                client.newCall(request).enqueue(new Callback() {
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(requestBody)
+                    .build();
+            client.newCall(request).enqueue(new Callback() {
 
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        Log.i("Create Android", "Test失敗");
-                    }
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.i("Create Android", "Test失敗");
+                }
 
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        Log.i("Create Android", "Test成功");
-                        dialog.dismiss();
-                        parseJsonWithJsonObject(response);
-
-                    }
-                });
-            }
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    Log.i("Create Android", "Test成功");
+                    dialog.dismiss();
+                    parseJsonWithJsonObject(response);
+                }
+            });
 
         }
-//        if (!photoPathToUploadClass.isEmpty()) {
-//            Log.d(TAG,photoPathToUploadClass.get(0));
-//
-//
-//
-//        }else {
-//            Toast.makeText(CreateClassGroupSt1.this, "請選擇相片或拍照",
-//                    Toast.LENGTH_SHORT).show();
-//        }
+
+    }
 
     }
 
@@ -259,25 +254,21 @@ public class CreateClassGroupSt1 extends AppCompatActivity {
     private void parseJsonWithJsonObject(Response response) throws IOException {
         responseBody = response.body();
         responseData = responseBody.string();
-        if (responseData.isEmpty()) {
-            ToastUtils.show(this, "辨識失敗 !" + "請再多試試 !");
-        } else {
-            try {
-                JSONArray jsonArray = new JSONArray(responseData);
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject obj = jsonArray.getJSONObject(i);
-                    studentIdFromUpload = obj.getString("student_id");
-                    Log.d(TAG, "studentIdFromUpload" + studentIdFromUpload);
-                    if (!listStudentIdFromUpload.contains(studentIdFromUpload)) {
-                        listStudentIdFromUpload.add(studentIdFromUpload);
-                    }
+        try {
+            JSONArray jsonArray = new JSONArray(responseData);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject obj = jsonArray.getJSONObject(i);
+                studentIdFromUpload = obj.getString("student_id");
+                Log.d(TAG,"studentIdFromUpload"+studentIdFromUpload);
+                if(studentIdFromUpload == null){
+                    continue;
                 }
-                getResultIntent(listStudentIdFromUpload);
-            } catch (JSONException e) {
-                e.printStackTrace();
+                listStudentIdFromUpload.add(studentIdFromUpload);
             }
+            getResultIntent(listStudentIdFromUpload);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-
     }
 
     //抓JSON內容後Intent

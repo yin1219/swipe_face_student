@@ -23,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,6 +36,7 @@ import java.util.Map;
 
 public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
 
+    private final String TAG = "S_SignUp";
     private Button buttonRegister;
     private ImageButton backBtn;
     private EditText editTextName;
@@ -334,10 +336,10 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
             firebaseAuth = FirebaseAuth.getInstance();
             db = FirebaseFirestore.getInstance();
 
-            firebaseAuth.createUserWithEmailAndPassword(email, password1)
-
-                    .addOnCompleteListener(v -> {
-
+            firebaseAuth.createUserWithEmailAndPassword(email, password1).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(task.isSuccessful()){
                         student_registrationToken = FirebaseInstanceId.getInstance().getToken();
 
                         Map<String, Object> user = new HashMap<>();
@@ -349,7 +351,7 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
                         user.put("student_registrationToken",student_registrationToken);
 
 
-                        db.collection("Student").add(user).addOnCompleteListener(task -> {
+                        db.collection("Student").add(user).addOnCompleteListener(taskToAddUser -> {
                             Toast.makeText(S_SignUp.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
                             finish();
@@ -359,12 +361,39 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
                         Intent i = new Intent();
                         i.setClass(S_SignUp.this,LeadingPage.class);
                         startActivity(i);
+                    }
+                    else{
+                        dialog.dismiss();
+                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                        Toast.makeText(S_SignUp.this, "註冊失敗",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
 
-
-
-                        //user is successfully registered and logged in
-                        //we will start the profile activity here
-                    });
+//            firebaseAuth.createUserWithEmailAndPassword(email,password1).addOnSuccessListener(authResult -> {
+//                student_registrationToken = FirebaseInstanceId.getInstance().getToken();
+//
+//                Map<String, Object> user = new HashMap<>();
+//                user.put("student_name", name);
+//                user.put("student_id",id);
+//                user.put("student_email", email);
+//                user.put("student_school", school);
+//                user.put("student_department", department);
+//                user.put("student_registrationToken",student_registrationToken);
+//
+//
+//                db.collection("Student").add(user).addOnCompleteListener(task -> {
+//                    Toast.makeText(S_SignUp.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+//                    dialog.dismiss();
+//                    finish();
+//
+//
+//                });
+//                Intent i = new Intent();
+//                i.setClass(S_SignUp.this,LeadingPage.class);
+//                startActivity(i);
+//            });
         }
     }
 

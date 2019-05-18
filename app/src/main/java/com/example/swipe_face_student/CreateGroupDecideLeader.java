@@ -111,15 +111,15 @@ public class CreateGroupDecideLeader extends AppCompatActivity {
     }
 
     private void finishStep() {
-        LayoutInflater lf = (LayoutInflater) CreateGroupDecideLeader.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        ViewGroup vg = (ViewGroup) lf.inflate(R.layout.dialog_decide_leader,null);
-        img_pgbar = (ImageView)vg.findViewById(R.id.img_pgbar);
-        ad = (AnimationDrawable)img_pgbar.getDrawable();
-        ad.start();
-        android.app.AlertDialog.Builder builder1 = new AlertDialog.Builder(CreateGroupDecideLeader.this);
-        builder1.setView(vg);
-        AlertDialog dialog = builder1.create();
-        dialog.show();
+//        LayoutInflater lf = (LayoutInflater) CreateGroupDecideLeader.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        ViewGroup vg = (ViewGroup) lf.inflate(R.layout.dialog_decide_leader,null);
+//        img_pgbar = (ImageView)vg.findViewById(R.id.img_pgbar);
+//        ad = (AnimationDrawable)img_pgbar.getDrawable();
+//        ad.start();
+//        android.app.AlertDialog.Builder builder1 = new AlertDialog.Builder(CreateGroupDecideLeader.this);
+//        builder1.setView(vg);
+//        AlertDialog dialog = builder1.create();
+//        dialog.show();
 
         //更新小組數目(+1)
         DocumentReference washingtonRef = db.collection("Class").document(classId);
@@ -150,7 +150,7 @@ public class CreateGroupDecideLeader extends AppCompatActivity {
                 .document(classId).collection("Group")
                 .add(group)
                 .addOnSuccessListener(aVoid -> {
-                    dialog.dismiss();
+//                    dialog.dismiss();
                     Log.d(TAG, "DocumentSnapshot successfully written!");
                 })
                 .addOnFailureListener(e -> Log.w(TAG, "Error writing document", e));

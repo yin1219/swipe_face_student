@@ -19,6 +19,7 @@ import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -71,8 +72,8 @@ public class AttendaceList extends AppCompatActivity {
 
         if (class_id != null && student_id != null) {
             db.collection("Class").
-                    whereEqualTo("class_id", class_id).
-                    addSnapshotListener((documentSnapshots, e) -> {
+                    whereEqualTo("class_id", class_id)
+                    .addSnapshotListener((documentSnapshots, e) -> {
                         if (e != null) {
                             Log.d(TAG, "Error :" + e.getMessage());
                         }
@@ -81,8 +82,9 @@ public class AttendaceList extends AppCompatActivity {
                         Log.d(TAG, "in" + class_id.toString());
 
                         db.collection("Rollcall").
-                                whereEqualTo("class_id", class_id).
-                                addSnapshotListener((documentSnapshots1, e1) -> {
+                                whereEqualTo("class_id", class_id)
+                                .orderBy("rollcall_time", Query.Direction.DESCENDING)
+                                .addSnapshotListener((documentSnapshots1, e1) -> {
                                     if (e1 != null) {
                                         Log.d(TAG, "Error :" + e1.getMessage());
                                     }
@@ -149,6 +151,8 @@ public class AttendaceList extends AppCompatActivity {
             attendance.setAttendance_status("病假");
         } else if (rollcall.getRollcall_late().contains(student_id)) {
             attendance.setAttendance_status("遲到");
+        } else {
+            attendance.setAttendance_status("Null");
         }
 
 

@@ -56,7 +56,10 @@ public class S_SignUp extends AppCompatActivity implements View.OnClickListener{
     private Spinner spinner2;
 
     private String[] school = {"請選擇學校","私立輔仁大學","國立台灣大學"}; //宣告字串陣列
-    private String[] department = {"請選擇科系","資訊管理學系","日本語文學系"}; //宣告字串陣列
+    private String[] department = {"請選擇科系","資訊管理學系"," 企業管理學系"," 統計資訊學系"," 會計學系"}; //宣告字串陣列
+    //,"金融與國際企業學系",
+    //            " 中國文學系"," 歷史學系"," 哲學系","新聞傳播學系","影像傳播學系"," 廣告傳播學系"," 法律學系"," 法律學系"," 財經法律學系"," 織品服裝學系",
+    //            " 食品科學系"," 兒童與家庭學系"," 餐旅管理學系"," 營養科學系"
 
     private ArrayAdapter<String> listAdapter; //宣告listAdapter物件
     private ArrayAdapter<String> listAdapter2; //宣告listAdapter物件

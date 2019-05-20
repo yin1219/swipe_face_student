@@ -60,20 +60,22 @@ public class AttendanceListAdapter extends RecyclerView.Adapter<AttendanceListAd
             holder.tvAttendanceState.setTextColor(context.getResources().getColor(R.color.attendance));
             holder.tvAttendanceState.setBackground(context.getResources().getDrawable(R.drawable.attendance_state_attend_backgroud));
         }
-        if(attendanceCheck.equals("缺席")){
+        else if(attendanceCheck.equals("缺席")){
             holder.tvAttendanceState.setText(attendanceCheck);
             holder.tvAttendanceState.setTextColor(context.getResources().getColor(R.color.absense));
             holder.tvAttendanceState.setBackground(context.getResources().getDrawable(R.drawable.attendance_state_absense_backgroudsd));
         }
-        if(attendanceCheck.equals("遲到")){
+        else if(attendanceCheck.equals("遲到")){
             holder.tvAttendanceState.setText(attendanceCheck);
             holder.tvAttendanceState.setTextColor(context.getResources().getColor(R.color.late));
             holder.tvAttendanceState.setBackground(context.getResources().getDrawable(R.drawable.attendance_state_late_backgroud));
         }
-        if(attendanceCheck.equals("請假")){
+        else if(attendanceCheck.equals("請假")){
             holder.tvAttendanceState.setText(attendanceCheck);
             holder.tvAttendanceState.setTextColor(context.getResources().getColor(R.color.leave));
             holder.tvAttendanceState.setBackground(context.getResources().getDrawable(R.drawable.attendance_state_leave_backgroud));
+        }else{
+            holder.tvAttendanceState.setText(attendanceCheck);
         }
 
         holder.mView.setOnClickListener(new View.OnClickListener() {

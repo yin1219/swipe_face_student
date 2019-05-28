@@ -254,7 +254,6 @@ public class Fragment_ClassList extends Fragment implements FragmentBackHandler 
                         for (DocumentChange doc : documentSnapshots1.getDocumentChanges()) {
                                 if (doc.getType() == DocumentChange.Type.ADDED) {
                                 String classId = doc.getDocument().getId();
-                                Log.d(TAG, "312 classId : " + classId);
                                 Class aClass = doc.getDocument().toObject(Class.class).withId(classId);
                                 if(!classList.contains(aClass)){
                                     classList.add(aClass);

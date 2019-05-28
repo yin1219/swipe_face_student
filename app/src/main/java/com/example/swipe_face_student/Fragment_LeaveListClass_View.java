@@ -106,13 +106,11 @@ public class Fragment_LeaveListClass_View extends Fragment {
                     }
 
                 }
-                if(leaveList.isEmpty()){
-                    Log.d(TAG,"here0" );
-                    leaveListClassDetailAdapter.notifyDataSetChanged();
+                if (leaveList.isEmpty()) {
                     mMainList.setVisibility(View.GONE);
                     tvNoData.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
+                    mMainList.setVisibility(View.VISIBLE);
                     tvNoData.setVisibility(View.GONE);
                 }
             }

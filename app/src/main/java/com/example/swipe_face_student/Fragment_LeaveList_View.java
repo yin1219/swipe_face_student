@@ -70,7 +70,7 @@ public class Fragment_LeaveList_View extends Fragment {
         mMainList.setAdapter(leaveListAdapter);
         setTeacherLeave(list_way);
 
-        tvNoData = (TextView) view.findViewById(R.id.tvNoData);
+        tvNoData = view.findViewById(R.id.tvNoData);
 
 
 
@@ -97,11 +97,9 @@ public class Fragment_LeaveList_View extends Fragment {
                 if(e != null){
                     Log.d(TAG,"error00" + e.getMessage());
                 }
-                Log.d(TAG,"測試94" );
                 for(DocumentChange doc : documentSnapshots.getDocumentChanges()){
 
                     if(doc.getType() == DocumentChange.Type.ADDED){
-                        Log.d(TAG,"測試98" );
 
                         String leaveRecordId = doc.getDocument().getId();
 
@@ -110,20 +108,15 @@ public class Fragment_LeaveList_View extends Fragment {
                         Log.d(TAG,"Check Teamil : " + leave.getTeacher_email());
                         if(!leaveList.contains(leave)){
                             leaveList.add(leave);
+                            leaveListAdapter.notifyDataSetChanged();
                         }
-
-
-                        leaveListAdapter.notifyDataSetChanged();
                     }
-
                 }
-                if(leaveList.isEmpty()){
-                    Log.d(TAG,"here0" );
-                    leaveListAdapter.notifyDataSetChanged();
+                if (leaveList.isEmpty()) {
                     mMainList.setVisibility(View.GONE);
                     tvNoData.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
+                    mMainList.setVisibility(View.VISIBLE);
                     tvNoData.setVisibility(View.GONE);
                 }
             }

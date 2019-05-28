@@ -5,14 +5,6 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-
-    <ImageView
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="21dp"
-        android:background="@drawable/ic_person_outline_gray_24dp" />
-
     <TextView
         android:id="@+id/groupDetailName"
         android:layout_width="wrap_content"

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context=".AttendaceList">
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,8 +24,8 @@
 
                 <ImageButton
                     android:id="@+id/backIBtn"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:background="@drawable/ic_chevron_left_black_24dp" />
 
 
@@ -97,7 +98,7 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_marginTop="100dp"
-            android:layout_marginLeft="80dp"
+            android:layout_gravity="center"
             android:gravity="center"
             android:text="尚無點名"
             android:textSize="24sp"

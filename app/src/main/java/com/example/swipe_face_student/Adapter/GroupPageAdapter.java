@@ -39,7 +39,7 @@ public class GroupPageAdapter extends RecyclerView.Adapter<GroupPageAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder");
         holder.tvGroupStudentName.setText(
-                String.format("%s\t%s\t%s",
+                String.format("%s\t\t%s\t\t%s",
                         studentList.get(position).getStudent_id(),
                         studentList.get(position).getStudent_department(),
                         studentList.get(position).getStudent_name()));
